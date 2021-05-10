@@ -22,6 +22,7 @@ function SeedDB()
                     return;
                 }
                 passport.authenticate("local")
+                console.log(admin)
             })
         }
     })
