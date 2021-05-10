@@ -1,37 +1,38 @@
 const mongoose = require("mongoose");
-const crypto   = require("crypto");
-const jwt      = require("jsonwebtoken");
 const Course   = require('./Course.js');
+var passportLocalMongoose = require("passport-local-mongoose");
 
 
 const UserSchema = new mongoose.Schema({
-    Name: {
+    name: {
         type: String,
         required: [true, 'An User must have a name'],
         },
-    Phone: {
+    phone: {
         type: String,
         required: [true, 'An User must have a Phone Number'],
         },
-    Email: {
+    email: {
         type: String,
         required: [true, 'An User must have an Email'],
         },
-    Password: {
+    password: {
         type: String,
         required: [true, 'An User must have a paswword'],
         },
-    Type: {
+    type: {
         type: String,
         required: [true, 'An User must have a type'],
         default : "Student",
         enum :["Instructor","Student"]
     },
-    Courses: [{
+    courses: [{
         type: mongoose.Schema.ObjectId,
         ref: 'Course'
     }]
 });
+UserSchema.plugin(passportLocalMongoose);
 
 const User = mongoose.model("User",UserSchema);
+
 module.exports = User;

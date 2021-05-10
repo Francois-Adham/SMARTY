@@ -1,21 +1,31 @@
 let mongoose = require('mongoose'),
+    passport = require('passport'),
     Admin    = require('../models/Admin');
 
 var Data = 
 {
     username : "Mervat",
-    Email : "test@Admin.com",
+    email : "test@Admin.com",
     password : "0"
 }
 
 function SeedDB()
 {
-    Admin.create(Data,(err,admin)=>{
+    Admin.remove({},(err)=>{
         if(err){
+            console.log("error in removeing admins in seed")
             console.log(err);
-            return; //console.log("register");
+        }else{
+            Admin.register(new Admin({username:Data.username,email:Data.email}),Data.password,(err,admin)=>{
+                if(err){
+                    console.log(err)
+                    return;
+                }
+                passport.authenticate("local")(req,res,()=>{
+                    console.log(user);
+                })
+            })
         }
-            console.log(admin.Email);
-    });
+    })
 }
 module.exports = SeedDB;

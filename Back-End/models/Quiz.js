@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 
 const QuizSchema = new mongoose.Schema({
-    Body: String,
-    Date: Date,
-    Grade: Float32Array
+    body: String,
+    date: Date,
+    grade: Float32Array
 });
 
 const Quiz = mongoose.model("Quiz",QuizSchema);

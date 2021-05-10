@@ -1,22 +1,22 @@
 const mongoose = require("mongoose");
 const User = require('./User.js');
-const Student = require('./Student.js');
+
 
 
 const CourseSchema = new mongoose.Schema({
-    Name: {
+    name: {
         type: String,
         required: [true, 'A course must have a name'],
         },
-    Key: {
+    key: {
         type: String,
         required: [true, 'A course must have a Phone Number'],
         },
-    Instructors: [{
+    instructors: [{
         type: mongoose.Schema.ObjectId,
         ref: 'User'
     }],
-    Students: [{
+    students: [{
         type: mongoose.Schema.ObjectId,
         ref: 'User'
     }]      

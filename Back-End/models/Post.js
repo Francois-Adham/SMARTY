@@ -2,15 +2,15 @@ const mongoose = require("mongoose");
 const User = require("User.js");
 
 const PostSchema = new mongoose.Schema({
-    Body: {
+    body: {
         type: String,
         required: [true, 'A Post must have a body'],
     },
-    Date: {
+    date: {
         type: String,
         required: [true, 'A post must have a date'],
     },
-    Type: {
+    type: {
         type: String,
         required: [true, 'A post must have a type'],
         default : "Announcement",
@@ -21,7 +21,7 @@ const PostSchema = new mongoose.Schema({
         ref: 'User'
     },
     MaterialPath: String,
-    Course:{
+    course:{
         type: mongoose.Schema.ObjectId,
         ref: 'Course'
     },

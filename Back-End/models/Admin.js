@@ -1,10 +1,9 @@
 const mongoose = require("mongoose");
-const crypto   = require("crypto");
-const jwt      = require("jsonwebtoken");
+var passportLocalMongoose = require("passport-local-mongoose");
 
 const AdminSchema = new mongoose.Schema({
     username : String,
-    Email: {
+    email: {
         type: String,
         required: [true, 'An Admin must have an Email'],
         },
@@ -13,6 +12,8 @@ const AdminSchema = new mongoose.Schema({
         required: [true, 'An Admin must have a paswword'],
         }
 });
+AdminSchema.plugin(passportLocalMongoose);
 
 const Admin = mongoose.model("Admin",AdminSchema);
+
 module.exports = Admin;

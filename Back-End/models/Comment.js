@@ -3,11 +3,11 @@ const Post = require("Post.js");
 const User = require("User.js");
 
 const CommentSchema = new mongoose.Schema({
-    Body: {
+    body: {
         type: String,
         required: [true, 'A Comment must have a body'],
     },
-    Date: {
+    date: {
         type: String,
         required: [true, 'A Comment must have a date'],
     },
@@ -15,7 +15,7 @@ const CommentSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'User'
     },
-    Post: {
+    post: {
         type: mongoose.Schema.ObjectId,
         ref: 'Post'
     }
