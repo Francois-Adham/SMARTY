@@ -1,6 +1,13 @@
-let express = require('express'),
-    app     = express();
+let express  = require('express'),
+    mongoose = require('mongoose'),
+    seed     = require('./seeds/seed'),
 
+    app      = express();
+
+
+//Database connections
+mongoose.connect("mongodb://localhost:27017/Smarty", {useNewUrlParser:true, useUnifiedTopology:true});
+//seed();
 
 // routes
 app.get('/',(req,res)=>{

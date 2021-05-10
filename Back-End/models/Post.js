@@ -20,7 +20,12 @@ const PostSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'User'
     },
-    MaterialPath: String
+    MaterialPath: String,
+    Course:{
+        type: mongoose.Schema.ObjectId,
+        ref: 'Course'
+    },
+
 });
 
 const Post = mongoose.model("Post",PostSchema);

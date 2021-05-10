@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
-const Course = require('./Course.js');
+const crypto   = require("crypto");
+const jwt      = require("jsonwebtoken");
+const Course   = require('./Course.js');
 
 
 const UserSchema = new mongoose.Schema({
