@@ -21,9 +21,7 @@ function SeedDB()
                     console.log(err)
                     return;
                 }
-                passport.authenticate("local")(req,res,()=>{
-                    console.log(user);
-                })
+                passport.authenticate("local")
             })
         }
     })

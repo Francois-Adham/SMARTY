@@ -22,7 +22,6 @@ const UserSchema = new mongoose.Schema({
         },
     type: {
         type: String,
-        required: [true, 'An User must have a type'],
         default : "Student",
         enum :["Instructor","Student"]
     },

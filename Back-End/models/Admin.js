@@ -8,8 +8,7 @@ const AdminSchema = new mongoose.Schema({
         required: [true, 'An Admin must have an Email'],
         },
     password: {
-        type: String,
-        required: [true, 'An Admin must have a paswword'],
+        type: String
         }
 });
 AdminSchema.plugin(passportLocalMongoose);
