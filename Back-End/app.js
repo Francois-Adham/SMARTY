@@ -1,23 +1,26 @@
 let express        = require('express'),
     mongoose       = require('mongoose'),
     seed           = require('./seeds/seed'),
-    bodyParser     = require("body-parser"),
     passport       = require("passport"),
     LocalStratgy   = require("passport-local"),
     methodOverride = require("method-override"),
     app            = express();
 
 // Requireing the Models
-let User  = require('./models/User'),
-    Amdin = require('./models/Admin');
+let User  = require('./models/User');
+    //Amdin = require('./models/Admin');
+
+// Requireing routes
+let indexRoutes = require('./routes/index');
 
 //Database connections
 mongoose.connect("mongodb://localhost:27017/Smarty", {useNewUrlParser:true, useUnifiedTopology:true});
 // Seeding database
 seed();
 // App Configrations
-app.use(bodyParser.urlencoded({ extended: true}));
+app.use(express.urlencoded({ extended: true}));
 app.use(methodOverride("_method"));
+app.use(express.json()); // Handeling post requests
 // Passport configration
 app.use(require("express-session")({
     secret: "secret word is here :)",
@@ -27,28 +30,22 @@ app.use(require("express-session")({
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStratgy(User.authenticate()));
-passport.use(new LocalStratgy(Amdin.authenticate()));
 passport.serializeUser(User.serializeUser());
-passport.serializeUser(Amdin.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-passport.deserializeUser(Amdin.deserializeUser());
 
 app.use((req,res,next)=>{
     res.locals.currentUser = req.user;
+    console.log(req.session);
+    console.log(req.user);
     next();
 });
 
 // routes
-app.get('/',(req,res)=>{
-    res.status(200).json({message : 'Hello from the server side', app:'server'});
-})
-app.post('/',(req,res)=>{
-    res.status(200).json({message : 'You can post to this url', app:'server'});
-})
+app.use('/api/v1/',indexRoutes);
 
 
 // Open the server
-const port = 3000;
+const port = process.env.PORT | 3000;
 app.listen(port,()=>{
     console.log(`Running on port: ${port} ...`);
 });

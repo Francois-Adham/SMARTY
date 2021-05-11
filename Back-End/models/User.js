@@ -4,26 +4,28 @@ var passportLocalMongoose = require("passport-local-mongoose");
 
 
 const UserSchema = new mongoose.Schema({
-    name: {
+    username: {
         type: String,
+        unique: true,
         required: [true, 'An User must have a name'],
         },
     phone: {
         type: String,
+        unique: true,
         required: [true, 'An User must have a Phone Number'],
         },
     email: {
         type: String,
+        unique: true,
         required: [true, 'An User must have an Email'],
         },
     password: {
-        type: String,
-        required: [true, 'An User must have a paswword'],
+        type: String
         },
     type: {
         type: String,
         default : "Student",
-        enum :["Instructor","Student"]
+        enum :["Instructor","Student","Admin"]
     },
     courses: [{
         type: mongoose.Schema.ObjectId,
