@@ -31,8 +31,7 @@ function SeedDB()
                         if(err){
                             console.log(err)
                         }
-                        passport.authenticate("local")
-                        //console.log(user);
+                        passport.authenticate("local");
                         console.log("The DB is seeded");
                 })
             }

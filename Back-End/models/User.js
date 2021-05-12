@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Course   = require('./Course.js');
+const bcrypt   = require('bcryptjs');
 var passportLocalMongoose = require("passport-local-mongoose");
 
 
@@ -32,6 +33,14 @@ const UserSchema = new mongoose.Schema({
         ref: 'Course'
     }]
 });
+
+UserSchema.statics.correctPassword = async function (
+    candidatePassword,
+    userPassword
+  ) {
+    return await bcrypt.compare(candidatePassword, userPassword);
+};
+  
 UserSchema.plugin(passportLocalMongoose);
 
 const User = mongoose.model("User",UserSchema);

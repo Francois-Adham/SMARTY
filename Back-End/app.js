@@ -12,6 +12,7 @@ let User  = require('./models/User');
 
 // Requireing routes
 let indexRoutes = require('./routes/index');
+let studentRoutes = require('./routes/Students');
 
 //Database connections
 mongoose.connect("mongodb://localhost:27017/Smarty", {useNewUrlParser:true, useUnifiedTopology:true});
@@ -42,6 +43,8 @@ app.use((req,res,next)=>{
 
 // routes
 app.use('/api/v1/',indexRoutes);
+app.use('/api/v1/students',studentRoutes);
+
 
 
 // Open the server
