@@ -53,15 +53,30 @@ router.delete('/:id',(req,res)=>
 //TODO:
 router.put('/:id',(req,res)=>
 {
-    User.findByIdAndUpdate(req.params.id, req.body,(err,newuser)=>{
-        if(err)
-            res.status(400).json({status:"Passwords don't match"});
-        else
-        {    
-            console.log(newuser);
-            res.status(200).json({status:"Password Updated"});
+    User.findById(req.params.id,(err,sanitizedUser)=>{
+        if(err){
+            res.status.apply(404).json({message:'user not found'})
+        }else{
+            sanitizedUser.changePassword(req.body.oldPassword,req.body.newPassword,(err)=>{
+                if(err)
+                    res.status(422).send(err);
+                sanitizedUser.save();
+                res.status(200).json({ message: 'Successful!' });
+            });
         }
     });
+    // User.findById(req.params.id,(err,sanitizedUser)=>{
+    //     if(err){
+    //         res.status.apply(404).json({message:'user not found'})
+    //     }else{
+    //         sanitizedUser.setPassword(req.body.newPassword,(err)=>{
+    //             if(err)
+    //                 res.status(422).send(err);
+    //             sanitizedUser.save();
+    //             res.status(200).json({ message: 'Successful!' });
+    //         });
+    //     }
+    // });
 });
 
 

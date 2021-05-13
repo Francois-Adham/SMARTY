@@ -8,11 +8,10 @@ let express        = require('express'),
 
 // Requireing the Models
 let User  = require('./models/User');
-    //Amdin = require('./models/Admin');
 
 // Requireing routes
-let indexRoutes = require('./routes/index');
-let studentRoutes = require('./routes/Students');
+let indexRoutes   = require('./routes/index'),
+    studentRoutes = require('./routes/Students');
 
 //Database connections
 mongoose.connect("mongodb://localhost:27017/Smarty", {useNewUrlParser:true, useUnifiedTopology:true});
