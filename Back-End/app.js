@@ -11,7 +11,9 @@ let User  = require('./models/User');
 
 // Requireing routes
 let indexRoutes   = require('./routes/index'),
-    studentRoutes = require('./routes/Students');
+    studentRoutes = require('./routes/Students'),
+    instructorRoutes = require('./routes/Instructor'),
+    userRoutes = require('./routes/Users');
 
 //Database connections
 mongoose.connect("mongodb://localhost:27017/Smarty", {useNewUrlParser:true, useUnifiedTopology:true});
@@ -35,14 +37,14 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use((req,res,next)=>{
     res.locals.currentUser = req.user;
-    console.log(req.session);
-    console.log(req.user);
     next();
 });
 
 // routes
 app.use('/api/v1/',indexRoutes);
 app.use('/api/v1/students',studentRoutes);
+app.use('/api/v1/users',userRoutes);
+app.use('/api/v1/instructors',instructorRoutes);
 
 
 
