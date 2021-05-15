@@ -10,7 +10,8 @@ const CourseSchema = new mongoose.Schema({
         },
     key: {
         type: String,
-        required: [true, 'A course must have a Phone Number'],
+        unique: true,
+        required: [true, 'A course must have a key'],
         },
     instructors: [{
         type: mongoose.Schema.ObjectId,

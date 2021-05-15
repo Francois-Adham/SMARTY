@@ -13,6 +13,7 @@ let User  = require('./models/User');
 let indexRoutes   = require('./routes/index'),
     studentRoutes = require('./routes/Students'),
     instructorRoutes = require('./routes/Instructor'),
+    courseRoutes = require('./routes/Course'),
     userRoutes = require('./routes/Users');
 
 //Database connections
@@ -45,6 +46,8 @@ app.use('/api/v1/',indexRoutes);
 app.use('/api/v1/students',studentRoutes);
 app.use('/api/v1/users',userRoutes);
 app.use('/api/v1/instructors',instructorRoutes);
+app.use('/api/v1/courses',courseRoutes);
+
 
 
 
