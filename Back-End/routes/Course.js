@@ -58,7 +58,6 @@ router.get('/',(req,res)=>
 
 router.get('/:id',isEnrolled,(req,res)=>
 {
-    console.log(req.params.id);
     Course.findById({_id:req.params.id},(err,course)=>{
         if(err)
         {
@@ -67,7 +66,7 @@ router.get('/:id',isEnrolled,(req,res)=>
         }
         else
         {
-            res.status(200).json({status:"success",data:{course:course}});
+            res.status(200).json({status:"success",isEnrolled: true,data:{course:course}});
         }
     });
 });
@@ -89,8 +88,41 @@ router.delete('/:id',isInstructor,(req,res)=>
     });
 });
 
-// TODO: Enroll in a course
-
+//Enroll in a course
+router.post('/:id/enroll',(req,res)=>{
+    Course.findById(req.params.id,(err,course)=>{
+        if(err)
+        {
+            console.log(err);
+            res.status(400).json({status:"failed to get Course"});
+        }
+        else
+        {
+            if(course.key == req.body.key)
+            {
+                course.students.push(req.user);
+                course.save();
+                User.findById(req.user._id,(err,student)=>{
+                    if(err)
+                    {
+                        console.log(err);
+                        res.status(400).json({status:"failed to get Student"});   
+                    }
+                    else
+                    {
+                        student.courses.push(course);
+                        student.save();
+                        res.status(200).json({status:"success"});
+                    }
+                });
+            }
+            else 
+            {
+                res.status(400).json({status:"You entered wrong Key !"}); 
+            }
+        }
+    })
+});
 
 
 module.exports =router;
