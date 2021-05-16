@@ -43,7 +43,8 @@ middlewareObj.isAdmin = (req,res,next) => {
 };
 // Check if the user is enrolled in the course
 middlewareObj.isEnrolled = (req,res,next) => {
-    User.findById(req.body.courseID,(err,user)=>{
+    found= false;
+    User.findById(req.user.id,(err,user)=>{
         if(err){
             return res.status(401).json({
                 status: 'failed',
@@ -51,15 +52,20 @@ middlewareObj.isEnrolled = (req,res,next) => {
             });
         }
         user.courses.forEach(course => {
-            if(course === req.body.courseID){
+            if(course == req.params.id)
+            {
+                found = true;
                 return next();
             }
         });
-        res.status(400).json({
+        if(!found)
+        {
+            res.status(400).json({
             status: 'failed',
             message: 'You are not enrolled in this course'
-        })
-    })
+           });
+        }
+    });
 };
 
 module.exports = middlewareObj;

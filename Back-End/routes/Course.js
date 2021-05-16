@@ -58,6 +58,7 @@ router.get('/',(req,res)=>
 
 router.get('/:id',isEnrolled,(req,res)=>
 {
+    console.log(req.params.id);
     Course.findById({_id:req.params.id},(err,course)=>{
         if(err)
         {
