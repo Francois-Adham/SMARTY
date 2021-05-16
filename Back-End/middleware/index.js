@@ -1,5 +1,6 @@
 let Course = require('../models/Course'),
-    User   = require('../models/User');
+    User   = require('../models/User'),
+    Post   = require('../models/Post');
 
 let middlewareObj ={}
 // Check if the user is logged in
@@ -64,6 +65,35 @@ middlewareObj.isEnrolled = (req,res,next) => {
             status: 'failed',
             isEnrolled: false,
             message: 'You are not enrolled in this course'
+           });
+        }
+    });
+};
+
+//Check if current user is the publisher of a post
+middlewareObj.isOwnedPost = (req,res,next) => {
+    found= false;
+    Post.findById(req.params.postID,(err,post)=>{
+        if(err){
+            return res.status(401).json({
+                status: 'failed',
+                message: 'post not found'
+            });
+        }
+        else
+        {
+            if(post.publisher == req.user.id)
+            {
+                found = true;
+                return next();
+            }
+        }
+        if(!found)
+        {
+            res.status(400).json({
+            status: 'failed',
+            isEnrolled: false,
+            message: 'You are not the publisher of this post'
            });
         }
     });

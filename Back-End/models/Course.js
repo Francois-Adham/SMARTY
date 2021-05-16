@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const User = require('./User.js');
+const Post = require('./Post.js');
 
 
 
@@ -20,7 +21,11 @@ const CourseSchema = new mongoose.Schema({
     students: [{
         type: mongoose.Schema.ObjectId,
         ref: 'User'
-    }]      
+    }],
+    posts: [{
+        type: mongoose.Schema.ObjectId,
+        ref: 'Post'
+    }]
 });
 
 const Course = mongoose.model("Course",CourseSchema);

@@ -34,7 +34,6 @@ router.delete('/:id',(req,res)=>
 });
 
 
-//TODO:
 router.put('/:id',(req,res)=>
 {
     User.findById(req.params.id,(err,sanitizedUser)=>{

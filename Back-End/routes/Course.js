@@ -4,13 +4,12 @@ var express  = require("express"),
     router   = express.Router({ mergeParams: true }),
     Course   = require("../models/Course"),
     User     = require("../models/User"),
-
+    Post     = require("../models/Post"),
     passport = require("passport");
 
 
 // Add Course
 router.post('/create',isInstructor,(req,res)=>{
-    console.log(req.body)
     Course.create({name:req.body.name,key:req.body.key},(err,course)=>{
         if(err)
         {
@@ -58,7 +57,7 @@ router.get('/',(req,res)=>
 
 router.get('/:id',isEnrolled,(req,res)=>
 {
-    Course.findById({_id:req.params.id},(err,course)=>{
+    Course.findById({_id:req.params.id}).populate("posts").exec((err,course)=>{
         if(err)
         {
             console.log(err);
@@ -75,15 +74,71 @@ router.get('/:id',isEnrolled,(req,res)=>
 
 router.delete('/:id',isInstructor,(req,res)=>
 {
-    Course.findByIdAndRemove(req.params.id,(err)=>{
-        if(err)
+    // Find Course
+    Course.findById({_id:req.params.id},(err,course)=>{
+        if (err)
         {
-            res.status(400).json({status:"failed to delete course"});
+            console.log(err);
+            res.status(400).json({status:"failed to get Course"});
         }
         else
         {
-
-            res.status(200).json({status:"success"});
+            // get instructors
+            // loop and remove course from them
+            course.instructors.forEach(instructor => {
+                User.findById(instructor,(err,inst)=>{
+                    if (err)
+                    {
+                        console.log(err);
+                        res.status(400).json({status:"failed to find instructor"});
+                    }
+                    else
+                    {
+                        inst.courses = inst.courses.filter(function(value, index, arr){ 
+                            return value != req.params.id;
+                        });
+                        inst.save();
+                    }
+                });
+            });
+            // do the same for students
+            course.students.forEach(student => {
+                User.findById(student,(err,std)=>{
+                    if (err)
+                    {
+                        console.log(err);
+                        res.status(400).json({status:"failed to find student"});
+                    }
+                    else
+                    {
+                        std.courses = std.courses.filter(function(value, index, arr){ 
+                            return value != req.params.id;
+                        });
+                        std.save();
+                    }
+                });
+            });
+            // delete all posts
+            course.posts.forEach(post => {
+                Post.findByIdAndRemove(post,(err,pst)=>{
+                    if (err)
+                    {
+                        console.log(err);
+                        res.status(400).json({status:"failed to delete post"});
+                    }
+                });
+            });
+            //Delete course
+            Course.findByIdAndRemove(req.params.id,(err)=>{
+                if(err)
+                {
+                    res.status(400).json({status:"failed to delete course"});
+                }
+                else
+                {
+                    res.status(200).json({status:"success"});
+                }
+            });
         }
     });
 });

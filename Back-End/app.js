@@ -14,7 +14,8 @@ let indexRoutes   = require('./routes/index'),
     studentRoutes = require('./routes/Students'),
     instructorRoutes = require('./routes/Instructor'),
     courseRoutes = require('./routes/Course'),
-    userRoutes = require('./routes/Users');
+    userRoutes = require('./routes/Users'),
+    postRoutes = require('./routes/Post');
 
 //Database connections
 mongoose.connect("mongodb://localhost:27017/Smarty", {useNewUrlParser:true, useUnifiedTopology:true});
@@ -47,6 +48,8 @@ app.use('/api/v1/students',studentRoutes);
 app.use('/api/v1/users',userRoutes);
 app.use('/api/v1/instructors',instructorRoutes);
 app.use('/api/v1/courses',courseRoutes);
+app.use('/api/v1/courses/:courseID/posts',postRoutes);
+
 
 
 
