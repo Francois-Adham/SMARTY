@@ -45,6 +45,7 @@
       :dark="this.$store.state.dark"
       clipped
       app
+      class="elevation-20"
     >
       <v-list-item>
         <v-list-item-content>
@@ -77,7 +78,7 @@
 
 <script>
 export default {
-  name: "Home",
+  name: 'Main',
   components: {},
 
   data: () => ({
@@ -86,22 +87,22 @@ export default {
       clipped: true,
     },
     containerStyle: {
-      "background-color": "black",
+      'background-color': 'black',
     },
     bgStyle: {
-      "background-image": `url(${require("../assets/background.png")})`,
+      'background-image': `url(${require('../assets/background.png')})`,
       opacity: 0.1,
     },
     drawerItems: [
-      { title: "Home", icon: "mdi-home" },
-      { title: "Activity Stream", icon: "mdi-view-stream" },
-      { title: "All Courses", icon: "mdi-bookshelf" },
-      { title: "Grades & Reports", icon: "mdi-folder" },
-      { title: "Sign out", icon: "mdi-logout" },
+      { title: 'Home', icon: 'mdi-home' },
+      { title: 'Activity Stream', icon: 'mdi-view-stream' },
+      { title: 'All Courses', icon: 'mdi-bookshelf' },
+      { title: 'Grades & Reports', icon: 'mdi-folder' },
+      { title: 'Sign out', icon: 'mdi-logout' },
     ],
     dropItems: [
-      { title: "Update Profile", icon: "mdi-update" },
-      { title: "Sign out", icon: "mdi-logout" },
+      { title: 'Update Profile', icon: 'mdi-update' },
+      { title: 'Sign out', icon: 'mdi-logout' },
     ],
   }),
 
@@ -109,16 +110,16 @@ export default {
     themeChanged() {
       this.$store.state.dark = !this.$store.state.dark;
       if (this.$store.state.dark) {
-        this.containerStyle["background-color"] = "black";
+        this.containerStyle['background-color'] = 'black';
         this.bgStyle[
-          "background-image"
-        ] = `url(${require("../assets/background.png")})`;
+          'background-image'
+        ] = `url(${require('../assets/background.png')})`;
         this.bgStyle.opacity = 0.1;
       } else {
-        this.containerStyle["background-color"] = "white";
+        this.containerStyle['background-color'] = 'white';
         this.bgStyle[
-          "background-image"
-        ] = `url(${require("../assets/background_light.png")})`;
+          'background-image'
+        ] = `url(${require('../assets/background_light.png')})`;
         this.bgStyle.opacity = 0.4;
       }
     },
