@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const User = require('./User.js');
+const Post = require('./Post.js');
 
 
 
@@ -10,7 +11,8 @@ const CourseSchema = new mongoose.Schema({
         },
     key: {
         type: String,
-        required: [true, 'A course must have a Phone Number'],
+        unique: true,
+        required: [true, 'A course must have a key'],
         },
     instructors: [{
         type: mongoose.Schema.ObjectId,
@@ -19,7 +21,11 @@ const CourseSchema = new mongoose.Schema({
     students: [{
         type: mongoose.Schema.ObjectId,
         ref: 'User'
-    }]      
+    }],
+    posts: [{
+        type: mongoose.Schema.ObjectId,
+        ref: 'Post'
+    }]
 });
 
 const Course = mongoose.model("Course",CourseSchema);

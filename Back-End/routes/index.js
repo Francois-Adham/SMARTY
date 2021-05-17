@@ -1,8 +1,8 @@
-var express  = require("express"),
+let express  = require("express"),
     router   = express.Router(),
     User     = require("../models/User"),
     passport = require("passport");
-
+let isLoggedIn = require('../middleware/index').isLoggedIn;
 
 router.get('/',(req,res)=>{
     res.status(200).json({
@@ -27,8 +27,8 @@ router.post("/register",(req,res)=>{
     res.status(201).json({
         status:'success',
         data:{
-            message:'user is added',
-            user: res.locals.currentUser
+            user: req.user,
+            sessionID: req.sessionID
         }
     })
 });
@@ -43,7 +43,10 @@ router.get('/loginSuccess',(req,res)=>{
     console.log("The login");
     res.status(201).json({
         status: 'success',
-        data: res.user
+        data:{
+            user: req.user,
+            sessionID: req.sessionID
+        }
     })
 })
 router.get('/loginFail',(req,res)=>{
@@ -59,5 +62,14 @@ router.get("/logout",(req,res)=>{
         message: "You are logged out"
     })
 });
-
+// ===================================================================
+//                          My Info ROUTES
+// ===================================================================
+router.get('/me',isLoggedIn,(req,res)=>{
+    res.status(200).json({
+        data :{
+            user: req.user
+        }
+})
+})
 module.exports = router;

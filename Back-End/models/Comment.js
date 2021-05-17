@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
-const Post = require("Post.js");
-const User = require("User.js");
+const Post = require("./Post.js");
+const User = require("./User.js");
 
 const CommentSchema = new mongoose.Schema({
     body: {
