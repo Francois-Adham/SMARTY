@@ -1,4 +1,4 @@
-const { isInstructor, isEnrolled } = require("../middleware");
+const { isInstructor, isEnrolled, isLoggedIn } = require("../middleware");
 
 var express  = require("express"),
     router   = express.Router({ mergeParams: true }),
@@ -55,7 +55,7 @@ router.get('/',(req,res)=>
 
 //Get Course by ID
 
-router.get('/:id',isEnrolled,(req,res)=>
+router.get('/:id',isLoggedIn,isEnrolled,(req,res)=>
 {
     Course.findById({_id:req.params.id}).populate("posts").exec((err,course)=>{
         if(err)
