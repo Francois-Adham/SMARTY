@@ -53,11 +53,39 @@ router.get('/',(req,res)=>
     });
 });
 
+// Get current user's Courses 
+router.get('/me',(req,res)=>
+{
+    User.findById(req.user._id).populate("courses").exec((err,user)=>{
+        if(err)
+        {
+            console.log(err);
+            res.status(400).json({status:"failed to get user"});
+        }
+        else
+        {
+            
+            res.status(200).json({status:"success",data:{
+                Courses:user.courses.map(function (value) {
+                    return {
+                        _id: value._id,
+                        name: value.name
+                    }
+                })
+            }});
+        }
+    });
+});
 //Get Course by ID
 
 router.get('/:id',isLoggedIn,isEnrolled,(req,res)=>
 {
-    Course.findById({_id:req.params.id}).populate("students").populate("posts").populate("instructors").exec((err,course)=>{
+    Course.findById({_id:req.params.id}).populate("students").populate("posts").populate("instructors").populate({ 
+     path: 'posts',
+     populate: {
+       path: 'publisher'
+     } 
+  }).exec((err,course)=>{
         if(err)
         {
             console.log(err);
@@ -65,22 +93,30 @@ router.get('/:id',isLoggedIn,isEnrolled,(req,res)=>
         }
         else
         {
-            console.log(course.instructors);
+            //console.log(course.posts[0]._id.getTimestamp());
             res.status(200).json({status:"success",isEnrolled: true,data:{course:
                 {
                 'instructors': course.instructors.map(function (value) {
                     return {
-                        id: value._id,
+                        _id: value._id,
                         name: value.username
                     }
                 }),
                 'students': course.students.map(function (value) {
                     return {
-                        id: value._id,
+                        _id: value._id,
                         name: value.username
                     }
                 }),
-                'posts':course.posts,
+                'posts':course.posts.map(function (value) {
+                    return {
+                        _id: value._id,
+                        type: value.type,
+                        body: value.body,
+                        publisher: { "_id":value.publisher._id,"name":value.publisher.username},
+                        date: value.created_at
+                    }
+                }),
                 '_id':course._id,
                 'key':course.key,
                 'name':course.name
@@ -197,6 +233,47 @@ router.post('/:id/enroll',(req,res)=>{
         }
     })
 });
+
+//Unenroll/delete from a course
+router.post('/:id/unenroll/:userID',(req,res)=>{
+    Course.findById(req.params.id,(err,course)=>{
+        if(err)
+        {
+            console.log(err);
+            res.status(400).json({status:"failed to get Course"});
+        }
+        else
+        {
+            if(req.user.type == "Instructor" || req.params.userID == req.user._id)
+            {
+                course.students = course.students.filter(function(value, index, arr){ 
+                    return value != req.params.userID;
+                });
+                course.save();
+                User.findById(req.params.userID,(err,student)=>{
+                    if(err)
+                    {
+                        console.log(err);
+                        res.status(400).json({status:"failed to get Student"});   
+                    }
+                    else
+                    {
+                        student.courses = student.courses.filter(function(value, index, arr){ 
+                            return value != course.id;
+                        });
+                        student.save();
+                        res.status(200).json({status:"success"});
+                    }
+                });
+            }
+            else 
+            {
+                res.status(400).json({status:"You don't have permission !"}); 
+            }
+        }
+    })
+});
+
 
 
 module.exports =router;

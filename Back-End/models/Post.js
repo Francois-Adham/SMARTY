@@ -21,8 +21,11 @@ const PostSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'Comment'
     }],
+    created_at: {
+        type: Date
+      },  
     MaterialPath: String
-});
+}, { timestamps: { createdAt: 'created_at' } });
 
 const Post = mongoose.model("Post",PostSchema);
 module.exports = Post;

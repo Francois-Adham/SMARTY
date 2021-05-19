@@ -71,5 +71,7 @@ router.get('/me',isLoggedIn,(req,res)=>{
             user: req.user
         }
 })
-})
+});
+
+
 module.exports = router;
