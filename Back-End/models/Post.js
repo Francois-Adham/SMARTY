@@ -11,7 +11,7 @@ const PostSchema = new mongoose.Schema({
         type: String,
         required: [true, 'A post must have a type'],
         default : "Announcement",
-        enum :["Announcement","Assignment"]
+        enum :["Announcement","file","video"]
     },
     publisher:{
         type: mongoose.Schema.ObjectId,

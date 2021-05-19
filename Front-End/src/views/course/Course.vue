@@ -88,7 +88,7 @@
                 <v-list-item-group color="primary">
                   <v-list-item
                     style="justify-content: center"
-                    v-for="(item, i) in this.course.content"
+                    v-for="(item, i) in this.content"
                     :key="i"
                   >
                     <v-icon>{{
@@ -233,6 +233,8 @@ export default {
     ],
     course: {},
     events: [],
+    content: [],
+    posts: [],
     enrolled: false,
     ready: false,
   }),
@@ -241,7 +243,16 @@ export default {
       const current_course = await Client.fetchCourse(this.$route.params.id);
       this.course = current_course.data.course;
       this.enrolled = current_course.isEnrolled;
-      for (const current_event of this.course.events) {
+      for (const current_post of this.course.posts) {
+        if (current_post.type == 'Announcement') {
+          this.posts.push(current_post);
+        }
+        else 
+        {
+          this.content.push(current_post);
+        }
+      }
+      /*for (const current_event of this.course.events) {
         if (current_event.type == 'quiz') {
           this.events.push({
             title: current_event.title,
@@ -257,7 +268,7 @@ export default {
             icon: 'mdi-lead-pencil',
           });
         }
-      }
+      }*/
       this.events.sort(function (x, y) {
         return x.due_date - y.due_date;
       });
