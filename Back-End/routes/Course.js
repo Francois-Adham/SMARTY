@@ -57,7 +57,7 @@ router.get('/',(req,res)=>
 
 router.get('/:id',isLoggedIn,isEnrolled,(req,res)=>
 {
-    Course.findById({_id:req.params.id}).populate("posts").exec((err,course)=>{
+    Course.findById({_id:req.params.id}).populate("students").populate("posts").populate("instructors").exec((err,course)=>{
         if(err)
         {
             console.log(err);
@@ -65,7 +65,26 @@ router.get('/:id',isLoggedIn,isEnrolled,(req,res)=>
         }
         else
         {
-            res.status(200).json({status:"success",isEnrolled: true,data:{course:course}});
+            console.log(course.instructors);
+            res.status(200).json({status:"success",isEnrolled: true,data:{course:
+                {
+                'instructors': course.instructors.map(function (value) {
+                    return {
+                        id: value._id,
+                        name: value.username
+                    }
+                }),
+                'students': course.students.map(function (value) {
+                    return {
+                        id: value._id,
+                        name: value.username
+                    }
+                }),
+                'posts':course.posts,
+                '_id':course._id,
+                'key':course.key,
+                'name':course.name
+            }}});
         }
     });
 });
