@@ -1,7 +1,7 @@
 {
   "status": "success",
+  "isEnrolled": true,
   "data": {
-    "is_enrolled": true,
     "course": {
       "instructors": [
         {

@@ -26,7 +26,7 @@
         style="min-height: 70vh"
         class="ma-0 pa-0 justify-center"
       >
-        <v-col cols="6">
+        <v-col cols="10" class="ma-0 pa-0">
           <h1
             :class="
               this.$store.state.dark
@@ -37,7 +37,7 @@
             You must be enrolled in this course to see its content
           </h1>
         </v-col>
-        <v-col cols="3">
+        <v-col cols="3" class="ma-0 pa-0">
           <v-card :dark="this.$store.state.dark" class="mt-10">
             <v-card-text class="elevation-20">
               <v-text-field
@@ -240,7 +240,7 @@ export default {
     async fetchCourseByID() {
       const current_course = await Client.fetchCourse(this.$route.params.id);
       this.course = current_course.data.course;
-      this.enrolled = current_course.data.is_enrolled;
+      this.enrolled = current_course.isEnrolled;
       for (const current_event of this.course.events) {
         if (current_event.type == 'quiz') {
           this.events.push({
