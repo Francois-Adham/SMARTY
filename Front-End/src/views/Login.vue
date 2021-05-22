@@ -7,21 +7,20 @@
     <v-form
       v-model="valid"
       :disabled="isLoading"
-      @submit.prevent="submit"
+      @submit.prevent="login"
       ref="form"
     >
       <h3>Log in to Smarty</h3>
 
-      <v-alert v-show="error" dense outlined type="error">
-        The email and password you entered did not match our records. Please
-        double-check and try again.
+      <v-alert v-show="showError" dense outlined type="error">
+        {{ errorMessage }}
       </v-alert>
 
       <v-text-field
-        v-model="email"
+        v-model="username"
         :rules="[rules.required]"
-        label="Phone, email or username"
-        autocomplete="email"
+        label="Username"
+        autocomplete="username"
         outlined
         :loading="isLoading"
       ></v-text-field>
@@ -51,25 +50,42 @@
 </template>
 
 <script>
+import Client from 'api-client';
 export default {
   data() {
     return {
-      email: "",
-      password: "",
+      username: '',
+      password: '',
       rules: {
         required: (value) => !!value,
       },
       valid: false,
       isLoading: false,
-      error: false,
+      showError: false,
+      errorMessage: '',
     };
   },
 
   methods: {
-    submit() {
+    async login() {
       if (this.valid) {
         this.isLoading = true;
-        
+        const ret = await Client.login(this.username, this.password);
+        if (ret.status && ret.status == 201) {
+          // success
+          this.$router.push({ name: 'Main' });
+        } else if (ret.response) {
+          // server returned error
+          this.isLoading = false;
+          this.errorMessage =
+            'The username and password you entered did not match our records. Please double-check and try again.';
+          this.showError = true;
+        } else {
+          // network error
+          this.isLoading = false;
+          this.errorMessage = 'Network error';
+          this.showError = true;
+        }
       }
     },
   },

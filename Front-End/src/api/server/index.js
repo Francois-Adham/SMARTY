@@ -17,4 +17,10 @@ export default {
       .then((response) => response.data)
       .catch((error) => console.log(error));
   },
+  async login(username, password) {
+    return axios
+      .post(`${api}/api/v1/login`, { username, password })
+      .then((response) => response)
+      .catch((error) => error);
+  },
 };
