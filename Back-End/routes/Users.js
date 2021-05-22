@@ -1,3 +1,4 @@
+const { isInstructor, isEnrolled, isLoggedIn } = require("../middleware");
 var express  = require("express"),
     router   = express.Router({ mergeParams: true }),
     User     = require("../models/User"),
@@ -60,6 +61,19 @@ router.put('/:id',(req,res)=>
     //         });
     //     }
     // });
+});
+
+router.put('/:id/mail',isLoggedIn,(req,res)=>
+{
+    User.findById(req.params.id,(err,user)=>{
+        if(err){
+            res.status.apply(404).json({message:'user not found'})
+        }else{
+            user.email=req.body.email;
+            user.save();
+            res.status(200).json({ message: 'Successful!' });
+        }
+    });
 });
 
 module.exports = router;

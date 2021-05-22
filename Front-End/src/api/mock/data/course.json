@@ -1,0 +1,129 @@
+{
+  "status": "success",
+  "isEnrolled": true,
+  "data": {
+    "course": {
+      "instructors": [
+        {
+          "_id": "60a06f2e93731c49c88781d0",
+          "name": "Intructor 1"
+        },
+        {
+          "_id": "60a06f2e93731c49c88781d1",
+          "name": "Intructor 2"
+        }
+      ],
+      "students": [
+        {
+          "_id": "60a06f2e93731c49c88781d2",
+          "name": "Student 1"
+        },
+        {
+          "_id": "60a06f2e93731c49c88781d3",
+          "name": "Student 2"
+        },
+        {
+          "_id": "60a06f2e93731c49c88781d2",
+          "name": "Student 3"
+        },
+        {
+          "_id": "60a06f2e93731c49c88781d3",
+          "name": "Student 4"
+        },
+        {
+          "_id": "60a06f2e93731c49c88781d2",
+          "name": "Student 5"
+        },
+        {
+          "_id": "60a06f2e93731c49c88781d3",
+          "name": "Student 6"
+        },
+        {
+          "_id": "60a06f2e93731c49c88781d2",
+          "name": "Student 7"
+        },
+        {
+          "_id": "60a06f2e93731c49c88781d3",
+          "name": "Student 8"
+        },
+        {
+          "_id": "60a06f2e93731c49c88781d2",
+          "name": "Student 9"
+        },
+        {
+          "_id": "60a06f2e93731c49c88781d3",
+          "name": "Student 10"
+        }
+      ],
+      "events": [
+        {
+          "due_date": "Sun 17 May 15:26:53 EET 2021",
+          "type": "quiz",
+          "title": "QUIZ 1"
+        },
+        {
+          "due_date": "Sun 16 May 15:26:53 EET 2021",
+          "type": "assignment",
+          "title": "assignment 1"
+        },
+        {
+          "due_date": "Sun 15 May 15:26:53 EET 2021",
+          "type": "quiz",
+          "title": "QUIZ 2"
+        },
+        {
+          "due_date": "Sun 16 May 15:26:53 EET 2021",
+          "type": "quiz",
+          "title": "QUIZ 3"
+        },
+        {
+          "due_date": "Sun 16 May 15:26:53 EET 2021",
+          "type": "assignment",
+          "title": "assignment 2"
+        }
+      ],
+      "content":[
+          {
+            "name": "Item 1",
+            "type": "file"
+          },
+          {
+            "name": "Item 2",
+            "type": "video"
+          },
+          {
+            "name": "Item 3",
+            "type": "file"
+          },
+          {
+            "name": "Item 4",
+            "type": "file"
+          },
+          {
+            "name": "Item 5",
+            "type": "video"
+          }
+      ],
+      "posts": [
+        {
+          "_id": "60a06f2e93731c49c88781d3",
+          "owner": "60a06f2e93731c49c88781d3",
+          "publish_date": "Sun 16 May 15:26:53 EET 2021",
+          "content": "bla bla bla",
+          "comments": [
+            {
+              "_id": "60a06f2e93731c49c88781d3",
+              "owner": "60a06f2e93731c49c88781d3",
+              "publish_date": "Sun 16 May 15:26:53 EET 2021",
+              "content": "bla bla bla"
+            }
+          ]
+        }
+      ],
+      "_id": "60a06f8493731c49c88781d4",
+      "name": "APT",
+      "key": "key",
+      "__v": 1
+    }
+  }
+}

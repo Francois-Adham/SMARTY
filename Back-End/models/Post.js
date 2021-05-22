@@ -11,7 +11,7 @@ const PostSchema = new mongoose.Schema({
         type: String,
         required: [true, 'A post must have a type'],
         default : "Announcement",
-        enum :["Announcement","Assignment"]
+        enum :["Announcement","file","video"]
     },
     publisher:{
         type: mongoose.Schema.ObjectId,
@@ -21,8 +21,11 @@ const PostSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'Comment'
     }],
+    created_at: {
+        type: Date
+      },  
     MaterialPath: String
-});
+}, { timestamps: { createdAt: 'created_at' } });
 
 const Post = mongoose.model("Post",PostSchema);
 module.exports = Post;
