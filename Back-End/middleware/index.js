@@ -1,5 +1,6 @@
 let Course = require('../models/Course'),
     User   = require('../models/User'),
+    Comment   = require('../models/Comment'),
     Post   = require('../models/Post');
 
 let middlewareObj ={}
@@ -99,4 +100,35 @@ middlewareObj.isOwnedPost = (req,res,next) => {
     });
 };
 
+//Check if current user is the publisher of a comment
+middlewareObj.isOwnedComment = (req,res,next) => {
+    found= false;
+    console.log(req.params.commentID);
+    Comment.findById(req.params.commentID,(err,comment)=>{
+        if(err){
+            return res.status(401).json({
+                status: 'failed',
+                message: 'comment not found'
+            });
+        }
+        else
+        {
+            console.log(comment);
+            console.log(req.user.id);
+            if(comment.publisher == req.user.id)
+            {
+                found = true;
+                return next();
+            }
+        }
+        if(!found)
+        {
+            res.status(400).json({
+            status: 'failed',
+            isEnrolled: false,
+            message: 'You are not the publisher of this comment'
+           });
+        }
+    });
+};
 module.exports = middlewareObj;

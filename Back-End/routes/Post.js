@@ -5,6 +5,7 @@ var express  = require("express"),
     Course   = require("../models/Course"),
     User     = require("../models/User"),
     Post     = require("../models/Post"),
+    Comment     = require("../models/Comment"),
     passport = require("passport");
 
 
@@ -70,15 +71,40 @@ router.delete('/:postID',isOwnedPost,(req,res)=>
             });
             course.save();
 
-            Post.findByIdAndRemove(req.params.postID,(err)=>{
+            Post.findById(req.params.postID,(err,post)=>{
                 if(err)
                 {
-                    res.status(400).json({status:"failed to delete post"});
+                    res.status(400).json({status:"failed to get post"});
                 }
                 else
                 {
-        
-                    res.status(200).json({status:"success"});
+                    // get comments
+                    // loop and remove them
+                    post.comments.forEach(comment => {
+                        Comment.findByIdAndRemove(comment,(err,com)=>{
+                            if (err)
+                            {
+                                console.log(err);
+                                res.status(400).json({status:"failed to delete comment"});
+                            }
+                            else
+                            {
+                                
+                            }
+                        });
+                    });
+                    //Remove post
+                    Post.findByIdAndRemove(req.params.postID,(err,post)=>{
+                        if (err)
+                            {
+                                console.log(err);
+                                res.status(400).json({status:"failed to delete post"});
+                            }
+                            else
+                            {
+                                res.status(200).json({status:"success"});
+                            }
+                    });                
                 }
             });
         }
