@@ -1,52 +1,46 @@
 <template>
-  <div
-    style="width: 100%; height: 100%; padding: 30px"
-    class="d-flex justify-center"
-    dark
+  <v-form
+    v-model="valid"
+    :disabled="isLoading"
+    @submit.prevent="login"
+    ref="form"
   >
-    <v-form
-      v-model="valid"
-      :disabled="isLoading"
-      @submit.prevent="login"
-      ref="form"
+    <h2>Log in to Smarty</h2>
+
+    <v-alert v-show="showError" dense outlined type="error">
+      {{ errorMessage }}
+    </v-alert>
+
+    <v-text-field
+      v-model="username"
+      :rules="[rules.required]"
+      label="Username"
+      autocomplete="username"
+      outlined
+      :loading="isLoading"
+    ></v-text-field>
+
+    <v-text-field
+      v-model="password"
+      :rules="[rules.required]"
+      type="password"
+      label="Password"
+      autocomplete="current-password"
+      outlined
+      :loading="isLoading"
+    ></v-text-field>
+
+    <v-btn
+      :disabled="!valid || isLoading"
+      :ripple="false"
+      style="width: 100%"
+      type="submit"
     >
-      <h3>Log in to Smarty</h3>
+      Log in
+    </v-btn>
 
-      <v-alert v-show="showError" dense outlined type="error">
-        {{ errorMessage }}
-      </v-alert>
-
-      <v-text-field
-        v-model="username"
-        :rules="[rules.required]"
-        label="Username"
-        autocomplete="username"
-        outlined
-        :loading="isLoading"
-      ></v-text-field>
-
-      <v-text-field
-        v-model="password"
-        :rules="[rules.required]"
-        type="password"
-        label="Password"
-        autocomplete="current-password"
-        outlined
-        :loading="isLoading"
-      ></v-text-field>
-
-      <v-btn
-        :disabled="!valid || isLoading"
-        :ripple="false"
-        style="width: 100%"
-        type="submit"
-      >
-        Log in
-      </v-btn>
-
-      <router-link to="/reset_password">Forgot Password?</router-link>
-    </v-form>
-  </div>
+    <router-link to="/reset_password">Forgot Password?</router-link>
+  </v-form>
 </template>
 
 <script>
@@ -93,6 +87,13 @@ export default {
 </script>
 
 <style scoped>
+h2 {
+  padding: 100px;
+}
+.v-form {
+  margin-inline: auto;
+  max-width: 400px;
+}
 </style>
 
 
