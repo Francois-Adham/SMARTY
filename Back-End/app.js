@@ -4,6 +4,7 @@ let express        = require('express'),
     passport       = require("passport"),
     LocalStratgy   = require("passport-local"),
     methodOverride = require("method-override"),
+    fileUpload     = require('express-fileupload'),
     app            = express();
 
 // Requireing the Models
@@ -15,7 +16,8 @@ let indexRoutes   = require('./routes/index'),
     instructorRoutes = require('./routes/Instructor'),
     courseRoutes = require('./routes/Course'),
     userRoutes = require('./routes/Users'),
-    postRoutes = require('./routes/Post');
+    postRoutes = require('./routes/Post'),
+    uploadDownloadRoutes = require('./routes/uploadDownload'),
     commentRoutes = require('./routes/Comment');
 
 
@@ -27,6 +29,7 @@ seed();
 app.use(express.urlencoded({ extended: true}));
 app.use(methodOverride("_method"));
 app.use(express.json()); // Handeling post requests
+app.use(fileUpload());
 // Passport configration
 app.use(require("express-session")({
     secret: "secret word is here :)",
@@ -72,6 +75,7 @@ app.use('/api/v1/instructors',instructorRoutes);
 app.use('/api/v1/courses',courseRoutes);
 app.use('/api/v1/courses/:courseID/posts',postRoutes);
 app.use('/api/v1/posts/:postID/comments',commentRoutes);
+app.use('/api/v1/courses/:courseID',uploadDownloadRoutes);
 
 
 
