@@ -94,7 +94,7 @@
                     <v-icon>{{
                       item.type == 'file' ? 'mdi-file' : 'mdi-video'
                     }}</v-icon>
-                    {{ item.name }}
+                    <a :href='"http://localhost:3000/api/v1/courses/"+course._id+"/downloads/"+item._id'>{{ item.body }}</a>
                   </v-list-item>
                 </v-list-item-group>
               </v-list>
