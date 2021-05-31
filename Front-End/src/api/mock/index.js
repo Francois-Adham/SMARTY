@@ -27,6 +27,6 @@ export default {
   },
 
   async unenroll() {
-    return { status: ';la2' };
+    return { status: 'success' };
   },
 };

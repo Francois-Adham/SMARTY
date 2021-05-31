@@ -18,9 +18,16 @@ export default {
       .catch((error) => console.log(error));
   },
 
-  async unenroll(courseId) {
+  async fetchCourses() {
     return axios
-      .post(`${api}/api/v1/courses/${courseId}/${$store.state.currentUser.id}`)
+      .post(`${api}/api/v1/courses/me`)
+      .then((response) => response.data)
+      .catch((error) => console.log(error));
+  },
+
+  async unenroll(courseId, studentId) {
+    return axios
+      .post(`${api}/api/v1/courses/${courseId}/${studentId}`)
       .then((response) => response.data)
       .catch((error) => console.log(error));
   },
