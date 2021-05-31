@@ -78,7 +78,15 @@
                     <v-icon>{{
                       item.type == 'file' ? 'mdi-file' : 'mdi-video'
                     }}</v-icon>
-                    <a :href='"http://localhost:3000/api/v1/courses/"+course._id+"/downloads/"+item._id'>{{ item.body }}</a>
+                    <a
+                      :href="
+                        'http://localhost:3000/api/v1/courses/' +
+                        course._id +
+                        '/downloads/' +
+                        item._id
+                      "
+                      >{{ item.body }}</a
+                    >
                   </v-list-item>
                 </v-list-item-group>
               </v-list>
@@ -146,9 +154,18 @@
                   <h2>Upload files to {{ course.name }}</h2>
                 </v-row>
               </v-card-text>
+              <v-spacer />
+              <v-row>
+                <v-file-input
+                  truncate-length="15"
+                  name="sampleFile"
+                  v-model="file"
+                ></v-file-input>
+              </v-row>
+              <v-spacer />
               <v-card-actions>
                 <v-spacer />
-
+                <v-btn class="btn-success" @click="submitFile">Submit</v-btn>
                 <v-spacer />
               </v-card-actions>
             </v-card-text>
@@ -171,20 +188,36 @@
           </v-data-table>
 
           <!-- Students-->
-          <v-data-table
-            :dark="this.$store.state.dark"
-            :headers="student_headers"
-            :items="this.course.students"
+          <v-list
+            style="height: 300px; overflow-y: auto; overflow-x: hidden"
+            :dark="$store.state.dark"
             class="mt-5 elevation-20"
-            hide-default-footer
-            height="30vh"
-            disable-pagination
           >
-            <template v-slot:[`item.name`]="{ item }">
-              <v-icon>mdi-account-circle</v-icon>
-              {{ item.name }}
-            </template>
-          </v-data-table>
+            <v-row justify="center" align="center" style="min-height: 60px">
+              <v-subheader inline>Students</v-subheader>
+            </v-row>
+            <v-divider />
+            <v-list-item-group>
+              <template v-for="(item, index) in this.course.students">
+                <v-list-item :key="item.title" link>
+                  <v-list-item-icon>
+                    <v-icon>mdi-account-circle</v-icon>
+                  </v-list-item-icon>
+
+                  <v-list-item-content>
+                    <v-list-item-title>{{ item.name }}</v-list-item-title>
+                  </v-list-item-content>
+                  <v-list-item-avatar>
+                    <v-icon @click="deleteStudent(item._id)">mdi-delete</v-icon>
+                  </v-list-item-avatar>
+                </v-list-item>
+                <v-divider
+                  v-if="index < course.students.length - 1"
+                  :key="`${index}-divider`"
+                />
+              </template>
+            </v-list-item-group>
+          </v-list>
         </v-col>
         <v-snackbar
           :dark="!this.$store.state.dark"
@@ -274,14 +307,6 @@ export default {
         sortable: false,
       },
     ],
-    student_headers: [
-      {
-        text: 'Other Students',
-        align: 'center',
-        value: 'name',
-        sortable: false,
-      },
-    ],
     course: {},
     events: [],
     content: [],
@@ -298,10 +323,12 @@ export default {
       'https://gstatic.com/classroom/themes/Economics.jpg',
       'https://gstatic.com/classroom/themes/Geography.jpg',
     ],
+    file: '',
   }),
   methods: {
     async fetchCourseByID() {
       const current_course = await Client.fetchCourse(this.$route.params.id);
+      console.log(current_course.data.course);
       this.course = current_course.data.course;
       this.course['img'] = this.imgs[
         Math.floor(Math.random() * this.imgs.length)
@@ -318,23 +345,23 @@ export default {
         }
       }
 
-      for (const current_event of this.course.events) {
-        if (current_event.type == 'quiz') {
-          this.events.push({
-            title: current_event.title,
-            due_date: current_event.due_date,
-            color: 'purple',
-            icon: 'mdi-comment-question-outline',
-          });
-        } else {
-          this.events.push({
-            title: current_event.title,
-            due_date: current_event.due_date,
-            color: 'blue',
-            icon: 'mdi-lead-pencil',
-          });
-        }
-      }
+      // for (const current_event of this.course.events) {
+      //   if (current_event.type == 'quiz') {
+      //     this.events.push({
+      //       title: current_event.title,
+      //       due_date: current_event.due_date,
+      //       color: 'purple',
+      //       icon: 'mdi-comment-question-outline',
+      //     });
+      //   } else {
+      //     this.events.push({
+      //       title: current_event.title,
+      //       due_date: current_event.due_date,
+      //       color: 'blue',
+      //       icon: 'mdi-lead-pencil',
+      //     });
+      //   }
+      //}
       this.events.sort(function (x, y) {
         return x.due_date - y.due_date;
       });
@@ -342,12 +369,36 @@ export default {
     },
 
     async unenroll() {
-      console.log(this.$store.state.dark);
-      const response = await Client.unenroll(this.course.id);
+      const response = await Client.unenroll(
+        this.course.id,
+        this.$store.state.currentUser.id,
+      );
       if (response.status == 'success') {
         this.$router.push('/courses');
       } else {
         this.snackbar = true;
+      }
+    },
+
+    async deleteStudent(studentId) {
+      const response = await Client.unenroll(this.course._id, studentId);
+      if (response.status == 'success') {
+        this.course.students = this.course.students.filter(function (value) {
+          return value._id != studentId;
+        });
+      } else {
+        this.snackbar = true;
+      }
+    },
+    async submitFile() {
+      const response = await Client.uploadSampleFile(
+        this.course._id,
+        this.file,
+      );
+      if (response.status == 'success') {
+        console.log('Hehe 3amlanaha');
+      } else {
+        console.log('etnyl ya ahbal');
       }
     },
   },

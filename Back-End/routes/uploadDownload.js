@@ -1,11 +1,13 @@
 let express  = require("express"),
     Post     = require("../models/Post"),
+    User     = require("../models/User"),
     Course   = require("../models/Course"),
-    {isInstructor,isStudent}       = require("../middleware/index")
+    {isInstructor,isStudent}       = require("../middleware/index"),
     router   = express.Router({ mergeParams: true });
 
 
 router.post('/upload', function(req, res) {
+
   let sampleFile;
   let uploadPath;
 
@@ -14,7 +16,7 @@ router.post('/upload', function(req, res) {
   }
 
   // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
-  sampleFile = req.files.sampleFile;
+  sampleFile = req.files.file;
   uploadPath = __dirname + '/../uploads/' + sampleFile.name;
 
   // Use the mv() method to place the file somewhere on your server
