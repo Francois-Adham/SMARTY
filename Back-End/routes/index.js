@@ -22,14 +22,13 @@ router.post("/register",(req,res)=>{
         passport.authenticate("local")(req,res,()=>{
             console.log(req.isAuthenticated());
         })
-        console.log(user)
-    })
-    res.status(201).json({
-        status:'success',
-        data:{
-            user: req.user,
-            sessionID: req.sessionID
-        }
+        res.status(201).json({
+            status:'success',
+            data:{
+                user: req.user,
+                sessionID: req.sessionID
+            }
+        })
     })
 });
 // Login 

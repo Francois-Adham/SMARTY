@@ -5,6 +5,7 @@ var express  = require("express"),
     Course   = require("../models/Course"),
     User     = require("../models/User"),
     Post     = require("../models/Post"),
+    Comment  = require("../models/Comment"),
     passport = require("passport");
 
 
@@ -78,7 +79,7 @@ router.get('/me',(req,res)=>
 });
 //Get Course by ID
 
-router.get('/:id',isLoggedIn,isEnrolled,(req,res)=>
+router.get('/:id',/*isLoggedIn,isEnrolled,*/(req,res)=>
 {
     Course.findById({_id:req.params.id}).populate("students").populate("posts").populate("instructors").populate({ 
      path: 'posts',
@@ -175,11 +176,40 @@ router.delete('/:id',isInstructor,(req,res)=>
             });
             // delete all posts
             course.posts.forEach(post => {
-                Post.findByIdAndRemove(post,(err,pst)=>{
-                    if (err)
+                Post.findById(post,(err,pos)=>{
+                    if(err)
                     {
-                        console.log(err);
-                        res.status(400).json({status:"failed to delete post"});
+                        res.status(400).json({status:"failed to get post"});
+                    }
+                    else
+                    {
+                        // get comments
+                        // loop and remove them
+                        pos.comments.forEach(comment => {
+                            Comment.findByIdAndRemove(comment,(err,com)=>{
+                                if (err)
+                                {
+                                    console.log(err);
+                                    res.status(400).json({status:"failed to delete comment"});
+                                }
+                                else
+                                {
+                                    
+                                }
+                            });
+                        });
+                        //Remove post
+                        Post.findByIdAndRemove(post,(err,pos)=>{
+                            if (err)
+                                {
+                                    console.log(err);
+                                    res.status(400).json({status:"failed to delete post"});
+                                }
+                                else
+                                {
+                                    res.status(200).json({status:"success"});
+                                }
+                        });                
                     }
                 });
             });

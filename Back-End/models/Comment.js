@@ -7,19 +7,14 @@ const CommentSchema = new mongoose.Schema({
         type: String,
         required: [true, 'A Comment must have a body'],
     },
-    date: {
-        type: String,
-        required: [true, 'A Comment must have a date'],
-    },
     publisher:{
         type: mongoose.Schema.ObjectId,
         ref: 'User'
     },
-    post: {
-        type: mongoose.Schema.ObjectId,
-        ref: 'Post'
-    }
-});
+    created_at: {
+        type: Date
+      }
+} , { timestamps: { createdAt: 'created_at' } });
 
 const Comment = mongoose.model("Comment",CommentSchema);
 module.exports = Comment;
