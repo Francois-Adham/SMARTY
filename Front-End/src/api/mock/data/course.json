@@ -55,33 +55,7 @@
           "name": "Student 10"
         }
       ],
-      "events": [
-        {
-          "due_date": "Sun 17 May 15:26:53 EET 2021",
-          "type": "quiz",
-          "title": "QUIZ 1"
-        },
-        {
-          "due_date": "Sun 16 May 15:26:53 EET 2021",
-          "type": "assignment",
-          "title": "assignment 1"
-        },
-        {
-          "due_date": "Sun 15 May 15:26:53 EET 2021",
-          "type": "quiz",
-          "title": "QUIZ 2"
-        },
-        {
-          "due_date": "Sun 16 May 15:26:53 EET 2021",
-          "type": "quiz",
-          "title": "QUIZ 3"
-        },
-        {
-          "due_date": "Sun 16 May 15:26:53 EET 2021",
-          "type": "assignment",
-          "title": "assignment 2"
-        }
-      ],
+
       "posts": [
         {
           "_id": "60a06f2e93731c49c88781d3",

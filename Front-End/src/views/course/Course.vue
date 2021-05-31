@@ -146,9 +146,14 @@
                   <h2>Upload files to {{ course.name }}</h2>
                 </v-row>
               </v-card-text>
+                <v-spacer />
+                  <v-row>
+                    <v-file-input truncate-length="15" name="sampleFile" v-model="file" ></v-file-input>
+                  </v-row>
+                <v-spacer />
               <v-card-actions>
                 <v-spacer />
-
+                  <v-btn class="btn-success" @click="submitFile">Submit</v-btn>
                 <v-spacer />
               </v-card-actions>
             </v-card-text>
@@ -298,10 +303,12 @@ export default {
       'https://gstatic.com/classroom/themes/Economics.jpg',
       'https://gstatic.com/classroom/themes/Geography.jpg',
     ],
+    file:'',
   }),
   methods: {
     async fetchCourseByID() {
       const current_course = await Client.fetchCourse(this.$route.params.id);
+      console.log(current_course.data.course)
       this.course = current_course.data.course;
       this.course['img'] = this.imgs[
         Math.floor(Math.random() * this.imgs.length)
@@ -318,23 +325,23 @@ export default {
         }
       }
 
-      for (const current_event of this.course.events) {
-        if (current_event.type == 'quiz') {
-          this.events.push({
-            title: current_event.title,
-            due_date: current_event.due_date,
-            color: 'purple',
-            icon: 'mdi-comment-question-outline',
-          });
-        } else {
-          this.events.push({
-            title: current_event.title,
-            due_date: current_event.due_date,
-            color: 'blue',
-            icon: 'mdi-lead-pencil',
-          });
-        }
-      }
+      // for (const current_event of this.course.events) {
+      //   if (current_event.type == 'quiz') {
+      //     this.events.push({
+      //       title: current_event.title,
+      //       due_date: current_event.due_date,
+      //       color: 'purple',
+      //       icon: 'mdi-comment-question-outline',
+      //     });
+      //   } else {
+      //     this.events.push({
+      //       title: current_event.title,
+      //       due_date: current_event.due_date,
+      //       color: 'blue',
+      //       icon: 'mdi-lead-pencil',
+      //     });
+      //   }
+      //}
       this.events.sort(function (x, y) {
         return x.due_date - y.due_date;
       });
@@ -343,13 +350,23 @@ export default {
 
     async unenroll() {
       console.log(this.$store.state.dark);
-      const response = await Client.unenroll(this.course.id);
+      const response = await Client.unenroll(this.course.id,this.$store.state.currentUser.id);
       if (response.status == 'success') {
         this.$router.push('/courses');
       } else {
         this.snackbar = true;
       }
-    },
+    }, /*handleUploadedFile(){
+      this.file = this.$refs.file.files[0];
+    }*/
+    async submitFile(){
+      const response = await Client.uploadSampleFile(this.course._id,this.file);
+      if (response.status == 'success') {
+        console.log("Hehe 3amlanaha")
+      } else {
+        console.log("etnyl ya ahbal")
+      }
+    }
   },
   async created() {
     this.fetchCourseByID();
