@@ -23,4 +23,10 @@ export default {
       .then((response) => response)
       .catch((error) => error);
   },
+  async unenroll(courseId) {
+    return axios
+      .post(`${api}/api/v1/courses/${courseId}/${$store.state.currentUser.id}`)
+      .then((response) => response.data)
+      .catch((error) => console.log(error));
+  },
 };

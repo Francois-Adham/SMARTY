@@ -1,0 +1,28 @@
+{
+  "status": "success",
+  "isEnrolled": true,
+  "data": {
+    "courses": [
+      {
+        "_id": "60a06f2e93731c49c88781d2",
+        "name": "Advanced Programming Techniques"
+      },
+      {
+        "_id": "60a06f2e93731c49c88781d3",
+        "name": "Operating Systems"
+      },
+      {
+        "_id": "60a06f2e93731c49c88781d2",
+        "name": "Digital Communications"
+      },
+      {
+        "_id": "60a06f2e93731c49c88781d3",
+        "name": "Control"
+      },
+      {
+        "_id": "60a06f2e93731c49c88781d2",
+        "name": "VLSI"
+      }
+    ]
+  }
+}

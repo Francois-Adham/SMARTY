@@ -4,6 +4,7 @@ import Login from "../views/Login.vue";
 import Signup from "../views/Signup.vue";
 import Main from '../views/Main.vue';
 import Course from '../views/course/Course.vue';
+import myCourses from '../views/course/myCourses.vue';
 import Stream from '../views/ActivityStream/ActivityStream.vue';
 
 Vue.use(VueRouter);
@@ -18,6 +19,7 @@ const routes = [
     },
     children: [
       { path: '/course/:id', name: 'course', component: Course },
+      { path: '/courses', name: 'courses', component: myCourses },
       { path: '/stream', name: 'stream', component: Stream },
     ],
   },
