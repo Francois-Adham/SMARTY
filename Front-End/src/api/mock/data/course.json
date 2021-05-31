@@ -82,28 +82,6 @@
           "title": "assignment 2"
         }
       ],
-      "content":[
-          {
-            "name": "Item 1",
-            "type": "file"
-          },
-          {
-            "name": "Item 2",
-            "type": "video"
-          },
-          {
-            "name": "Item 3",
-            "type": "file"
-          },
-          {
-            "name": "Item 4",
-            "type": "file"
-          },
-          {
-            "name": "Item 5",
-            "type": "video"
-          }
-      ],
       "posts": [
         {
           "_id": "60a06f2e93731c49c88781d3",
@@ -117,7 +95,28 @@
               "publish_date": "Sun 16 May 15:26:53 EET 2021",
               "content": "bla bla bla"
             }
-          ]
+          ],
+          "type": "Announcement"
+        },
+        {
+          "name": "Item 1",
+          "type": "file"
+        },
+        {
+          "name": "Item 2",
+          "type": "video"
+        },
+        {
+          "name": "Item 3",
+          "type": "file"
+        },
+        {
+          "name": "Item 4",
+          "type": "file"
+        },
+        {
+          "name": "Item 5",
+          "type": "video"
         }
       ],
       "_id": "60a06f8493731c49c88781d4",

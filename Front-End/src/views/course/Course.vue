@@ -3,24 +3,8 @@
     <!-- ====================================================== -->
     <!-- ==================== Course Cover ==================== -->
     <!-- ====================================================== -->
-    <v-row style="width: 100%; max-height: 30vh; min-height: 30vh" class="ma-0">
-      <v-col cols="12">
-        <v-parallax
-          style="height: 100%"
-          dark
-          src="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg"
-        >
-          <v-row align="center" justify="center">
-            <v-col class="text-center" cols="12">
-              <h1 class="display-4 font-weight-bold ma-10">
-                {{ this.course.name }}
-              </h1>
-            </v-col>
-          </v-row>
-        </v-parallax>
-      </v-col>
-    </v-row>
     <div v-if="this.ready" class="ma-0 pa-0" style="width: 100%">
+      <Banner :image="this.course.img" :name="this.course.name" />
       <v-row
         v-if="!this.enrolled"
         style="min-height: 70vh"
@@ -64,7 +48,7 @@
           <v-tabs
             v-model="tab"
             grow
-            class="tabs mt-5"
+            class="tabs mt-5 elevation-20"
             centered
             :dark="this.$store.state.dark"
           >
@@ -131,6 +115,44 @@
         <!-- ==================== Other Users ==================== -->
         <!-- ===================================================== -->
         <v-col sm="3">
+          <!-- UNENROLL -->
+          <v-card
+            v-if="$store.state.currentUser.type == 'Student'"
+            :dark="this.$store.state.dark"
+            class="mt-5"
+          >
+            <v-card-text class="elevation-20">
+              <v-card-text>
+                <v-row justify="center">
+                  <h2>Unenroll me from {{ course.name }}</h2>
+                </v-row>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer />
+                <v-btn @click="unenroll()" class="error">Unenroll</v-btn>
+                <v-spacer />
+              </v-card-actions>
+            </v-card-text>
+          </v-card>
+          <!-- UPLOAD -->
+          <v-card
+            v-if="$store.state.currentUser.type == 'Instructor'"
+            :dark="this.$store.state.dark"
+            class="mt-5"
+          >
+            <v-card-text class="elevation-20">
+              <v-card-text>
+                <v-row justify="center">
+                  <h2>Upload files to {{ course.name }}</h2>
+                </v-row>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer />
+
+                <v-spacer />
+              </v-card-actions>
+            </v-card-text>
+          </v-card>
           <!-- Instructors-->
           <v-data-table
             :dark="this.$store.state.dark"
@@ -164,9 +186,34 @@
             </template>
           </v-data-table>
         </v-col>
+        <v-snackbar
+          :dark="!this.$store.state.dark"
+          :light="this.$store.state.dark"
+          v-model="snackbar"
+        >
+          Something went wrong
+          <template v-slot:action="{ attrs }">
+            <v-btn color="pink" text v-bind="attrs" @click="snackbar = false">
+              Close
+            </v-btn>
+          </template>
+        </v-snackbar>
       </v-row>
     </div>
+
+    <!-- ==================================================== -->
+    <!-- ==================== SEKELETONS ==================== -->
+    <!-- ==================================================== -->
     <div v-if="!this.ready" class="ma-0 pa-0" style="width: 100%">
+      <v-row>
+        <v-col cols="12">
+          <v-skeleton-loader
+            class="ma-5"
+            :dark="this.$store.state.dark"
+            type="image"
+          ></v-skeleton-loader>
+        </v-col>
+      </v-row>
       <v-row>
         <v-col xs="12">
           <v-skeleton-loader
@@ -194,13 +241,17 @@
 
 <script>
 import Client from 'api-client';
+import Banner from '../../components/courseBanner.vue';
 
 export default {
   name: 'Course',
-  components: {},
+  components: {
+    Banner,
+  },
 
   data: () => ({
     tab: null,
+    snackbar: false,
     tabs: [
       {
         name: 'Content',
@@ -237,22 +288,37 @@ export default {
     posts: [],
     enrolled: false,
     ready: false,
+    imgs: [
+      'https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg',
+      'https://gstatic.com/classroom/themes/img_read.jpg',
+      'https://gstatic.com/classroom/themes/img_bookclub.jpg',
+      'https://gstatic.com/classroom/themes/img_code.jpg',
+      'https://gstatic.com/classroom/themes/img_backtoschool.jpg',
+      'https://gstatic.com/classroom/themes/img_learnlanguage.jpg',
+      'https://gstatic.com/classroom/themes/Economics.jpg',
+      'https://gstatic.com/classroom/themes/Geography.jpg',
+    ],
   }),
   methods: {
     async fetchCourseByID() {
       const current_course = await Client.fetchCourse(this.$route.params.id);
       this.course = current_course.data.course;
+      this.course['img'] = this.imgs[
+        Math.floor(Math.random() * this.imgs.length)
+      ].split("'")[0];
+      // console.log(this.course.img);
+
       this.enrolled = current_course.isEnrolled;
+
       for (const current_post of this.course.posts) {
         if (current_post.type == 'Announcement') {
           this.posts.push(current_post);
-        }
-        else 
-        {
+        } else {
           this.content.push(current_post);
         }
       }
-      /*for (const current_event of this.course.events) {
+
+      for (const current_event of this.course.events) {
         if (current_event.type == 'quiz') {
           this.events.push({
             title: current_event.title,
@@ -268,11 +334,21 @@ export default {
             icon: 'mdi-lead-pencil',
           });
         }
-      }*/
+      }
       this.events.sort(function (x, y) {
         return x.due_date - y.due_date;
       });
       this.ready = true;
+    },
+
+    async unenroll() {
+      console.log(this.$store.state.dark);
+      const response = await Client.unenroll(this.course.id);
+      if (response.status == 'success') {
+        this.$router.push('/courses');
+      } else {
+        this.snackbar = true;
+      }
     },
   },
   async created() {
