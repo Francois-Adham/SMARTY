@@ -7,8 +7,18 @@ export default new Vuex.Store({
   state: {
     currentUser: { username: 'Smarty user', type: 'Instructor', id: 'ID' },
     dark: false,
+    loggedIn: false
   },
-  mutations: {},
+  mutations: {
+    setUser(state, username, type, id){
+      state.currentUser.username = username
+      state.currentUser.type = type
+      state.currentUser.id = id
+    },
+    login(state){
+      state.loggedIn = true;
+    }
+  },
   actions: {},
   modules: {},
 });

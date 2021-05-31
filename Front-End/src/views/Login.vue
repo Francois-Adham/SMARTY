@@ -7,7 +7,7 @@
   >
     <h2>Log in to Smarty</h2>
 
-    <v-alert v-show="showError" dense outlined type="error">
+    <v-alert v-show="errorMessage" dense outlined type="error">
       {{ errorMessage }}
     </v-alert>
 
@@ -55,7 +55,6 @@ export default {
       },
       valid: false,
       isLoading: false,
-      showError: false,
       errorMessage: '',
     };
   },
@@ -64,22 +63,24 @@ export default {
     async login() {
       if (this.valid) {
         this.isLoading = true;
-        const ret = await Client.login(this.username, this.password);
-        if (ret.status && ret.status == 201) {
-          // success
-          this.$router.push({ name: 'Main' });
-        } else if (ret.response) {
-          // server returned error
-          this.isLoading = false;
-          this.errorMessage =
-            'The username and password you entered did not match our records. Please double-check and try again.';
-          this.showError = true;
-        } else {
-          // network error
-          this.isLoading = false;
-          this.errorMessage = 'Network error';
-          this.showError = true;
-        }
+        Client.login(this.username, this.password)
+          .then((response) => {
+            if (response.status == 201) {
+              console.log(response.data.data);
+              this.$store.commit('login');
+              this.$router.push({ name: 'Main' });
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            if (error.response && error.response.status == 401) {
+              this.errorMessage =
+                'The username and password you entered did not match our records. Please double-check and try again.';
+            } else {
+              this.errorMessage = 'network error';
+            }
+            this.isLoading = false;
+          });
       }
     },
   },

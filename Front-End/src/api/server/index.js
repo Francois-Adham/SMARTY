@@ -20,8 +20,6 @@ export default {
   async login(username, password) {
     return axios
       .post(`${api}/api/v1/login`, { username, password })
-      .then((response) => response)
-      .catch((error) => error);
   },
 
   async fetchCourses() {

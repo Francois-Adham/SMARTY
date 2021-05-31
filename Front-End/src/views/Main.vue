@@ -163,6 +163,9 @@ export default {
 
   mounted() {
     this.themeChanged();
+    if (!this.$store.state.loggedIn) {
+      this.$router.push({ name: 'Login' });
+    }
   },
 };
 </script>
