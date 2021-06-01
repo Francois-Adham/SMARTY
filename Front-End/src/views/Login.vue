@@ -1,46 +1,54 @@
 <template>
-  <v-form
-    v-model="valid"
-    :disabled="isLoading"
-    @submit.prevent="login"
-    ref="form"
-  >
-    <h2>Log in to Smarty</h2>
+  <div class="root">
+    <v-row justify="center">
+      <v-col cols="3">
+        <v-form
+          v-model="valid"
+          :disabled="isLoading"
+          @submit.prevent="login"
+          ref="form"
+        >
+          <v-img src="..\..\src\assets\logo.png"></v-img>
 
-    <v-alert v-show="errorMessage" dense outlined type="error">
-      {{ errorMessage }}
-    </v-alert>
+          <h2 class="text-center">Log in to Smarty</h2>
 
-    <v-text-field
-      v-model="username"
-      :rules="[rules.required]"
-      label="Username"
-      autocomplete="username"
-      outlined
-      :loading="isLoading"
-    ></v-text-field>
+          <v-alert v-show="errorMessage" dense outlined type="error">
+            {{ errorMessage }}
+          </v-alert>
 
-    <v-text-field
-      v-model="password"
-      :rules="[rules.required]"
-      type="password"
-      label="Password"
-      autocomplete="current-password"
-      outlined
-      :loading="isLoading"
-    ></v-text-field>
+          <v-text-field
+            v-model="username"
+            :rules="[rules.required]"
+            label="Username"
+            autocomplete="username"
+            outlined
+            :loading="isLoading"
+          ></v-text-field>
 
-    <v-btn
-      :disabled="!valid || isLoading"
-      :ripple="false"
-      style="width: 100%"
-      type="submit"
-    >
-      Log in
-    </v-btn>
+          <v-text-field
+            v-model="password"
+            :rules="[rules.required]"
+            type="password"
+            label="Password"
+            autocomplete="current-password"
+            outlined
+            :loading="isLoading"
+          ></v-text-field>
 
-    <router-link to="/reset_password">Forgot Password?</router-link>
-  </v-form>
+          <v-btn
+            :disabled="!valid || isLoading"
+            :ripple="false"
+            style="width: 100%"
+            type="submit"
+          >
+            Log in
+          </v-btn>
+
+          <!-- <router-link to="/reset_password">Forgot Password?</router-link> -->
+        </v-form>
+      </v-col>
+    </v-row>
+  </div>
 </template>
 
 <script>
@@ -89,11 +97,24 @@ export default {
 
 <style scoped>
 h2 {
-  padding: 100px;
+  margin-bottom: 20px;
 }
+
 .v-form {
   margin-inline: auto;
   max-width: 400px;
+  border-radius: 8px;
+  border: 1px solid #dadce0;
+  padding: 40px;
+  margin-top: 100px;
+  background: white;
+}
+
+.root {
+  background: #eeeeee;
+  width: 100%;
+  height: 100%;
+  margin: 0px;
 }
 </style>
 
