@@ -77,8 +77,7 @@ export default {
         Client.login(this.username, this.password)
           .then((response) => {
             if (response.status == 201) {
-              console.log(response.data.data);
-              console.log(response.data.data.user.username);
+              this.$cookies.set('user_session', response.data.data.sessionID);
               this.$store.commit('login');
 
               this.$store.commit('setUser',response.data.data.user)
@@ -100,9 +99,8 @@ export default {
   },
 
   mounted() {
-    if (this.$store.state.loggedIn) {
-      Client.logout();
-      this.$store.commit('logout');
+    if (this.$cookies.isKey('user_session')) {
+      this.$router.push({ name: 'Main' });
     }
   },
 };
