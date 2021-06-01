@@ -25,7 +25,7 @@ router.post("/register",(req,res)=>{
         res.status(201).json({
             status:'success',
             data:{
-                user: req.user,
+                user: user,
                 sessionID: req.sessionID
             }
         })

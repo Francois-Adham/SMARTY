@@ -27,7 +27,7 @@ export default {
   },
 
   signup(username, password, email, type, phone) {
-    return axios.post(`${api}/api/v1/signup`, {
+    return axios.post(`${api}/api/v1/register`, {
       username,
       password,
       email,
@@ -45,7 +45,7 @@ export default {
 
   async unenroll(courseId, studentId) {
     return axios
-      .post(`${api}/api/v1/courses/${courseId}/${studentId}`)
+      .post(`${api}/api/v1/courses/${courseId}/unenroll/${studentId}`)
       .then((response) => response.data)
       .catch((error) => console.log(error));
   },
@@ -68,4 +68,10 @@ export default {
       .then((resposne) => resposne.data)
       .catch((error) => console.log(error));
   },
+  async enroll(key,courseID){
+    return axios
+    .post(`${api}/api/v1/courses/${courseID}/enroll`,{key:key})
+    .then(response => response)
+    .catch(err => (err)? {status:'failed'}:{});
+  }
 };

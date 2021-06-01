@@ -1,0 +1,2 @@
+https://www.pyimagesearch.com/2017/02/20/text-skew-correction-opencv-python/
+https://www.youtube.com/watch?v=83nAgfAiv7U&t=745s

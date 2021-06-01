@@ -126,7 +126,7 @@ export default {
           .then((response) => {
             if (response.status == 201) {
               this.$store.commit('login');
-              this.$router.push({ name: 'Main' });
+              this.$router.push({ name: 'Login' });
             }
           })
           .catch((error) => {

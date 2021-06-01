@@ -78,7 +78,10 @@ export default {
           .then((response) => {
             if (response.status == 201) {
               console.log(response.data.data);
+              console.log(response.data.data.user.username);
               this.$store.commit('login');
+
+              this.$store.commit('setUser',response.data.data.user)
               this.$router.push({ name: 'Main' });
             }
           })

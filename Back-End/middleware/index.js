@@ -62,7 +62,7 @@ middlewareObj.isEnrolled = (req,res,next) => {
         });
         if(!found)
         {
-            res.status(400).json({
+            res.status(200).json({
             status: 'failed',
             isEnrolled: false,
             message: 'You are not enrolled in this course'

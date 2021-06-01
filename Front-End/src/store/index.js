@@ -10,10 +10,10 @@ export default new Vuex.Store({
     loggedIn: false
   },
   mutations: {
-    setUser(state, username, type, id){
-      state.currentUser.username = username
-      state.currentUser.type = type
-      state.currentUser.id = id
+    setUser( state,user){
+      state.currentUser.username = user.username
+      state.currentUser.type = user.type
+      state.currentUser.id = user._id
     },
     login(state){
       state.loggedIn = true;

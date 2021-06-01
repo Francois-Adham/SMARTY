@@ -18,13 +18,14 @@
                 : 'darkblue--text font-weight-bold display-4 ma-10'
             "
           >
-            You must be enrolled in this course to see its content
+            You must be enrolled
           </h1>
         </v-col>
-        <v-col cols="3" class="ma-0 pa-0">
+        <v-col cols="10" class="ma-0 pa-0" md="3" >
           <v-card :dark="this.$store.state.dark" class="mt-10">
             <v-card-text class="elevation-20">
               <v-text-field
+                v-model="key"
                 outlined
                 label="Enrollment Key"
                 prepend-inner-icon="mdi-key"
@@ -34,7 +35,7 @@
                 ]"
               >
               </v-text-field>
-              <v-btn class="success">Enroll</v-btn>
+              <v-btn class="success" @click="enrollToCourse">Enroll</v-btn>
             </v-card-text>
           </v-card>
         </v-col>
@@ -219,7 +220,10 @@
             </v-list-item-group>
           </v-list>
         </v-col>
-        <v-snackbar
+        
+      </v-row>
+    </div>
+    <v-snackbar
           :dark="!this.$store.state.dark"
           :light="this.$store.state.dark"
           v-model="snackbar"
@@ -231,8 +235,6 @@
             </v-btn>
           </template>
         </v-snackbar>
-      </v-row>
-    </div>
 
     <!-- ==================================================== -->
     <!-- ==================== SEKELETONS ==================== -->
@@ -324,53 +326,55 @@ export default {
       'https://gstatic.com/classroom/themes/Geography.jpg',
     ],
     file: '',
+    key: '',
   }),
   methods: {
     async fetchCourseByID() {
       const current_course = await Client.fetchCourse(this.$route.params.id);
-      console.log(current_course.data.course);
-      this.course = current_course.data.course;
-      this.course['img'] = this.imgs[
-        Math.floor(Math.random() * this.imgs.length)
-      ].split("'")[0];
-      // console.log(this.course.img);
+      if(current_course.isEnrolled){
+        this.course = current_course.data.course;
+        this.course['img'] = this.imgs[
+          Math.floor(Math.random() * this.imgs.length)
+        ].split("'")[0];
+        // console.log(this.course.img);
 
-      this.enrolled = current_course.isEnrolled;
+        this.enrolled = current_course.isEnrolled;
 
-      for (const current_post of this.course.posts) {
-        if (current_post.type == 'Announcement') {
-          this.posts.push(current_post);
-        } else {
-          this.content.push(current_post);
+        for (const current_post of this.course.posts) {
+          if (current_post.type == 'Announcement') {
+            this.posts.push(current_post);
+          } else {
+            this.content.push(current_post);
+          }
         }
-      }
 
-      // for (const current_event of this.course.events) {
-      //   if (current_event.type == 'quiz') {
-      //     this.events.push({
-      //       title: current_event.title,
-      //       due_date: current_event.due_date,
-      //       color: 'purple',
-      //       icon: 'mdi-comment-question-outline',
-      //     });
-      //   } else {
-      //     this.events.push({
-      //       title: current_event.title,
-      //       due_date: current_event.due_date,
-      //       color: 'blue',
-      //       icon: 'mdi-lead-pencil',
-      //     });
-      //   }
-      //}
-      this.events.sort(function (x, y) {
-        return x.due_date - y.due_date;
-      });
+        // for (const current_event of this.course.events) {
+        //   if (current_event.type == 'quiz') {
+        //     this.events.push({
+        //       title: current_event.title,
+        //       due_date: current_event.due_date,
+        //       color: 'purple',
+        //       icon: 'mdi-comment-question-outline',
+        //     });
+        //   } else {
+        //     this.events.push({
+        //       title: current_event.title,
+        //       due_date: current_event.due_date,
+        //       color: 'blue',
+        //       icon: 'mdi-lead-pencil',
+        //     });
+        //   }
+        //}
+        this.events.sort(function (x, y) {
+          return x.due_date - y.due_date;
+        });
+      }
       this.ready = true;
     },
 
     async unenroll() {
       const response = await Client.unenroll(
-        this.course.id,
+        this.$route.params.id,
         this.$store.state.currentUser.id,
       );
       if (response.status == 'success') {
@@ -381,7 +385,8 @@ export default {
     },
 
     async deleteStudent(studentId) {
-      const response = await Client.unenroll(this.course._id, studentId);
+      console.log(this.$route.params.id);
+      const response = await Client.unenroll(this.$route.params.id, studentId);
       if (response.status == 'success') {
         this.course.students = this.course.students.filter(function (value) {
           return value._id != studentId;
@@ -401,6 +406,16 @@ export default {
         console.log('etnyl ya ahbal');
       }
     },
+    async enrollToCourse(){
+      const response = await Client.enroll(this.key,this.$route.params.id);
+      if(response.data.status == 'success'){
+        console.log("hena in");
+        this.fetchCourseByID();
+      } else{
+        console.log("hena out");
+        this.snackbar = true;
+      }
+    }
   },
   async created() {
     this.fetchCourseByID();

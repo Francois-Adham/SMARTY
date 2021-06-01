@@ -79,7 +79,7 @@ router.get('/me',(req,res)=>
 });
 //Get Course by ID
 
-router.get('/:id',/*isLoggedIn,isEnrolled,*/(req,res)=>
+router.get('/:id',isLoggedIn,isEnrolled,(req,res)=>
 {
     Course.findById({_id:req.params.id}).populate("students").populate("posts").populate("instructors").populate({ 
      path: 'posts',
@@ -252,7 +252,7 @@ router.post('/:id/enroll',(req,res)=>{
                     {
                         student.courses.push(course);
                         student.save();
-                        res.status(200).json({status:"success"});
+                        res.status(200).json({status:"success",data:{course:course}});
                     }
                 });
             }
