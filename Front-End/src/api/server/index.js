@@ -17,8 +17,13 @@ export default {
       .then((response) => response.data)
       .catch((error) => console.log(error));
   },
+
   login(username, password) {
     return axios.post(`${api}/api/v1/login`, { username, password });
+  },
+
+  logout(){
+    return axios.get(`${api}/api/v1/logout`)
   },
 
   signup(username, password, email, type, phone) {

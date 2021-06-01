@@ -3,6 +3,7 @@
     <v-row justify="center">
       <v-col cols="3">
         <v-form
+        class="text-center"
           v-model="valid"
           :disabled="isLoading"
           @submit.prevent="submit"
@@ -68,6 +69,10 @@
           >
             Sign up
           </v-btn>
+          
+          <div class="rl">
+            <router-link to="/login">Log in instead</router-link>
+          </div>
         </v-form>
       </v-col>
     </v-row>
@@ -159,6 +164,10 @@ h3 {
   width: 100%;
   height: 100%;
   margin: 0px;
+}
+
+.rl {
+  margin-top: 30px;
 }
 </style>
 

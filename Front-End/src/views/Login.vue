@@ -97,8 +97,11 @@ export default {
   },
 
   mounted() {
-    this.$store.commit('logout');
-  }
+    if (this.$store.state.loggedIn) {
+      Client.logout();
+      this.$store.commit('logout');
+    }
+  },
 };
 </script>
 
