@@ -51,7 +51,7 @@
           </v-btn>
         </template>
         <v-list>
-          <v-list-item v-for="(item, index) in dropItems" :key="index">
+          <v-list-item v-for="(item, index) in dropItems" :key="index" :to="item.route">
             <v-list-item-icon>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-icon>
@@ -134,11 +134,11 @@ export default {
       { title: 'My Courses', icon: 'mdi-bookshelf', route: '/courses' },
       { title: 'Grades & Reports', icon: 'mdi-folder', route: '/reports' },
       // TODO handle signout
-      { title: 'Sign out', icon: 'mdi-logout', route: '/landing' },
+      { title: 'Sign out', icon: 'mdi-logout', route: '/login' },
     ],
     dropItems: [
       { title: 'Update Profile', icon: 'mdi-update' },
-      { title: 'Sign out', icon: 'mdi-logout' },
+      { title: 'Sign out', icon: 'mdi-logout', route: '/login' },
     ],
   }),
 

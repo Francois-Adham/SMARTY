@@ -95,6 +95,10 @@ export default {
       }
     },
   },
+
+  mounted() {
+    this.$store.commit('logout');
+  }
 };
 </script>
 
