@@ -1,71 +1,72 @@
 <template>
-  <div
-    style="width: 100%; height: 100%; padding: 30px"
-    class="d-flex justify-center"
-  >
-    <v-form
-      v-model="valid"
-      :disabled="isLoading"
-      @submit.prevent="submit"
-      ref="form"
-    >
-      <h3>Create your account</h3>
+  <div class="root">
+    <v-row justify="center">
+      <v-col cols="3">
+        <v-form
+          v-model="valid"
+          :disabled="isLoading"
+          @submit.prevent="submit"
+          ref="form"
+        >
+          <h3 class="text-center">Create your account</h3>
 
-      <v-text-field
-        v-model="email"
-        :rules="[rules.email]"
-        label="Email"
-        required
-        autocomplete="email"
-        outlined
-        :loading="isLoading"
-      ></v-text-field>
+          <v-text-field
+            v-model="email"
+            :rules="[rules.email]"
+            label="Email"
+            required
+            autocomplete="email"
+            outlined
+            :loading="isLoading"
+          ></v-text-field>
 
-      <v-text-field
-        v-model="username"
-        :rules="[rules.username]"
-        label="Username"
-        required
-        autocomplete="username"
-        outlined
-        :loading="isLoading"
-      ></v-text-field>
+          <v-text-field
+            v-model="username"
+            :rules="[rules.username]"
+            label="Username"
+            required
+            autocomplete="username"
+            outlined
+            :loading="isLoading"
+          ></v-text-field>
 
-      <v-text-field
-        v-model="phone"
-        :rules="[rules.phone]"
-        label="Phone"
-        required
-        autocomplete="tel"
-        outlined
-        :loading="isLoading"
-      ></v-text-field>
+          <v-text-field
+            v-model="phone"
+            :rules="[rules.phone]"
+            label="Phone"
+            required
+            autocomplete="tel"
+            outlined
+            :loading="isLoading"
+          ></v-text-field>
 
-      <v-text-field
-        v-model="password"
-        :rules="[rules.password]"
-        type="password"
-        label="Password"
-        required
-        autocomplete="current-password"
-        outlined
-        :loading="isLoading"
-      ></v-text-field>
+          <v-text-field
+            v-model="password"
+            :rules="[rules.password]"
+            type="password"
+            label="Password"
+            required
+            autocomplete="current-password"
+            outlined
+            :loading="isLoading"
+          ></v-text-field>
 
-      <v-radio-group row v-model="type" :disabled="isLoading">
-        <v-radio label="Student" value="Student"></v-radio>
-        <v-radio label="Instructor" value="Instructor"></v-radio>
-      </v-radio-group>
+          <v-radio-group row v-model="type" :disabled="isLoading">
+            <v-radio label="Student" value="Student"></v-radio>
+            <v-radio label="Instructor" value="Instructor"></v-radio>
+          </v-radio-group>
 
-      <v-btn
-        :disabled="!valid || isLoading"
-        :ripple="false"
-        style="width: 100%"
-        type="submit"
-      >
-        Sign up
-      </v-btn>
-    </v-form>
+          <v-btn
+            :disabled="!valid || isLoading"
+            :ripple="false"
+            style="width: 100%"
+            type="submit"
+          >
+            Sign up
+          </v-btn>
+        </v-form>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
@@ -78,20 +79,20 @@ const phoneRegex = /^01\d{9}$/;
 export default {
   data() {
     return {
-      email: "",
-      username: "",
-      phone: "",
-      password: "",
-      type: "Student",
+      email: '',
+      username: '',
+      phone: '',
+      password: '',
+      type: 'Student',
       rules: {
-        required: (value) => !!value || "Required.",
+        required: (value) => !!value || 'Required.',
         //counter: (value) => value.length <= 20 || "Max 20 characters",
-        username: (value) => usernameRegex.test(value) || "Invalid username",
-        email: (value) => emailRegex.test(value) || "Invalid e-mail",
+        username: (value) => usernameRegex.test(value) || 'Invalid username',
+        email: (value) => emailRegex.test(value) || 'Invalid e-mail',
         password: (value) =>
           passwordRegex.test(value) ||
-          "Minimum 8 characters, at least one letter and one number",
-        phone: (value) => phoneRegex.test(value) || "Invalid phone number",
+          'Minimum 8 characters, at least one letter and one number',
+        phone: (value) => phoneRegex.test(value) || 'Invalid phone number',
       },
       valid: false,
       isLoading: false,
@@ -111,6 +112,26 @@ export default {
 </script>
 
 <style scoped>
+h3 {
+  margin-bottom: 20px;
+}
+
+.v-form {
+  margin-inline: auto;
+  max-width: 400px;
+  border-radius: 8px;
+  border: 1px solid #dadce0;
+  padding: 40px;
+  margin-top: 100px;
+  background: white;
+}
+
+.root {
+  background: #eeeeee;
+  width: 100%;
+  height: 100%;
+  margin: 0px;
+}
 </style>
 
 
