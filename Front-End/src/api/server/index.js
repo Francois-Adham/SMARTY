@@ -17,9 +17,18 @@ export default {
       .then((response) => response.data)
       .catch((error) => console.log(error));
   },
-  async login(username, password) {
-    return axios
-      .post(`${api}/api/v1/login`, { username, password })
+  login(username, password) {
+    return axios.post(`${api}/api/v1/login`, { username, password });
+  },
+
+  signup(username, password, email, type, phone) {
+    return axios.post(`${api}/api/v1/signup`, {
+      username,
+      password,
+      email,
+      type,
+      phone,
+    });
   },
 
   async fetchCourses() {

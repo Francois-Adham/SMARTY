@@ -10,6 +10,10 @@
         >
           <h3 class="text-center">Create your account</h3>
 
+          <v-alert v-show="errorMessage" dense outlined type="error">
+            {{ errorMessage }}
+          </v-alert>
+
           <v-text-field
             v-model="email"
             :rules="[rules.email]"
@@ -76,6 +80,8 @@ const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/; // Minimum 8 cha
 const usernameRegex = /^(?=.{4,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/;
 const phoneRegex = /^01\d{9}$/;
 
+import Client from 'api-client';
+
 export default {
   data() {
     return {
@@ -96,7 +102,7 @@ export default {
       },
       valid: false,
       isLoading: false,
-      error: false,
+      errorMessage: '',
     };
   },
 
@@ -105,6 +111,28 @@ export default {
       this.$refs.form.validate();
       if (this.valid) {
         this.isLoading = true;
+        Client.signup(
+          this.username,
+          this.password,
+          this.email,
+          this.type,
+          this.phone,
+        )
+          .then((response) => {
+            if (response.status == 201) {
+              this.$store.commit('login');
+              this.$router.push({ name: 'Main' });
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            if (error.response && error.response.status == 400) {
+              this.errorMessage = 'Username already exists';
+            } else {
+              this.errorMessage = 'Network error';
+            }
+            this.isLoading = false;
+          });
       }
     },
   },

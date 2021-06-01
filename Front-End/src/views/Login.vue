@@ -3,6 +3,7 @@
     <v-row justify="center">
       <v-col cols="3">
         <v-form
+          class="text-center"
           v-model="valid"
           :disabled="isLoading"
           @submit.prevent="login"
@@ -10,7 +11,7 @@
         >
           <v-img src="..\..\src\assets\logo.png"></v-img>
 
-          <h2 class="text-center">Log in to Smarty</h2>
+          <h2>Log in to Smarty</h2>
 
           <v-alert v-show="errorMessage" dense outlined type="error">
             {{ errorMessage }}
@@ -44,7 +45,9 @@
             Log in
           </v-btn>
 
-          <!-- <router-link to="/reset_password">Forgot Password?</router-link> -->
+          <div class="rl">
+            <router-link to="/signup">Sign up for Smarty</router-link>
+          </div>
         </v-form>
       </v-col>
     </v-row>
@@ -68,7 +71,7 @@ export default {
   },
 
   methods: {
-    async login() {
+    login() {
       if (this.valid) {
         this.isLoading = true;
         Client.login(this.username, this.password)
@@ -115,6 +118,10 @@ h2 {
   width: 100%;
   height: 100%;
   margin: 0px;
+}
+
+.rl {
+  margin-top: 30px;
 }
 </style>
 
