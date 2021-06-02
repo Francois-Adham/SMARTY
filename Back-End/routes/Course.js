@@ -79,6 +79,20 @@ router.get("/:id", isLoggedIn, isEnrolled, (req, res) => {
         path: "publisher",
       },
     })
+    .populate({
+      path:"posts",
+      populate: {
+        path: "comments"
+      },
+    }).populate({
+      path:"posts",
+      populate: {
+        path: "comments",
+        populate: {
+          path: "publisher"
+        }
+      }
+    })
     .exec((err, course) => {
       if (err) {
         console.log(err);
@@ -107,6 +121,8 @@ router.get("/:id", isLoggedIn, isEnrolled, (req, res) => {
                   _id: value._id,
                   type: value.type,
                   body: value.body,
+                  title: value.title,
+                  comments: value.comments,
                   publisher: {
                     _id: value.publisher._id,
                     name: value.publisher.username,
@@ -205,12 +221,12 @@ router.delete("/:id", isInstructor, (req, res) => {
 
 //Enroll in a course
 router.post("/enroll", (req, res) => {
-  Course.find({ key: req.body.key }, (err, course) => {
+  Course.findOne({ key: req.body.key }, (err, course) => {
     if (err) {
       console.log(err);
       res.status(400).json({ status: "failed to get Course" });
     } else {
-      if (course.key == req.body.key) {
+      if (course.key == req.body.key  ) {
         course.students.push(req.user);
         course.save();
         User.findById(req.user._id, (err, student) => {

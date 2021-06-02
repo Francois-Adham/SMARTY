@@ -29,6 +29,7 @@
                 <v-card-text class="elevation-20">
                   <v-text-field
                     outlined
+                    v-model="enrollKey"
                     label="Enrollment Key"
                     prepend-inner-icon="mdi-key"
                     :rules="[
@@ -41,7 +42,7 @@
 
                   <v-card-actions>
                     <v-spacer />
-                    <v-btn class="success">Enroll</v-btn>
+                    <v-btn class="success" @click="enrollToCourse">Enroll</v-btn>
                     <v-spacer />
                   </v-card-actions>
                 </v-card-text>
@@ -113,15 +114,24 @@ export default {
     courses: [],
     enrolled: false,
     ready: false,
+    enrollKey:'',
   }),
   methods: {
     async fetchCourses() {
       const response = await Client.fetchCourses();
-      this.courses = response.data.courses;
+      this.courses = response.data.Courses;
       if (this.courses.length > 0) {
         this.enrolled = true;
       }
       this.ready = true;
+    },
+    async enrollToCourse() {
+      const response = await Client.enroll(this.enrollKey);
+      if (response.data.status == 'success') {
+        this.$router.go(this.$router.currentRoute)
+      } else {
+        alert('Something Went Wrong');
+      }
     },
   },
   async created() {

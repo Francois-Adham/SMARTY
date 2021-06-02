@@ -404,7 +404,7 @@ export default {
     async deleteStudent(studentId) {
       console.log(this.$route.params.id);
       const response = await Client.unenroll(this.$route.params.id, studentId);
-      if (response.status == 'success') {
+      if (response.data.status == 'success') {
         this.course.students = this.course.students.filter(function (student) {
           return student._id != studentId;
         });
@@ -415,7 +415,7 @@ export default {
 
     async deletePost(flag, postId) {
       const response = await Client.deletePost(this.$route.params.id, postId);
-      if (response.status != 'success') {
+      if (response.data.status != 'success') {
         alert('Something went wrong');
       } else {
         if (flag) {

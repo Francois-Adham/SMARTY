@@ -57,7 +57,7 @@ export default {
     async addComment() {
       this.dialog = false;
       const response = await Client.addComment(this.postId, this.text);
-      if (response.status != 'success') {
+      if (response.data.status != 'success') {
         alert('Something Went Wrong');
       }
     },

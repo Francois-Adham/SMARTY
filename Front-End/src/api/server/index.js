@@ -38,7 +38,7 @@ export default {
 
   async fetchCourses() {
     return axios
-      .post(`${api}/api/v1/courses/me`)
+      .get(`${api}/api/v1/courses/me`)
       .then((response) => response.data)
       .catch((error) => console.log(error));
   },

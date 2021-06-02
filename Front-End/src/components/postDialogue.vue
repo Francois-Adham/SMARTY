@@ -18,7 +18,7 @@
         </v-btn>
       </v-toolbar>
       <v-card-title class="display-1"> {{ post.title }} </v-card-title>
-      <v-card-subtitle class="mt-1">{{ post.publisher }}</v-card-subtitle>
+      <v-card-subtitle class="mt-1">{{ post.publisher.name }}</v-card-subtitle>
       <v-divider></v-divider><br />
       <v-card-text style="font-weight: 500; font-size: large">
         {{ post.body }}
@@ -36,7 +36,7 @@
                 <v-list-item-title
                   style="font-size: large; font-weight: 700"
                   class="mb-3"
-                  >{{ item.publisher }}</v-list-item-title
+                  >{{ item.publisher.username }}</v-list-item-title
                 >
                 {{ item.body }}
               </v-list-item-content>
@@ -90,7 +90,7 @@ export default {
   methods: {
     async deleteComment(commentId) {
       const response = await Client.deleteComment(this.post._id, commentId);
-      if (response.status != 'success') {
+      if (response.data.status != 'success') {
         alert('Something went wrong');
       } else {
         this.comments = this.comments.filter(function (comment) {

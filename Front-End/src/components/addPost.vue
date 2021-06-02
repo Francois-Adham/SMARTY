@@ -60,7 +60,8 @@ export default {
         this.title,
         this.text,
       );
-      if (response.status != 'success') {
+      console.log(response.data.status);
+      if (response.data.status != 'success') {
         alert('Something Went Wrong');
       }
     },

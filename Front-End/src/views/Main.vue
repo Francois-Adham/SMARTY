@@ -46,7 +46,7 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer />
-              <v-btn class="success" @click="enrollToCourse">Add Course</v-btn>
+              <v-btn class="success" @click="addCourse">Add Course</v-btn>
               <v-spacer />
             </v-card-actions>
           </v-card>
@@ -220,7 +220,8 @@ export default {
     async addCourse() {
       const response = await Client.addCourse(this.courseName, this.courseKey);
       if (response.data.status == 'success') {
-        this.$router.push(`/course/${response.data.course._id}`);
+        this.$router.push(`/course/${response.data.data.Course._id}`);
+        this.$router.go(this.$router.currentRoute);
       } else {
         alert('Something Went Wrong');
       }
