@@ -78,8 +78,8 @@ export default {
           .then((response) => {
             if (response.status == 201) {
               this.$cookies.set('user_session', response.data.data.sessionID);
+              this.$cookies.set('user_data', response.data.data.user);
               this.$store.commit('login');
-
               this.$store.commit('setUser', response.data.data.user);
               this.$router.push({ name: 'Main' });
             }
@@ -100,6 +100,8 @@ export default {
 
   mounted() {
     if (this.$cookies.isKey('user_session')) {
+      this.$store.commit('setUser', this.$cookies.get('user_data'));
+      this.$store.commit('login');
       this.$router.push({ name: 'Main' });
     }
   },

@@ -229,7 +229,12 @@ export default {
 
   mounted() {
     this.themeChanged();
-    if (!this.$cookies.isKey('user_session')) {
+    if (this.$cookies.isKey('user_session')) {
+      if (!this.$store.loggedIn) {
+        this.$store.commit('setUser', this.$cookies.get('user_data'));
+        this.$store.commit('login');
+      }
+    } else {
       this.$router.push({ name: 'Login' });
     }
   },
