@@ -55,7 +55,9 @@
                       >{{ item.body }}</a
                     >
                     <v-spacer />
-                    <v-icon v-if="$store.state.currentUser.type != 'Student'"
+                    <v-icon
+                      @click="deletePost(0, item._id)"
+                      v-if="$store.state.currentUser.type != 'Student'"
                       >mdi-delete</v-icon
                     >
                   </v-list-item>
@@ -98,6 +100,13 @@
               >
                 <v-list-item-group color="primary">
                   <v-list-item
+                    class="blue lighten-0"
+                    v-if="$store.state.currentUser.type != 'Student'"
+                    style="justify-content: center"
+                  >
+                    <add-post :courseId="this.$route.params.id" />
+                  </v-list-item>
+                  <v-list-item
                     style="justify-content: center"
                     v-for="(item, i) in this.posts"
                     :key="i"
@@ -105,12 +114,15 @@
                     <h3>{{ item.title }}</h3>
                     <v-spacer />
                     <post :post="item" />
-                  </v-list-item>
-                  <v-list-item
-                    v-if="$store.state.currentUser.type != 'Student'"
-                    style="justify-content: center"
-                  >
-                    <add-post :courseId="this.$route.params.id" />
+                    <v-btn
+                      v-if="$store.state.currentUser.type != 'Student'"
+                      icon
+                      small
+                      @click="deletePost(1, item._id)"
+                      class="ml-2"
+                    >
+                      <v-icon>mdi-delete</v-icon>
+                    </v-btn>
                   </v-list-item>
                 </v-list-item-group>
               </v-list>
@@ -400,6 +412,24 @@ export default {
         this.snackbar = true;
       }
     },
+
+    async deletePost(flag, postId) {
+      const response = await Client.deletePost(this.$route.params.id, postId);
+      if (response.status != 'success') {
+        alert('Something went wrong');
+      } else {
+        if (flag) {
+          this.posts = this.posts.filter(function (post) {
+            return post._id != postId;
+          });
+        } else {
+          this.content = this.content.filter(function (post) {
+            return post._id != postId;
+          });
+        }
+      }
+    },
+
     async submitFile() {
       const response = await Client.uploadSampleFile(
         this.course._id,

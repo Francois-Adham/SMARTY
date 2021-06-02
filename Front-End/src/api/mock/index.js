@@ -40,4 +40,14 @@ export default {
     console.log('body:' + text);
     return { status: 'success' };
   },
+
+  deleteComment(postId, commentId) {
+    console.log(postId, commentId);
+    return { status: 'la2' };
+  },
+
+  deletePost(courseId, postId) {
+    console.log(courseId, postId);
+    return { status: 'success' };
+  },
 };

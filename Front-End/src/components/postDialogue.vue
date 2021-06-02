@@ -7,15 +7,6 @@
     transition="dialog-bottom-transition"
   >
     <template v-slot:activator="{ on, attrs }">
-      <v-btn
-        v-if="$store.state.currentUser.type != 'Student'"
-        icon
-        small
-        class="ml-2"
-      >
-        <v-icon>mdi-delete</v-icon>
-      </v-btn>
-
       <v-btn icon small v-bind="attrs" v-on="on">
         <v-icon>mdi-chevron-triple-up</v-icon>
       </v-btn>
@@ -39,7 +30,7 @@
       >
         <v-subheader>COMMENTS</v-subheader>
         <v-list-item-group>
-          <template v-for="(item, index) in post.comments">
+          <template v-for="(item, index) in comments">
             <v-list-item :key="item.title" link>
               <v-list-item-content>
                 <v-list-item-title
@@ -59,7 +50,7 @@
               </v-list-item-avatar>
             </v-list-item>
             <v-divider
-              v-if="index < post.comments.length - 1"
+              v-if="index < comments.length - 1"
               :key="`${index}-divider`"
             />
           </template>
@@ -76,6 +67,7 @@
 </template>
 
 <script>
+import Client from 'api-client';
 import addComment from './addComment.vue';
 
 export default {
@@ -92,10 +84,23 @@ export default {
       notifications: false,
       sound: true,
       widgets: false,
+      comments: [],
     };
   },
   methods: {
-    deleteComment() {},
+    async deleteComment(commentId) {
+      const response = await Client.deleteComment(this.post._id, commentId);
+      if (response.status != 'success') {
+        alert('Something went wrong');
+      } else {
+        this.comments = this.comments.filter(function (comment) {
+          return comment._id != commentId;
+        });
+      }
+    },
+  },
+  created() {
+    this.comments = this.post.comments;
   },
 };
 </script>

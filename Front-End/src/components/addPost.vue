@@ -3,7 +3,7 @@
     <v-dialog v-model="dialog" width="500">
       <template v-slot:activator="{ on, attrs }">
         <v-btn text v-bind="attrs" v-on="on">
-          <h3>Add new Post</h3>
+          <h3 class="white--text">Add new Post</h3>
         </v-btn>
       </template>
 

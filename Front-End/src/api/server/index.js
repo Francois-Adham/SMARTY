@@ -98,4 +98,18 @@ export default {
       .then((response) => response)
       .catch((err) => (err ? { status: 'failed' } : {}));
   },
+
+  async deleteComment(postId, commentId) {
+    return axios
+      .delete(`${api}/api/v1/posts/${postId}/comments/${commentId}`)
+      .then((response) => response)
+      .catch((err) => (err ? { status: 'failed' } : {}));
+  },
+
+  async deletePost(courseId, postId) {
+    return axios
+      .delete(`${api}/api/v1/courses/${courseId}/posts/${postId}`)
+      .then((response) => response)
+      .catch((err) => (err ? { status: 'failed' } : {}));
+  },
 };
