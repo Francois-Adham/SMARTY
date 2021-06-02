@@ -3,7 +3,7 @@
     <v-row justify="center">
       <v-col cols="3">
         <v-form
-        class="text-center"
+          class="text-center"
           v-model="valid"
           :disabled="isLoading"
           @submit.prevent="submit"
@@ -69,7 +69,7 @@
           >
             Sign up
           </v-btn>
-          
+
           <div class="rl">
             <router-link to="/login">Log in instead</router-link>
           </div>
@@ -170,7 +170,5 @@ h3 {
   margin-top: 30px;
 }
 </style>
-
-
 
 <!-- class="d-flex justify-center" -->

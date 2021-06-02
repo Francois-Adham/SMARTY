@@ -9,37 +9,73 @@
       ></v-app-bar-nav-icon>
       <v-toolbar-title>SMARTY</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-menu
-        :dark="this.$store.state.dark"
-        :close-on-content-click="false"
-        offset-y
-      >
-        <template v-slot:activator="{ on: menu, attrs }">
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on: tooltip }">
-              <v-btn icon v-bind="attrs" v-on="{ ...tooltip, ...menu }">
-                <v-icon>mdi-plus-circle</v-icon>
-              </v-btn>
-            </template>
-            <span>Join class</span>
-          </v-tooltip>
-        </template>
-        <v-card :dark="this.$store.state.dark">
-          <v-card-text class="elevation-20">
-            <v-text-field
-              outlined
-              label="Class code"
-              prepend-inner-icon="mdi-key"
-              :rules="[
-                (value) => !!value || 'Required.',
-                (value) => (value && value.length >= 3) || 'Min 3 characters',
-              ]"
-            >
-            </v-text-field>
-            <v-btn class="success">Join</v-btn>
-          </v-card-text>
-        </v-card>
-      </v-menu>
+      <div class="text-center">
+        <v-dialog v-model="dialog" width="500">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn icon :dark="$store.state.dark" v-bind="attrs" v-on="on">
+              <v-icon large>mdi-plus-circle</v-icon>
+            </v-btn>
+          </template>
+          <v-card
+            :dark="this.$store.state.dark"
+            v-if="$store.state.currentUser.type != 'Student'"
+          >
+            <br />
+            <v-card-text>
+              <v-text-field
+                v-model="courseName"
+                outlined
+                label="Course Name"
+                :rules="[
+                  (value) => !!value || 'Required.',
+                  (value) => (value && value.length >= 3) || 'Min 3 characters',
+                ]"
+              >
+              </v-text-field>
+              <v-text-field
+                v-model="courseKey"
+                outlined
+                label="Course Key"
+                prepend-inner-icon="mdi-key"
+                :rules="[
+                  (value) => !!value || 'Required.',
+                  (value) => (value && value.length >= 3) || 'Min 3 characters',
+                ]"
+              >
+              </v-text-field>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer />
+              <v-btn class="success" @click="enrollToCourse">Add Course</v-btn>
+              <v-spacer />
+            </v-card-actions>
+          </v-card>
+          <v-card
+            :dark="this.$store.state.dark"
+            v-if="$store.state.currentUser.type == 'Student'"
+          >
+            <br />
+            <v-card-text>
+              <v-text-field
+                v-model="enrollKey"
+                outlined
+                label="Enrollment Key"
+                prepend-inner-icon="mdi-key"
+                :rules="[
+                  (value) => !!value || 'Required.',
+                  (value) => (value && value.length >= 3) || 'Min 3 characters',
+                ]"
+              >
+              </v-text-field>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer />
+              <v-btn class="success" @click="enrollToCourse">Enroll</v-btn>
+              <v-spacer />
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </div>
       <v-menu
         :dark="this.$store.state.dark"
         :close-on-content-click="false"
@@ -47,7 +83,7 @@
       >
         <template v-slot:activator="{ on, attrs }">
           <v-btn icon v-bind="attrs" v-on="on">
-            <v-icon>mdi-account-circle</v-icon>
+            <v-icon large>mdi-account-circle</v-icon>
           </v-btn>
         </template>
         <v-list>
@@ -83,8 +119,11 @@
     >
       <v-list-item>
         <v-list-item-content>
-          <v-list-item-title class="title">Student</v-list-item-title>
-          <v-list-item-subtitle>ID</v-list-item-subtitle>
+          <br />
+          <v-list-item-title class="title">{{
+            $store.state.currentUser.username
+          }}</v-list-item-title>
+          <br />
         </v-list-item-content>
       </v-list-item>
 
@@ -116,11 +155,17 @@
 </template>
 
 <script>
+import Client from 'api-client';
+
 export default {
   name: 'Main',
   components: {},
 
   data: () => ({
+    dialog: false,
+    enrollKey: '',
+    courseKey: '',
+    courseName: '',
     primaryDrawer: {
       model: null,
       clipped: true,
@@ -161,6 +206,23 @@ export default {
           'background-image'
         ] = `url(${require('../assets/background_light.png')})`;
         this.bgStyle.opacity = 0.4;
+      }
+    },
+    async enrollToCourse() {
+      const response = await Client.enroll(this.enrollKey);
+      if (response.data.status == 'success') {
+        this.$router.push('/courses');
+      } else {
+        alert('Something Went Wrong');
+      }
+    },
+
+    async addCourse() {
+      const response = await Client.addCourse(this.courseName, this.courseKey);
+      if (response.data.status == 'success') {
+        this.$router.push(`/course/${response.data.course._id}`);
+      } else {
+        alert('Something Went Wrong');
       }
     },
   },

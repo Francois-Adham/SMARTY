@@ -1,8 +1,8 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
-import Login from "../views/Login.vue";
-import Logout from "../views/Logout.vue"
-import Signup from "../views/Signup.vue";
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import Login from '../views/user/Login.vue';
+import Logout from '../views/user/Logout.vue';
+import Signup from '../views/user/Signup.vue';
 import Main from '../views/Main.vue';
 import Course from '../views/course/Course.vue';
 import myCourses from '../views/course/myCourses.vue';
@@ -25,18 +25,18 @@ const routes = [
     ],
   },
   {
-    path: "/login",
-    name: "Login",
+    path: '/login',
+    name: 'Login',
     component: Login,
   },
   {
-    path: "/logout",
-    name: "Logout",
+    path: '/logout',
+    name: 'Logout',
     component: Logout,
   },
   {
-    path: "/signup",
-    name: "Signup",
+    path: '/signup',
+    name: 'Signup',
     component: Signup,
   },
 ];

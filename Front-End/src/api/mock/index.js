@@ -26,7 +26,18 @@ export default {
     return courses;
   },
 
-  async unenroll() {
+  unenroll() {
+    return { status: 'success' };
+  },
+  addPost(courseId, title, text) {
+    console.log('Course:' + courseId);
+    console.log('title:' + title);
+    console.log('body:' + text);
+    return { status: 'success' };
+  },
+  addComment(postId, text) {
+    console.log('Post:' + postId);
+    console.log('body:' + text);
     return { status: 'success' };
   },
 };

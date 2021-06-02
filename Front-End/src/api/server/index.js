@@ -22,8 +22,8 @@ export default {
     return axios.post(`${api}/api/v1/login`, { username, password });
   },
 
-  logout(){
-    return axios.get(`${api}/api/v1/logout`)
+  logout() {
+    return axios.get(`${api}/api/v1/logout`);
   },
 
   signup(username, password, email, type, phone) {
@@ -68,10 +68,34 @@ export default {
       .then((resposne) => resposne.data)
       .catch((error) => console.log(error));
   },
-  async enroll(key,courseID){
+  async enroll(key) {
     return axios
-    .post(`${api}/api/v1/courses/${courseID}/enroll`,{key:key})
-    .then(response => response)
-    .catch(err => (err)? {status:'failed'}:{});
-  }
+      .post(`${api}/api/v1/courses/enroll`, { key: key })
+      .then((response) => response)
+      .catch((err) => (err ? { status: 'failed' } : {}));
+  },
+
+  async addCourse(name, key) {
+    return axios
+      .post(`${api}/api/v1/courses/create`, { name: name, key: key })
+      .then((response) => response)
+      .catch((err) => (err ? { status: 'failed' } : {}));
+  },
+
+  async addComment(postId, text) {
+    return axios
+      .post(`${api}/api/v1/posts/${postId}/comments/create`, { body: text })
+      .then((response) => response)
+      .catch((err) => (err ? { status: 'failed' } : {}));
+  },
+
+  async addPost(courseId, title, text) {
+    return axios
+      .post(`${api}/api/v1/courses/${courseId}/posts/create`, {
+        title: title,
+        body: text,
+      })
+      .then((response) => response)
+      .catch((err) => (err ? { status: 'failed' } : {}));
+  },
 };

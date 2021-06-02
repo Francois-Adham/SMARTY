@@ -9,7 +9,7 @@
           @submit.prevent="login"
           ref="form"
         >
-          <v-img src="..\..\src\assets\logo.png"></v-img>
+          <v-img src="../../assets/logo.png"></v-img>
 
           <h2>Log in to Smarty</h2>
 
@@ -80,7 +80,7 @@ export default {
               this.$cookies.set('user_session', response.data.data.sessionID);
               this.$store.commit('login');
 
-              this.$store.commit('setUser',response.data.data.user)
+              this.$store.commit('setUser', response.data.data.user);
               this.$router.push({ name: 'Main' });
             }
           })
@@ -132,7 +132,3 @@ h2 {
   margin-top: 30px;
 }
 </style>
-
-
-
-<!-- class="d-flex justify-center" -->

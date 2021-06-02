@@ -5,41 +5,7 @@
     <!-- ====================================================== -->
     <div v-if="this.ready" class="ma-0 pa-0" style="width: 100%">
       <Banner :image="this.course.img" :name="this.course.name" />
-      <v-row
-        v-if="!this.enrolled"
-        style="min-height: 70vh"
-        class="ma-0 pa-0 justify-center"
-      >
-        <v-col cols="10" class="ma-0 pa-0">
-          <h1
-            :class="
-              this.$store.state.dark
-                ? 'white--text display-4 font-weight-bold ma-10'
-                : 'darkblue--text font-weight-bold display-4 ma-10'
-            "
-          >
-            You must be enrolled
-          </h1>
-        </v-col>
-        <v-col cols="10" class="ma-0 pa-0" md="3" >
-          <v-card :dark="this.$store.state.dark" class="mt-10">
-            <v-card-text class="elevation-20">
-              <v-text-field
-                v-model="key"
-                outlined
-                label="Enrollment Key"
-                prepend-inner-icon="mdi-key"
-                :rules="[
-                  (value) => !!value || 'Required.',
-                  (value) => (value && value.length >= 3) || 'Min 3 characters',
-                ]"
-              >
-              </v-text-field>
-              <v-btn class="success" @click="enrollToCourse">Enroll</v-btn>
-            </v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
+      <not-enrolled :enrolled="this.enrolled" />
       <v-row v-if="this.enrolled" style="min-height: 70vh" class="pa-0 ma-0">
         <!-- ======================================================== -->
         <!-- ==================== Course Content ==================== -->
@@ -88,6 +54,10 @@
                       "
                       >{{ item.body }}</a
                     >
+                    <v-spacer />
+                    <v-icon v-if="$store.state.currentUser.type != 'Student'"
+                      >mdi-delete</v-icon
+                    >
                   </v-list-item>
                 </v-list-item-group>
               </v-list>
@@ -116,7 +86,35 @@
                 </v-timeline-item>
               </v-timeline>
             </v-tab-item>
-            <v-tab-item> </v-tab-item>
+            <v-tab-item>
+              <v-list
+                :class="
+                  this.$store.state.dark
+                    ? 'transparent elevation-20'
+                    : 'elevation-20'
+                "
+                :dark="this.$store.state.dark"
+                rounded
+              >
+                <v-list-item-group color="primary">
+                  <v-list-item
+                    style="justify-content: center"
+                    v-for="(item, i) in this.posts"
+                    :key="i"
+                  >
+                    <h3>{{ item.title }}</h3>
+                    <v-spacer />
+                    <post :post="item" />
+                  </v-list-item>
+                  <v-list-item
+                    v-if="$store.state.currentUser.type != 'Student'"
+                    style="justify-content: center"
+                  >
+                    <add-post :courseId="this.$route.params.id" />
+                  </v-list-item>
+                </v-list-item-group>
+              </v-list>
+            </v-tab-item>
           </v-tabs-items>
         </v-col>
 
@@ -208,7 +206,9 @@
                   <v-list-item-content>
                     <v-list-item-title>{{ item.name }}</v-list-item-title>
                   </v-list-item-content>
-                  <v-list-item-avatar>
+                  <v-list-item-avatar
+                    v-if="$store.state.currentUser.type != 'Student'"
+                  >
                     <v-icon @click="deleteStudent(item._id)">mdi-delete</v-icon>
                   </v-list-item-avatar>
                 </v-list-item>
@@ -220,21 +220,20 @@
             </v-list-item-group>
           </v-list>
         </v-col>
-        
       </v-row>
     </div>
     <v-snackbar
-          :dark="!this.$store.state.dark"
-          :light="this.$store.state.dark"
-          v-model="snackbar"
-        >
-          Something went wrong
-          <template v-slot:action="{ attrs }">
-            <v-btn color="pink" text v-bind="attrs" @click="snackbar = false">
-              Close
-            </v-btn>
-          </template>
-        </v-snackbar>
+      :dark="!this.$store.state.dark"
+      :light="this.$store.state.dark"
+      v-model="snackbar"
+    >
+      Something went wrong
+      <template v-slot:action="{ attrs }">
+        <v-btn color="pink" text v-bind="attrs" @click="snackbar = false">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
 
     <!-- ==================================================== -->
     <!-- ==================== SEKELETONS ==================== -->
@@ -277,11 +276,17 @@
 <script>
 import Client from 'api-client';
 import Banner from '../../components/courseBanner.vue';
+import notEnrolled from '../../components/notEnrolled.vue';
+import post from '../../components/postDialogue.vue';
+import addPost from '../../components/addPost.vue';
 
 export default {
   name: 'Course',
   components: {
     Banner,
+    notEnrolled,
+    post,
+    addPost,
   },
 
   data: () => ({
@@ -325,13 +330,13 @@ export default {
       'https://gstatic.com/classroom/themes/Economics.jpg',
       'https://gstatic.com/classroom/themes/Geography.jpg',
     ],
-    file: '',
+    file: null,
     key: '',
   }),
   methods: {
     async fetchCourseByID() {
       const current_course = await Client.fetchCourse(this.$route.params.id);
-      if(current_course.isEnrolled){
+      if (current_course.isEnrolled) {
         this.course = current_course.data.course;
         this.course['img'] = this.imgs[
           Math.floor(Math.random() * this.imgs.length)
@@ -348,23 +353,23 @@ export default {
           }
         }
 
-        // for (const current_event of this.course.events) {
-        //   if (current_event.type == 'quiz') {
-        //     this.events.push({
-        //       title: current_event.title,
-        //       due_date: current_event.due_date,
-        //       color: 'purple',
-        //       icon: 'mdi-comment-question-outline',
-        //     });
-        //   } else {
-        //     this.events.push({
-        //       title: current_event.title,
-        //       due_date: current_event.due_date,
-        //       color: 'blue',
-        //       icon: 'mdi-lead-pencil',
-        //     });
-        //   }
-        //}
+        for (const current_event of this.course.posts) {
+          if (current_event.type == 'quiz') {
+            this.events.push({
+              title: current_event.title,
+              due_date: current_event.due_date,
+              color: 'purple',
+              icon: 'mdi-comment-question-outline',
+            });
+          } else {
+            this.events.push({
+              title: current_event.title,
+              due_date: current_event.due_date,
+              color: 'blue',
+              icon: 'mdi-lead-pencil',
+            });
+          }
+        }
         this.events.sort(function (x, y) {
           return x.due_date - y.due_date;
         });
@@ -388,8 +393,8 @@ export default {
       console.log(this.$route.params.id);
       const response = await Client.unenroll(this.$route.params.id, studentId);
       if (response.status == 'success') {
-        this.course.students = this.course.students.filter(function (value) {
-          return value._id != studentId;
+        this.course.students = this.course.students.filter(function (student) {
+          return student._id != studentId;
         });
       } else {
         this.snackbar = true;
@@ -400,22 +405,10 @@ export default {
         this.course._id,
         this.file,
       );
-      if (response.status == 'success') {
-        console.log('Hehe 3amlanaha');
-      } else {
-        console.log('etnyl ya ahbal');
-      }
-    },
-    async enrollToCourse(){
-      const response = await Client.enroll(this.key,this.$route.params.id);
-      if(response.data.status == 'success'){
-        console.log("hena in");
-        this.fetchCourseByID();
-      } else{
-        console.log("hena out");
+      if (response.status != 'success') {
         this.snackbar = true;
       }
-    }
+    },
   },
   async created() {
     this.fetchCourseByID();
