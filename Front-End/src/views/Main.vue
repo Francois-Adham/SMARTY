@@ -186,7 +186,7 @@ export default {
       { title: 'Sign out', icon: 'mdi-logout', route: '/logout' },
     ],
     dropItems: [
-      { title: 'Update Profile', icon: 'mdi-update' },
+      { title: 'Update Profile', icon: 'mdi-update', route: '/profile' },
       { title: 'Sign out', icon: 'mdi-logout', route: '/logout' },
     ],
   }),

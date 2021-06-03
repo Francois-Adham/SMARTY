@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Login from '../views/user/Login.vue';
 import Logout from '../views/user/Logout.vue';
+import Profile from '../views/user/Profile/Profile.vue';
 import Signup from '../views/user/Signup.vue';
 import Main from '../views/Main.vue';
 import Course from '../views/course/Course.vue';
@@ -22,6 +23,7 @@ const routes = [
       { path: '/course/:id', name: 'course', component: Course },
       { path: '/courses', name: 'courses', component: myCourses },
       { path: '/stream', name: 'stream', component: Stream },
+      { path: '/profile', name: 'profile', component: Profile },
     ],
   },
   {

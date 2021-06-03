@@ -1,7 +1,7 @@
 <template>
-  <div class="root">
+  <v-container fluid class="fill-height grey lighten-3">
     <v-row justify="center">
-      <v-col cols="3">
+      <v-col sm="12" md="6" lg="3">
         <v-form
           class="text-center"
           v-model="valid"
@@ -51,7 +51,7 @@
         </v-form>
       </v-col>
     </v-row>
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -115,19 +115,14 @@ h2 {
 
 .v-form {
   margin-inline: auto;
-  max-width: 400px;
   border-radius: 8px;
-  border: 1px solid #dadce0;
+  border: 2px solid #dadce0;
   padding: 40px;
-  margin-top: 100px;
   background: white;
 }
 
-.root {
-  background: #eeeeee;
-  width: 100%;
-  height: 100%;
-  margin: 0px;
+.v-container {
+  background:black;
 }
 
 .rl {
