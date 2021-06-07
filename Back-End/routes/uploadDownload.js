@@ -25,7 +25,7 @@ router.post('/upload', function(req, res) {
       return res.status(500).send(err);
     
     // Create post and give hime the path of this file 
-    Post.create({title:" ",body:sampleFile.name,type:"file",publisher:req.user,MaterialPath:uploadPath},(err,post)=>{
+    Post.create({title:req.body.title,body:sampleFile.name,type:req.body.type,publisher:req.user,MaterialPath:uploadPath,dueDate:req.body.dueDate},(err,post)=>{
         if(err)
         {
             console.log(err);

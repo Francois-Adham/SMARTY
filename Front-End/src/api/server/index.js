@@ -66,10 +66,12 @@ export default {
       .catch((error) => console.log(error));
   },
 
-  async uploadSampleFile(courseID, file) {
+  async uploadSampleFile(courseID, file,fileType,fileTitle,dueDate) {
     let formData = new FormData();
     formData.append('file', file);
-    console.log(courseID);
+    formData.append('type', fileType);
+    formData.append('title', fileTitle);
+    formData.append('dueDate', dueDate);
     return axios
       .post(
         `${api}/api/v1/courses/${courseID}/upload`,

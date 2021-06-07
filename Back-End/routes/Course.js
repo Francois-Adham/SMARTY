@@ -128,6 +128,7 @@ router.get("/:id", isLoggedIn, isEnrolled, (req, res) => {
                     name: value.publisher.username,
                   },
                   date: value.created_at,
+                  dueDate:value.dueDate,
                 };
               }),
               _id: course._id,

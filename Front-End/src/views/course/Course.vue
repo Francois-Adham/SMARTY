@@ -75,13 +75,13 @@
                 >
                   <v-card class="elevation-20" :color="item.color">
                     <v-card-title class="title justify-center">
-                      {{ item.title }}
+                      {{ item.body }}
                     </v-card-title>
                     <v-card-text
                       class="white font-weight-bold text--primary text-center"
                     >
                       <p>
-                        {{ item.due_date }}
+                        {{ item.dueDate }}
                       </p>
                     </v-card-text>
                   </v-card>
@@ -174,8 +174,21 @@
                 ></v-file-input>
               </v-row>
               <v-spacer />
+              <v-text-field
+                  v-if="fileType=='Assignment'"
+                  v-model="fileTitle"
+                  label="Title"
+                  prepend-icon="mdi-pencil"
+                ></v-text-field>
+                <v-date-picker v-model="date" v-if="fileType=='Assignment'" width="90%"></v-date-picker>
               <v-card-actions>
                 <v-spacer />
+                <v-radio-group v-model="fileType" row>
+                  <v-radio key="Content" label="Content" value="file" color="primary">
+                  </v-radio>
+                  <v-radio key="Assignment" label="Assignment" value="Assignment" color="primary">
+                  </v-radio>
+                </v-radio-group>
                 <v-btn class="btn-success" @click="submitFile">Submit</v-btn>
                 <v-spacer />
               </v-card-actions>
@@ -344,6 +357,9 @@ export default {
     ],
     file: null,
     key: '',
+    fileType:"file",
+    fileTitle:" ",
+    date: new Date().toISOString().substr(0, 10),
   }),
   methods: {
     async fetchCourseByID() {
@@ -360,31 +376,27 @@ export default {
         for (const current_post of this.course.posts) {
           if (current_post.type == 'Announcement') {
             this.posts.push(current_post);
-          } else {
+          } else if (current_post.type == 'file') {
             this.content.push(current_post);
+          }else if (current_post.type == 'Assignment') {
+
+            if(new Date().toISOString() <= current_post.dueDate )
+            {
+              current_post.dueDate = current_post.dueDate.split('T')[0];
+              this.events.push(current_post);
+            }
           }
         }
 
-        for (const current_event of this.course.posts) {
-          if (current_event.type == 'quiz') {
-            this.events.push({
-              title: current_event.title,
-              due_date: current_event.due_date,
-              color: 'purple',
-              icon: 'mdi-comment-question-outline',
-            });
-          } else {
-            this.events.push({
-              title: current_event.title,
-              due_date: current_event.due_date,
-              color: 'blue',
-              icon: 'mdi-lead-pencil',
-            });
-          }
+        this.events.sort((a,b) => {
+        if ( a.dueDate < b.dueDate ){
+          return -1;
         }
-        this.events.sort(function (x, y) {
-          return x.due_date - y.due_date;
-        });
+        if ( a.dueDate > b.dueDate ){
+          return 1;
+        }
+        return 0;
+      });
       }
       this.ready = true;
     },
@@ -434,6 +446,9 @@ export default {
       const response = await Client.uploadSampleFile(
         this.course._id,
         this.file,
+        this.fileType,
+        this.fileTitle,
+        this.date
       );
       if (response.status != 'success') {
         this.snackbar = true;

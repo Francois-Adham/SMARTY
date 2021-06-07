@@ -16,7 +16,7 @@ const PostSchema = new mongoose.Schema(
       type: String,
       required: [true, "A post must have a type"],
       default: "Announcement",
-      enum: ["Announcement", "file", "video"],
+      enum: ["Announcement", "file", "video","Assignment"],
     },
     publisher: {
       type: mongoose.Schema.ObjectId,
@@ -32,6 +32,7 @@ const PostSchema = new mongoose.Schema(
       type: Date,
     },
     MaterialPath: String,
+    dueDate: Date,
   },
   { timestamps: { createdAt: "created_at" } }
 );
