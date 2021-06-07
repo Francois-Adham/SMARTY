@@ -178,11 +178,9 @@ export default {
       opacity: 0.1,
     },
     drawerItems: [
-      { title: 'Home', icon: 'mdi-home', route: '/' },
-      { title: 'Activity Stream', icon: 'mdi-view-stream', route: '/stream' },
+      { title: 'Home', icon: 'mdi-home', userType: [], route: '/' },
       { title: 'My Courses', icon: 'mdi-bookshelf', route: '/courses' },
       { title: 'Grades & Reports', icon: 'mdi-folder', route: '/reports' },
-      // TODO handle signout
       { title: 'Sign out', icon: 'mdi-logout', route: '/logout' },
     ],
     dropItems: [

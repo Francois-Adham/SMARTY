@@ -42,7 +42,9 @@
 
                   <v-card-actions>
                     <v-spacer />
-                    <v-btn class="success" @click="enrollToCourse">Enroll</v-btn>
+                    <v-btn class="success" @click="enrollToCourse">
+                      Enroll
+                    </v-btn>
                     <v-spacer />
                   </v-card-actions>
                 </v-card-text>
@@ -114,7 +116,7 @@ export default {
     courses: [],
     enrolled: false,
     ready: false,
-    enrollKey:'',
+    enrollKey: '',
   }),
   methods: {
     async fetchCourses() {
@@ -128,7 +130,7 @@ export default {
     async enrollToCourse() {
       const response = await Client.enroll(this.enrollKey);
       if (response.data.status == 'success') {
-        this.$router.go(this.$router.currentRoute)
+        this.$router.go(this.$router.currentRoute);
       } else {
         alert('Something Went Wrong');
       }

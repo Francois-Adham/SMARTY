@@ -68,11 +68,10 @@ export default {
 
   methods: {
     submit() {
-        console.log(this.$refs.form.validate())
+      console.log(this.$refs.form.validate());
     },
   },
 };
 </script>
 
-<style>
-</style>
+<style></style>

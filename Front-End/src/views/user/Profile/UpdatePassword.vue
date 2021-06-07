@@ -77,7 +77,8 @@ export default {
         password: (value) =>
           passwordRegex.test(value) ||
           'Minimum 8 characters, at least one letter and one number',
-        matches: (value) => value === this.newPassword || "Password doesn't match"
+        matches: (value) =>
+          value === this.newPassword || "Password doesn't match",
       },
     };
   },
@@ -88,5 +89,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

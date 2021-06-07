@@ -34,8 +34,8 @@
 
 <script>
 //import Client from 'api-client';
-import UpdatePassword from './UpdatePassword.vue'
-import UpdateEmail from './UpdateEmail.vue'
+import UpdatePassword from './UpdatePassword.vue';
+import UpdateEmail from './UpdateEmail.vue';
 export default {
   data() {
     return {
@@ -48,7 +48,7 @@ export default {
 
   components: {
     UpdatePassword,
-    UpdateEmail
+    UpdateEmail,
   },
 
   methods: {},

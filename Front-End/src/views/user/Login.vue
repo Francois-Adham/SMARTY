@@ -122,7 +122,7 @@ h2 {
 }
 
 .v-container {
-  background:black;
+  background: black;
 }
 
 .rl {
