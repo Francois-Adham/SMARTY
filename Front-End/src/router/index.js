@@ -8,6 +8,7 @@ import Main from '../views/Main.vue';
 import Course from '../views/course/Course.vue';
 import myCourses from '../views/course/myCourses.vue';
 import Stream from '../views/ActivityStream/ActivityStream.vue';
+import UserProfile from '../views/user/Profile/UserProfile.vue';
 
 Vue.use(VueRouter);
 
@@ -24,6 +25,7 @@ const routes = [
       { path: '/courses', name: 'courses', component: myCourses },
       { path: '/stream', name: 'stream', component: Stream },
       { path: '/profile', name: 'profile', component: Profile },
+      { path: '/user/:id', name: 'user', component: UserProfile },
     ],
   },
   {
