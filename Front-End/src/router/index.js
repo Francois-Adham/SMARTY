@@ -8,6 +8,10 @@ import Main from '../views/Main.vue';
 import Course from '../views/course/Course.vue';
 import myCourses from '../views/course/myCourses.vue';
 import Home from '../views/Home/Home.vue';
+import Admin from '../views/Admin/admin.vue';
+import allCourses from '../views/Admin/allCourses.vue';
+import allInstructors from '../views/Admin/allInstructors.vue';
+import allStudents from '../views/Admin/allStudents.vue';
 
 Vue.use(VueRouter);
 
@@ -21,9 +25,17 @@ const routes = [
     },
     children: [
       { path: '/course/:id', name: 'course', component: Course },
-      { path: '/courses', name: 'courses', component: myCourses },
+      { path: '/my-courses', name: 'courses', component: myCourses },
       { path: '/home', name: 'Home', component: Home },
+      { path: '/admin', name: 'AdminDashboard', component: Admin },
+      { path: '/courses', name: 'allCourses', component: allCourses },
+      { path: '/students', name: 'allStudents', component: allStudents },
       { path: '/profile', name: 'profile', component: Profile },
+      {
+        path: '/instructors',
+        name: 'allInstructors',
+        component: allInstructors,
+      },
     ],
   },
   {

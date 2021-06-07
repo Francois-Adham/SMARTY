@@ -2,16 +2,10 @@
   <v-row style="width: 100%; height: 100%" class="ma-0">
     <v-col cols="12" class="col pa-0">
       <div class="bg mp-0 ma-0">
-        <v-row
-          align="center"
-          justify="center"
-          style="width: 100%; height: 100%"
-        >
-          <v-col class="pa-0" cols="12">
-            <h1
-              class="display-4 text-center white--text font-weight-bold pt-16 welcome"
-            >
-              WELCOME TO SMARTY
+        <v-row align="start" justify="start" style="width: 100%; height: 100%">
+          <v-col class="pa-10" cols="6">
+            <h1 class="display-4 text-center font-weight-bold pt-16 welcome">
+              Welcome {{ this.$store.state.currentUser.username }} to SMARTY
             </h1>
           </v-col>
         </v-row>
@@ -28,6 +22,8 @@ export default {
 
 <style scoped>
 .welcome {
+  color: #d0e04f;
+  font-family: 'Merienda', Helvetica, Arial;
 }
 .col {
   min-height: 100%;

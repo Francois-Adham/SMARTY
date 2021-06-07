@@ -81,7 +81,7 @@ export default {
               this.$cookies.set('user_data', response.data.data.user);
               this.$store.commit('setUser', response.data.data.user);
               this.$store.commit('login');
-              this.$router.push({ name: 'Main' });
+              this.$router.push('/home');
             }
           })
           .catch((error) => {
