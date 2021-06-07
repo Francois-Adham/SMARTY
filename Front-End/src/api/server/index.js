@@ -36,6 +36,22 @@ export default {
     });
   },
 
+  changePassword(oldPassword, newPassword, id) {
+    return axios.put(`${api}/api/v1/users/${id}`, {
+      oldPassword,
+      newPassword,
+    });
+  },
+
+  changeEmail(email, id) {
+    return axios.put(`${api}/api/v1/users/${id}/mail`, {
+      email,
+    });
+  },
+
+  profile(id) {
+    return axios.get(`${api}/api/v1/users/${id}`);
+  },
   async fetchCourses() {
     return axios
       .get(`${api}/api/v1/courses/me`)

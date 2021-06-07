@@ -18,6 +18,7 @@
       ref="form"
     >
       <v-text-field
+        :name="Math.random()"
         v-model="currentPassword"
         :rules="[rules.required]"
         type="password"
@@ -60,6 +61,8 @@
 </template>
 
 <script>
+import Client from 'api-client';
+
 const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/; // Minimum 8 characters, at least one letter and one number:
 
 export default {
@@ -77,13 +80,39 @@ export default {
         password: (value) =>
           passwordRegex.test(value) ||
           'Minimum 8 characters, at least one letter and one number',
-        matches: (value) => value === this.newPassword || "Password doesn't match"
+        matches: (value) =>
+          value === this.newPassword || "Password doesn't match",
       },
     };
   },
 
   methods: {
-    submit() {},
+    submit() {
+      this.isLoading = true;
+      Client.changePassword(
+        this.currentPassword,
+        this.newPassword,
+        this.$store.state.currentUser.id,
+      )
+        .then((response) => {
+          console.log(response);
+          this.isLoading = false;
+          this.$refs.form.reset();
+          this.message = "Password changed"
+          this.messageType = "success"
+        })
+        .catch((error) => {
+          this.isLoading = false;
+          this.$refs.form.reset();
+          this.messageType = "error"
+          if(error.response.status == 422){
+            this.message = "Current password in incorrect";
+          }
+          else{
+            this.message = "network error"
+          }
+        });
+    },
   },
 };
 </script>

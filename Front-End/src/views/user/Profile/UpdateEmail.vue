@@ -47,7 +47,9 @@
 </template>
 
 <script>
-const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+import Client from 'api-client';
+const emailRegex =
+  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export default {
   data() {
@@ -56,6 +58,7 @@ export default {
       isLoading: false,
       newEmail: '',
       confirmEmail: '',
+      savedEmail: '',
       message: '',
       messageType: 'error',
       rules: {
@@ -68,7 +71,27 @@ export default {
 
   methods: {
     submit() {
-        console.log(this.$refs.form.validate())
+      this.savedEmail = this.newEmail;
+      this.isLoading = true;
+      Client.changeEmail(this.newEmail, this.$store.state.currentUser.id)
+        .then((response) => {
+          console.log(response);
+          this.isLoading = false;
+          this.$refs.form.reset();
+          this.message = 'Email changed';
+          this.messageType = 'success';
+          Client.profile(this.$store.state.currentUser.id).then((response) => {
+            this.$cookies.set('user_data', response.data.data.student);
+            this.$store.commit('setUser', response.data.data.student);
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+          this.isLoading = false;
+          this.$refs.form.reset();
+          this.messageType = 'error';
+          this.message = 'network error';
+        });
     },
   },
 };

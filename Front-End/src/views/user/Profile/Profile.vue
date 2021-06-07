@@ -34,26 +34,34 @@
 
 <script>
 //import Client from 'api-client';
-import UpdatePassword from './UpdatePassword.vue'
-import UpdateEmail from './UpdateEmail.vue'
+import UpdatePassword from './UpdatePassword.vue';
+import UpdateEmail from './UpdateEmail.vue';
 export default {
-  data() {
-    return {
-      username: 'Hard Coded',
-      email: 'Hardcoded@gmail.com',
-      phone: '01234123412',
-      type: 'Instructor',
-    };
+  computed: {
+    username() {
+      return this.$store.state.currentUser.username;
+    },
+    email() {
+      return this.$store.state.currentUser.email;
+    },
+    phone() {
+      return this.$store.state.currentUser.phone;
+    },
+    type() {
+      return this.$store.state.currentUser.type;
+    },
   },
 
   components: {
     UpdatePassword,
-    UpdateEmail
+    UpdateEmail,
   },
 
   methods: {},
 
-  mounted() {},
+  mounted() {
+    console.log(this.$store.state);
+  },
 };
 </script>
 
