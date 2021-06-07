@@ -19,7 +19,7 @@
     >
       <v-text-field
         v-model="newEmail"
-        :rules="[rules.email]"
+        :rules="[rules.email, rules.required]"
         required:loading="isLoading"
         class="px-16"
         label="New Email"
@@ -27,7 +27,7 @@
       ></v-text-field>
       <v-text-field
         v-model="confirmEmail"
-        :rules="[rules.matches]"
+        :rules="[rules.matches, rules.required]"
         required
         :loading="isLoading"
         class="px-16"
@@ -48,8 +48,7 @@
 
 <script>
 import Client from 'api-client';
-const emailRegex =
-  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export default {
   data() {
@@ -97,5 +96,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

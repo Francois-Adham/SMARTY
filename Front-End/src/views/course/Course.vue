@@ -369,7 +369,6 @@ export default {
         this.course['img'] = this.imgs[
           Math.floor(Math.random() * this.imgs.length)
         ].split("'")[0];
-        // console.log(this.course.img);
 
         this.enrolled = current_course.isEnrolled;
 
@@ -407,14 +406,13 @@ export default {
         this.$store.state.currentUser.id,
       );
       if (response.status == 'success') {
-        this.$router.push('/courses');
+        this.$router.push('/my-courses');
       } else {
         this.snackbar = true;
       }
     },
 
     async deleteStudent(studentId) {
-      console.log(this.$route.params.id);
       const response = await Client.unenroll(this.$route.params.id, studentId);
       if (response.data.status == 'success') {
         this.course.students = this.course.students.filter(function (student) {

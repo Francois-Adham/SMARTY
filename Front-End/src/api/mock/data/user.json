@@ -1,0 +1,9 @@
+{
+    "response": 201,
+    "data": {
+      "data": {
+        "user": "username",
+        "sessionID": "test-session"
+      }
+    }
+}

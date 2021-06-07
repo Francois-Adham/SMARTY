@@ -1,0 +1,70 @@
+{
+  "status": "success",
+  "data": {
+    "Courses": [
+      {
+        "instructors": ["60a081c37ae73a46b49228b4"],
+        "students": ["60a081b47ae73a46b49228b3", "60b790c01b36a629bcd0f8cb"],
+        "posts": [
+          "60a09a6314aa91561c2d44cd",
+          "60a473326dbeb25ce81287f9",
+          "60a47d10d890245ee42ebf88",
+          "60a47e011cbd14593c9e73c9",
+          "60a47e9385d5de43ec19606c",
+          "60a47f3fd8da455404322139",
+          "60ae8ecaa8608e3ab887a8e3",
+          "60b784b74eed3b49601b2112"
+        ],
+        "_id": "60a081e77ae73a46b49228b5",
+        "name": "APT",
+        "key": "key",
+        "__v": 42
+      },
+      {
+        "instructors": ["60a081c37ae73a46b49228b4"],
+        "students": [],
+        "posts": [],
+        "_id": "60b793ce3600c07d2486e718",
+        "name": "Math",
+        "key": "Sad",
+        "__v": 1
+      },
+      {
+        "instructors": ["60a081c37ae73a46b49228b4"],
+        "students": [],
+        "posts": [],
+        "_id": "60b794003600c07d2486e71a",
+        "name": "VLSI",
+        "key": "Abo",
+        "__v": 1
+      },
+      {
+        "instructors": ["60a081c37ae73a46b49228b4"],
+        "students": [],
+        "posts": [],
+        "_id": "60b794423600c07d2486e71c",
+        "name": "mm",
+        "key": "123",
+        "__v": 1
+      },
+      {
+        "instructors": ["60a081c37ae73a46b49228b4"],
+        "students": [],
+        "posts": [],
+        "_id": "60b794603600c07d2486e71e",
+        "name": "Final",
+        "key": "111",
+        "__v": 1
+      },
+      {
+        "instructors": ["60a081c37ae73a46b49228b4"],
+        "students": [],
+        "posts": [],
+        "_id": "60b7970007434b57848f7a56",
+        "name": "y Rab",
+        "key": "000",
+        "__v": 1
+      }
+    ]
+  }
+}
