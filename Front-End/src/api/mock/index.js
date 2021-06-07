@@ -1,6 +1,8 @@
 import Course from './data/course.json';
 import Courses from './data/myCourses.json';
 import Stream from './data/stream.json';
+import User from './data/user.json';
+import allCourses from './data/courses.json';
 
 const fetch = (mockData, time = 0) =>
   new Promise((resolve) => {
@@ -49,5 +51,14 @@ export default {
   deletePost(courseId, postId) {
     console.log(courseId, postId);
     return { status: 'success' };
+  },
+
+  async login(username, password) {
+    console.log(username, password);
+    return await fetch(User, 1000);
+  },
+
+  fetchAllCourses() {
+    return await fetch(allCourses, 1000);
   },
 };

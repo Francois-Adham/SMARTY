@@ -98,18 +98,17 @@ export default {
           console.log(response);
           this.isLoading = false;
           this.$refs.form.reset();
-          this.message = "Password changed"
-          this.messageType = "success"
+          this.message = 'Password changed';
+          this.messageType = 'success';
         })
         .catch((error) => {
           this.isLoading = false;
           this.$refs.form.reset();
-          this.messageType = "error"
-          if(error.response.status == 422){
-            this.message = "Current password in incorrect";
-          }
-          else{
-            this.message = "network error"
+          this.messageType = 'error';
+          if (error.response.status == 422) {
+            this.message = 'Current password in incorrect';
+          } else {
+            this.message = 'network error';
           }
         });
     },
@@ -117,5 +116,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

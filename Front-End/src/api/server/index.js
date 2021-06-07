@@ -69,7 +69,6 @@ export default {
   async uploadSampleFile(courseID, file) {
     let formData = new FormData();
     formData.append('file', file);
-    console.log(courseID);
     return axios
       .post(
         `${api}/api/v1/courses/${courseID}/upload`,
@@ -125,6 +124,41 @@ export default {
   async deletePost(courseId, postId) {
     return axios
       .delete(`${api}/api/v1/courses/${courseId}/posts/${postId}`)
+      .then((response) => response)
+      .catch((err) => (err ? { status: 'failed' } : {}));
+  },
+
+  async deleteCourse(id) {
+    return axios
+      .delete(`${api}/api/v1/courses/${id}`)
+      .then((response) => response)
+      .catch((err) => (err ? { status: 'failed' } : {}));
+  },
+
+  async fetchAllCourses() {
+    return axios
+      .get(`${api}/api/v1/courses`)
+      .then((response) => response)
+      .catch((err) => (err ? { status: 'failed' } : {}));
+  },
+
+  async deleteUser(id) {
+    return axios
+      .delete(`${api}/api/v1/users/${id}`)
+      .then((response) => response)
+      .catch((err) => (err ? { status: 'failed' } : {}));
+  },
+
+  async fetchAllInstructors() {
+    return axios
+      .get(`${api}/api/v1/instructors`)
+      .then((response) => response)
+      .catch((err) => (err ? { status: 'failed' } : {}));
+  },
+
+  async fetchAllStudents() {
+    return axios
+      .get(`${api}/api/v1/students`)
       .then((response) => response)
       .catch((err) => (err ? { status: 'failed' } : {}));
   },

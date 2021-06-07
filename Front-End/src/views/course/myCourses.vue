@@ -9,7 +9,7 @@
         style="min-height: 70vh"
         class="ma-0 pa-0 justify-center"
       >
-        <v-col>
+        <v-col v-if="$store.state.currentUser.type == 'Student'">
           <v-row class="ma-0 pa-0 justify-center">
             <v-col cols="7" class="ma-0 pa-0">
               <h1
@@ -42,10 +42,67 @@
 
                   <v-card-actions>
                     <v-spacer />
-                    <v-btn class="success" @click="enrollToCourse">Enroll</v-btn>
+                    <v-btn class="success" @click="enrollToCourse">
+                      Enroll
+                    </v-btn>
                     <v-spacer />
                   </v-card-actions>
                 </v-card-text>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-col>
+        <v-col v-else>
+          <v-row class="ma-0 pa-0 justify-center">
+            <v-col cols="7" class="ma-0 pa-0">
+              <h1
+                :class="
+                  this.$store.state.dark
+                    ? 'white--text text-center display-4 font-weight-bold ma-10'
+                    : 'black--text text-center font-weight-bold display-4 ma-10'
+                "
+              >
+                You do not have any courses
+              </h1>
+            </v-col>
+          </v-row>
+          <v-row class="ma-0 pa-0 justify-center">
+            <v-col cols="5" class="ma-0 pa-0">
+              <v-card
+                :dark="this.$store.state.dark"
+                v-if="$store.state.currentUser.type != 'Student'"
+              >
+                <br />
+                <v-card-text>
+                  <v-text-field
+                    v-model="courseName"
+                    outlined
+                    label="Course Name"
+                    :rules="[
+                      (value) => !!value || 'Required.',
+                      (value) =>
+                        (value && value.length >= 3) || 'Min 3 characters',
+                    ]"
+                  >
+                  </v-text-field>
+                  <v-text-field
+                    v-model="courseKey"
+                    outlined
+                    label="Course Key"
+                    prepend-inner-icon="mdi-key"
+                    :rules="[
+                      (value) => !!value || 'Required.',
+                      (value) =>
+                        (value && value.length >= 3) || 'Min 3 characters',
+                    ]"
+                  >
+                  </v-text-field>
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer />
+                  <v-btn class="success" @click="addCourse">Add Course</v-btn>
+                  <v-spacer />
+                </v-card-actions>
               </v-card>
             </v-col>
           </v-row>
@@ -114,7 +171,9 @@ export default {
     courses: [],
     enrolled: false,
     ready: false,
-    enrollKey:'',
+    enrollKey: '',
+    courseName: '',
+    courseKey: '',
   }),
   methods: {
     async fetchCourses() {
@@ -128,7 +187,16 @@ export default {
     async enrollToCourse() {
       const response = await Client.enroll(this.enrollKey);
       if (response.data.status == 'success') {
-        this.$router.go(this.$router.currentRoute)
+        this.$router.go(this.$router.currentRoute);
+      } else {
+        alert('Something Went Wrong');
+      }
+    },
+    async addCourse() {
+      const response = await Client.addCourse(this.courseName, this.courseKey);
+      if (response.data.status == 'success') {
+        this.$router.push(`/course/${response.data.data.Course._id}`);
+        this.$router.go(this.$router.currentRoute);
       } else {
         alert('Something Went Wrong');
       }

@@ -5,7 +5,13 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    currentUser: { username: 'Solly', type: 'Instructor', id: 'ID', phone: '99999', email: '000@000.com' },
+    currentUser: {
+      username: 'Solly',
+      type: 'Instructor',
+      id: 'ID',
+      phone: '99999',
+      email: '000@000.com',
+    },
     dark: false,
     loggedIn: false,
   },

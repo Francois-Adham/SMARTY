@@ -131,7 +131,7 @@
 
       <v-list rounded nav>
         <v-list-item
-          v-for="item in drawerItems"
+          v-for="item in drawerItemsRender"
           :key="item.title"
           link
           :to="item.route"
@@ -160,7 +160,13 @@ import Client from 'api-client';
 export default {
   name: 'Main',
   components: {},
-
+  computed: {
+    drawerItemsRender() {
+      return this.drawerItems.filter((item) =>
+        item.userType.includes(this.$store.state.currentUser.type),
+      );
+    },
+  },
   data: () => ({
     dialog: false,
     enrollKey: '',
@@ -178,12 +184,36 @@ export default {
       opacity: 0.1,
     },
     drawerItems: [
-      { title: 'Home', icon: 'mdi-home', route: '/' },
-      { title: 'Activity Stream', icon: 'mdi-view-stream', route: '/stream' },
-      { title: 'My Courses', icon: 'mdi-bookshelf', route: '/courses' },
-      { title: 'Grades & Reports', icon: 'mdi-folder', route: '/reports' },
-      // TODO handle signout
-      { title: 'Sign out', icon: 'mdi-logout', route: '/logout' },
+      {
+        title: 'Home',
+        icon: 'mdi-home',
+        route: '/home',
+        userType: ['Admin', 'Student', 'Instructor'],
+      },
+      {
+        title: 'Profile',
+        icon: 'mdi-account-circle',
+        route: '/profile',
+        userType: ['Admin', 'Student', 'Instructor'],
+      },
+      {
+        title: 'My Courses',
+        icon: 'mdi-bookshelf',
+        route: '/my-courses',
+        userType: ['Student', 'Instructor'],
+      },
+      {
+        title: 'Admin Dashboard',
+        icon: 'mdi-folder',
+        route: '/admin',
+        userType: ['Admin'],
+      },
+      {
+        title: 'Sign out',
+        icon: 'mdi-logout',
+        route: '/logout',
+        userType: ['Admin', 'Student', 'Instructor'],
+      },
     ],
     dropItems: [
       { title: 'Update Profile', icon: 'mdi-update', route: '/profile' },
@@ -195,11 +225,11 @@ export default {
     themeChanged() {
       this.$store.state.dark = !this.$store.state.dark;
       if (this.$store.state.dark) {
-        this.containerStyle['background-color'] = 'black';
+        this.containerStyle['background-color'] = '#4a4947';
         this.bgStyle[
           'background-image'
         ] = `url(${require('../assets/background.png')})`;
-        this.bgStyle.opacity = 0.1;
+        this.bgStyle.opacity = 0.2;
       } else {
         this.containerStyle['background-color'] = 'white';
         this.bgStyle[
@@ -211,7 +241,7 @@ export default {
     async enrollToCourse() {
       const response = await Client.enroll(this.enrollKey);
       if (response.data.status == 'success') {
-        this.$router.push('/courses');
+        this.$router.push('/my-courses');
       } else {
         alert('Something Went Wrong');
       }
