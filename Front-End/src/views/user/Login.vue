@@ -79,8 +79,8 @@ export default {
             if (response.status == 201) {
               this.$cookies.set('user_session', response.data.data.sessionID);
               this.$cookies.set('user_data', response.data.data.user);
-              this.$store.commit('login');
               this.$store.commit('setUser', response.data.data.user);
+              this.$store.commit('login');
               this.$router.push({ name: 'Main' });
             }
           })

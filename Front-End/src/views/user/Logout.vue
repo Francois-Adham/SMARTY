@@ -1,3 +1,7 @@
+<template>
+  <h3>logging out...</h3>
+</template>
+
 <script>
 import Client from 'api-client';
 
