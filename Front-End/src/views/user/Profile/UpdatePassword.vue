@@ -30,7 +30,7 @@
       ></v-text-field>
       <v-text-field
         v-model="newPassword"
-        :rules="[rules.password]"
+        :rules="[rules.password, rules.required]"
         type="password"
         required
         :loading="isLoading"
@@ -40,7 +40,7 @@
       ></v-text-field>
       <v-text-field
         v-model="confirmPassword"
-        :rules="[rules.matches]"
+        :rules="[rules.matches, rules.required]"
         required
         :loading="isLoading"
         type="password"

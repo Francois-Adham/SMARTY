@@ -19,7 +19,7 @@
     >
       <v-text-field
         v-model="newEmail"
-        :rules="[rules.email]"
+        :rules="[rules.email, rules.required]"
         required:loading="isLoading"
         class="px-16"
         label="New Email"
@@ -27,7 +27,7 @@
       ></v-text-field>
       <v-text-field
         v-model="confirmEmail"
-        :rules="[rules.matches]"
+        :rules="[rules.matches, rules.required]"
         required
         :loading="isLoading"
         class="px-16"
