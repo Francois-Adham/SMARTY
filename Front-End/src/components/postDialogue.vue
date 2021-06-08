@@ -21,7 +21,7 @@
       <v-card-subtitle class="mt-1">{{ post.publisher.name }}</v-card-subtitle>
       <v-divider></v-divider><br />
       <v-card-text
-        :class="$store.state.dark ? 'white--text':'blac--text'"
+        :class="$store.state.dark ? 'white--text' : 'black--text'"
         style="font-weight: 500; font-size: large"
       >
         {{ post.body }}

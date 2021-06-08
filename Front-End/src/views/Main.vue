@@ -12,8 +12,8 @@
       <v-app-bar-nav-icon
         @click.stop="primaryDrawer.model = !primaryDrawer.model"
       ></v-app-bar-nav-icon>
-      <img style="height: 50px" :src="logo" />
-      <h1 class="ml-3 website">Smarty</h1>
+      <img style="height: 50px" @click="$router.push('/login')" :src="logo" />
+      <h1 class="ml-3 website" @click="$router.push('/login')">Smarty</h1>
       <v-spacer></v-spacer>
       <div class="text-center">
         <v-dialog v-model="dialog" width="500">
@@ -269,26 +269,27 @@ export default {
     },
 
     async addCourse() {
-      await Client.addCourse(this.courseName, this.courseKey).then((response)=>{
-        if (response.status == 200) {
-        this.dialog = false;
-        this.$router.push(`/course/${response.data.data.Course._id}`);
-        this.$router.go(this.$router.currentRoute);
-        this.errorMessage = '';
-      } else {
-        this.errorMessage = "Enter unique key";
-      }
-      }).catch((err) => {
+      await Client.addCourse(this.courseName, this.courseKey)
+        .then((response) => {
+          if (response.status == 200) {
+            this.dialog = false;
+            this.$router.push(`/course/${response.data.data.Course._id}`);
+            this.$router.go(this.$router.currentRoute);
+            this.errorMessage = '';
+          } else {
+            this.errorMessage = 'Enter unique key';
+          }
+        })
+        .catch((err) => {
           if (err) {
             this.errorMessage = 'Enter unique key';
           }
-      });;
-      
+        });
     },
   },
 
-  created(){
-    console.log("Main created")
+  created() {
+    console.log('Main created');
     if (this.$cookies.isKey('user_session')) {
       if (!this.$store.loggedIn) {
         this.$store.commit('setUser', this.$cookies.get('user_data'));

@@ -15,7 +15,7 @@ export default {
     return axios
       .get(`${api}/api/v1/courses/${id}`)
       .then((response) => response.data)
-      .catch((error) => (error ? { status: 'failed',isEnrolled :false } : {}));
+      .catch((error) => (error ? { status: 'failed', isEnrolled: false } : {}));
   },
 
   login(username, password) {

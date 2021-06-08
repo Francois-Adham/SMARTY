@@ -102,7 +102,7 @@ export default {
     if (this.$cookies.isKey('user_session')) {
       this.$store.commit('setUser', this.$cookies.get('user_data'));
       this.$store.commit('login');
-      this.$router.push({ name: 'Main' });
+      this.$router.push('/home');
     }
   },
 };

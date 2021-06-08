@@ -29,39 +29,40 @@
           <v-tabs-items v-model="tab" class="transparent">
             <v-tab-item>
               <v-list
+                :color="$store.state.dark ? '#1F2833' : 'white'"
                 :class="
-                  this.$store.state.dark
-                    ? 'transparent elevation-20'
-                    : 'elevation-20'
+                  this.$store.state.dark ? 'elevation-20' : 'elevation-20'
                 "
                 :dark="this.$store.state.dark"
-                rounded
               >
                 <v-list-item-group color="primary">
-                  <v-list-item
-                    style="justify-content: center"
-                    v-for="(item, i) in this.content"
-                    :key="i"
-                  >
-                    <v-icon>{{
-                      item.type == 'file' ? 'mdi-file' : 'mdi-video'
-                    }}</v-icon>
-                    <a
-                      :href="
-                        'http://localhost:3000/api/v1/courses/' +
-                        course._id +
-                        '/downloads/' +
-                        item._id
-                      "
-                      >{{ item.body }}</a
-                    >
-                    <v-spacer />
-                    <v-icon
-                      @click="deletePost(0, item._id)"
-                      v-if="$store.state.currentUser.type != 'Student'"
-                      >mdi-delete</v-icon
-                    >
-                  </v-list-item>
+                  <template v-for="(item, i) in this.content">
+                    <v-list-item style="justify-content: center" :key="i">
+                      <v-icon>
+                        {{ item.type == 'file' ? 'mdi-file' : 'mdi-video' }}
+                      </v-icon>
+                      <a
+                        :href="
+                          'http://localhost:3000/api/v1/courses/' +
+                          course._id +
+                          '/downloads/' +
+                          item._id
+                        "
+                      >
+                        {{ item.body }}
+                      </a>
+                      <v-spacer />
+                      <v-icon
+                        @click="deletePost(0, item._id)"
+                        v-if="$store.state.currentUser.type != 'Student'"
+                        >mdi-delete</v-icon
+                      >
+                    </v-list-item>
+                    <v-divider
+                      v-if="i < content.length - 1"
+                      :key="`${i}-divider`"
+                    />
+                  </template>
                 </v-list-item-group>
               </v-list>
             </v-tab-item>
@@ -74,9 +75,9 @@
                   :icon="item.icon"
                   fill-dot
                 >
-                  <v-card class="elevation-20" :color="item.color">
+                  <v-card class="elevation-5" :color="item.color">
                     <v-card-title class="title justify-center">
-                      {{ item.body }}
+                      {{ item.title != ' ' ? item.title : item.body }}
                     </v-card-title>
                     <v-card-text
                       class="white font-weight-bold text--primary text-center"
@@ -91,13 +92,11 @@
             </v-tab-item>
             <v-tab-item>
               <v-list
+                :color="$store.state.dark ? '#1F2833' : 'white'"
                 :class="
-                  this.$store.state.dark
-                    ? 'transparent elevation-20'
-                    : 'elevation-20'
+                  this.$store.state.dark ? 'elevation-20' : 'elevation-20'
                 "
                 :dark="this.$store.state.dark"
-                rounded
               >
                 <v-list-item-group color="primary">
                   <v-list-item
@@ -145,24 +144,26 @@
                       </v-dialog>
                     </div>
                   </v-list-item>
-                  <v-list-item
-                    style="justify-content: center"
-                    v-for="(item, i) in this.posts"
-                    :key="i"
-                  >
-                    <h3>{{ item.title }}</h3>
-                    <v-spacer />
-                    <post :post="item" />
-                    <v-btn
-                      v-if="$store.state.currentUser.type != 'Student'"
-                      icon
-                      small
-                      @click="deletePost(1, item._id)"
-                      class="ml-2"
-                    >
-                      <v-icon>mdi-delete</v-icon>
-                    </v-btn>
-                  </v-list-item>
+                  <template v-for="(item, i) in this.posts">
+                    <v-list-item style="justify-content: center" :key="i">
+                      <h3>{{ item.title }}</h3>
+                      <v-spacer />
+                      <post :post="item" />
+                      <v-btn
+                        v-if="$store.state.currentUser.type != 'Student'"
+                        icon
+                        small
+                        @click="deletePost(1, item._id)"
+                        class="ml-2"
+                      >
+                        <v-icon>mdi-delete</v-icon>
+                      </v-btn>
+                    </v-list-item>
+                    <v-divider
+                      v-if="i < posts.length - 1"
+                      :key="`${i}-divider`"
+                    />
+                  </template>
                 </v-list-item-group>
               </v-list>
             </v-tab-item>
@@ -455,6 +456,8 @@ export default {
           } else if (current_post.type == 'Assignment') {
             if (new Date().toISOString() <= current_post.dueDate) {
               current_post.dueDate = current_post.dueDate.split('T')[0];
+              current_post['color'] = 'primary';
+              current_post['icon'] = 'mdi-pencil';
               this.events.push(current_post);
             }
           }
@@ -535,6 +538,24 @@ export default {
       );
       if (response.status != 'success') {
         this.snackbar = true;
+      } else {
+        if (this.fileType == 'file') {
+          this.content.push({
+            type: response.post.type,
+            _id: response.post._id,
+            body: response.post.body,
+          });
+        } else {
+          this.events.push({
+            color: 'primary',
+            icon: 'mdi-pencil',
+            dueDate: response.post.dueDate,
+            type: response.post.type,
+            _id: response.post._id,
+            body: response.post.body,
+            title: response.post.title,
+          });
+        }
       }
     },
   },
