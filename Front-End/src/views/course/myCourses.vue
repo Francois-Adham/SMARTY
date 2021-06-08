@@ -198,7 +198,6 @@ export default {
         })
         .catch((err) => {
           if (err) {
-            alert('Something Went Wrong');
             this.errorMessage = 'You entered wrong key';
           }
         });

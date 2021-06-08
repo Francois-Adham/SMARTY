@@ -112,5 +112,10 @@ export default {
   async created() {
     this.ready = true;
   },
+  mounted() {
+    if (this.$store.state.currentUser.type === 'Student') {
+      this.$router.push('/home');
+    }
+  },
 };
 </script>

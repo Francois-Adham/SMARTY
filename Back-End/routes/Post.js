@@ -1,4 +1,4 @@
-const { isInstructor, isEnrolled, isOwnedPost } = require("../middleware");
+const { isInstructor, isEnrolled, isOwnedPost,isLoggedIn } = require("../middleware");
 
 var express = require("express"),
   router = express.Router({ mergeParams: true }),
@@ -39,7 +39,7 @@ router.post("/create", isInstructor, (req, res) => {
 
 //Get Post by ID
 
-router.get("/:postID", (req, res) => {
+router.get("/:postID",isLoggedIn, (req, res) => {
   Post.findById({ _id: req.params.postID })
     .populate("publisher")
     .exec((err, post) => {
@@ -54,7 +54,7 @@ router.get("/:postID", (req, res) => {
 
 //delete post by ID
 
-router.delete("/:postID", isOwnedPost, (req, res) => {
+router.delete("/:postID", isOwnedPost,isLoggedIn, (req, res) => {
   Course.findById({ _id: req.params.courseID }, (err, course) => {
     if (err) {
       console.log(err);
@@ -96,7 +96,7 @@ router.delete("/:postID", isOwnedPost, (req, res) => {
 });
 
 //Edit Post
-router.put("/:postID", isOwnedPost, (req, res) => {
+router.put("/:postID", isOwnedPost,isLoggedIn, (req, res) => {
   Post.findById(req.params.postID, (err, post) => {
     if (err) {
       res.status.apply(404).json({ message: "post not found" });

@@ -2,11 +2,11 @@ let express  = require("express"),
     Post     = require("../models/Post"),
     User     = require("../models/User"),
     Course   = require("../models/Course"),
-    {isInstructor,isStudent}       = require("../middleware/index"),
+    {isInstructor,isLoggedIn,isEnrolled}       = require("../middleware/index"),
     router   = express.Router({ mergeParams: true });
 
 
-router.post('/upload', function(req, res) {
+router.post('/upload', isLoggedIn,isInstructor,function(req, res) {
 
   let sampleFile;
   let uploadPath;
@@ -51,7 +51,7 @@ router.post('/upload', function(req, res) {
   });
 });
 
-router.get('/downloads/:id', function (req, res, next) {
+router.get('/downloads/:id', isLoggedIn,isEnrolled,function (req, res, next) {
     // Get the post to fill the data 
     Post.findById(req.params.id,(err,post)=>{
         if(err){

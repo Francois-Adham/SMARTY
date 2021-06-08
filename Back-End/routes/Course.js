@@ -1,4 +1,4 @@
-const { isInstructor, isEnrolled, isLoggedIn } = require("../middleware");
+const { isInstructor, isEnrolled, isLoggedIn,isAdmin } = require("../middleware");
 
 var express = require("express"),
   router = express.Router({ mergeParams: true }),
@@ -9,30 +9,42 @@ var express = require("express"),
   passport = require("passport");
 
 // Add Course
-router.post("/create", isInstructor, (req, res) => {
-  Course.create({ name: req.body.name, key: req.body.key }, (err, course) => {
-    if (err) {
+router.post("/create",isLoggedIn, isInstructor, (req, res) => {
+  Course.findOne({key:req.body.key},(err,checkKey)=>{
+    if(err){
       console.log(err);
-      res.status(400).json({ status: "failed to Add Course" });
-    } else {
-      course.instructors.push(req.user);
-      course.save();
-      User.findById(req.user._id, (err, instructor) => {
-        if (err) {
-          console.log(err);
-          res.status(400).json({ status: "failed to get Instructor" });
-        } else {
-          instructor.courses.push(course);
-          instructor.save();
-          res.status(200).json({ status: "success", data: { Course: course } });
-        }
-      });
+      res.status(400).json({ status: "failed", message:"Something went wrong in db" });
+    }else{
+      if(checkKey){
+        res.status(400).json({ status: "failed",message:"Key must be unique" });
+      }else{
+        Course.create({ name: req.body.name, key: req.body.key }, (err, course) => {
+          if (err) {
+            console.log(err);
+            res.status(400).json({ status: "failed to Add Course" });
+          } else {
+            course.instructors.push(req.user);
+            course.save();
+            User.findById(req.user._id, (err, instructor) => {
+              if (err) {
+                console.log(err);
+                res.status(400).json({ status: "failed to get Instructor" });
+              } else {
+                instructor.courses.push(course);
+                instructor.save();
+                res.status(200).json({ status: "success", data: { Course: course } });
+              }
+            });
+          }
+        });
+      }
     }
-  });
+  })
+  
 });
 
 // Get all Courses
-router.get("/", (req, res) => {
+router.get("/",isAdmin, (req, res) => {
   Course.find({}, (err, courses) => {
     if (err) {
       console.log(err);
@@ -44,7 +56,7 @@ router.get("/", (req, res) => {
 });
 
 // Get current user's Courses
-router.get("/me", (req, res) => {
+router.get("/me", isLoggedIn,(req, res) => {
   User.findById(req.user._id)
     .populate("courses")
     .exec((err, user) => {
@@ -143,7 +155,7 @@ router.get("/:id", isLoggedIn, isEnrolled, (req, res) => {
 
 //delete Course by ID
 
-router.delete("/:id", isInstructor, (req, res) => {
+router.delete("/:id", isLoggedIn, isInstructor, (req, res) => {
   // Find Course
   Course.findById({ _id: req.params.id }, (err, course) => {
     if (err) {
@@ -221,7 +233,7 @@ router.delete("/:id", isInstructor, (req, res) => {
 });
 
 //Enroll in a course
-router.post("/enroll", (req, res) => {
+router.post("/enroll", isLoggedIn, (req, res) => {
   Course.findOne({ key: req.body.key }, (err, course) => {
     if (err) {
       console.log(err);
@@ -252,7 +264,7 @@ router.post("/enroll", (req, res) => {
 });
 
 //Unenroll/delete from a course
-router.post("/:id/unenroll/:userID", (req, res) => {
+router.post("/:id/unenroll/:userID", isLoggedIn, isEnrolled, (req, res) => {
   Course.findById(req.params.id, (err, course) => {
     if (err) {
       console.log(err);

@@ -438,6 +438,7 @@ export default {
   methods: {
     async fetchCourseByID() {
       const current_course = await Client.fetchCourse(this.$route.params.id);
+      console.log(current_course);
       if (current_course.isEnrolled) {
         this.course = current_course.data.course;
         this.course['img'] = this.imgs[
