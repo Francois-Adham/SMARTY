@@ -113,7 +113,7 @@
               id="switch"
               label="Dark"
               :value="this.$store.state.dark"
-              @change="themeChanged"
+              @change="toggleTheme"
             ></v-switch>
           </v-list-item>
         </v-list>
@@ -243,7 +243,6 @@ export default {
 
   methods: {
     themeChanged() {
-      this.$store.state.dark = !this.$store.state.dark;
       if (this.$store.state.dark) {
         this.containerStyle['background-color'] = '#0B0C10';
         this.bgStyle[
@@ -258,6 +257,11 @@ export default {
         this.bgStyle.opacity = 0.2;
       }
     },
+    toggleTheme() {
+      this.$store.state.dark = !this.$store.state.dark;
+      this.$cookies.set('dark', this.$store.state.dark);
+      this.themeChanged();
+    },
     async enrollToCourse() {
       const response = await Client.enroll(this.enrollKey);
       if (response.data.status == 'success') {
@@ -269,29 +273,31 @@ export default {
     },
 
     async addCourse() {
-      await Client.addCourse(this.courseName, this.courseKey).then((response)=>{
-        if (response.status == 200) {
-        this.dialog = false;
-        this.$router.push(`/course/${response.data.data.Course._id}`);
-        this.$router.go(this.$router.currentRoute);
-        this.errorMessage = '';
-      } else {
-        this.errorMessage = "Enter unique key";
-      }
-      }).catch((err) => {
+      await Client.addCourse(this.courseName, this.courseKey)
+        .then((response) => {
+          if (response.status == 200) {
+            this.dialog = false;
+            this.$router.push(`/course/${response.data.data.Course._id}`);
+            this.$router.go(this.$router.currentRoute);
+            this.errorMessage = '';
+          } else {
+            this.errorMessage = 'Enter unique key';
+          }
+        })
+        .catch((err) => {
           if (err) {
             this.errorMessage = 'Enter unique key';
           }
-      });;
-      
+        });
     },
   },
 
-  created(){
-    console.log("Main created")
+  created() {
+    console.log('Main created');
     if (this.$cookies.isKey('user_session')) {
       if (!this.$store.loggedIn) {
         this.$store.commit('setUser', this.$cookies.get('user_data'));
+        this.$store.commit('setDark', this.$cookies.get('dark') === 'true');
         this.$store.commit('login');
       }
     } else {
