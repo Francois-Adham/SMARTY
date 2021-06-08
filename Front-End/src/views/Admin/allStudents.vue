@@ -23,7 +23,7 @@
             v-for="(item, i) in this.Students"
             :key="i"
           >
-            <div>
+            <div @click="$router.push(`/user/${item._id}`)">
               <h3 :class="$store.state.dark ? 'white--text' : 'black--text'">
                 {{ item.username }}
               </h3>

@@ -279,8 +279,8 @@ export default {
     },
   },
 
-  mounted() {
-    this.themeChanged();
+  created(){
+    console.log("Main created")
     if (this.$cookies.isKey('user_session')) {
       if (!this.$store.loggedIn) {
         this.$store.commit('setUser', this.$cookies.get('user_data'));
@@ -289,6 +289,10 @@ export default {
     } else {
       this.$router.push({ name: 'Login' });
     }
+  },
+
+  mounted() {
+    this.themeChanged();
   },
 };
 </script>
