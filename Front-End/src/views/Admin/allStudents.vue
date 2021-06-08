@@ -19,7 +19,7 @@
         <v-list-item-group color="primary">
           <template v-for="(item, i) in this.Students">
             <v-list-item style="justify-content: center" class="mt-2" :key="i">
-              <div>
+              <div @click="$router.push(`/user/${item._id}`)">
                 <h3 :class="$store.state.dark ? 'white--text' : 'black--text'">
                   {{ item.username }}
                 </h3>
