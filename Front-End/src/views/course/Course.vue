@@ -18,8 +18,9 @@
             class="tabs mt-5 elevation-20"
             centered
             :dark="this.$store.state.dark"
+            :background-color="$store.state.dark ? '#1F2833' : 'white'"
           >
-            <v-tab v-for="tab in tabs" :key="tab.name" :color="tab.color">
+            <v-tab v-for="tab in tabs" :key="tab.name">
               <v-icon left>{{ tab.icon }}</v-icon>
               {{ tab.name }}
             </v-tab>
@@ -174,6 +175,7 @@
         <v-col sm="3">
           <!-- UNENROLL -->
           <v-card
+            :color="$store.state.dark ? '#1F2833' : 'white'"
             v-if="$store.state.currentUser.type == 'Student'"
             :dark="this.$store.state.dark"
             class="mt-5"
@@ -193,6 +195,7 @@
           </v-card>
           <!-- UPLOAD -->
           <v-card
+            :color="$store.state.dark ? '#1F2833' : 'white'"
             v-if="$store.state.currentUser.type == 'Instructor'"
             :dark="this.$store.state.dark"
             class="mt-5"
@@ -241,30 +244,46 @@
                   >
                   </v-radio>
                 </v-radio-group>
-                <v-btn class="btn-success" @click="submitFile">Submit</v-btn>
                 <v-spacer />
               </v-card-actions>
+              <v-row justify="center">
+                <v-btn class="primary" @click="submitFile">Submit</v-btn>
+              </v-row>
             </v-card-text>
           </v-card>
           <!-- Instructors-->
-          <v-data-table
-            :dark="this.$store.state.dark"
-            :headers="intructor_headers"
-            :items="this.course.instructors"
+          <v-list
+            :color="$store.state.dark ? '#1F2833' : 'white'"
+            style="max-height: 30vh; overflow-x: hidden"
+            :dark="$store.state.dark"
             class="mt-5 elevation-20"
-            hide-default-footer
-            fixed-header
-            max-height="30vh"
-            disable-pagination
           >
-            <template v-slot:[`item.name`]="{ item }">
-              <v-icon>mdi-account-circle</v-icon>
-              {{ item.name }}
-            </template>
-          </v-data-table>
+            <v-row justify="center" align="center" style="min-height: 60px">
+              <v-subheader inline>Instructors</v-subheader>
+            </v-row>
+            <v-divider />
+            <v-list-item-group>
+              <template v-for="(item, index) in this.course.instructors">
+                <v-list-item :key="item.title" link>
+                  <v-list-item-icon>
+                    <v-icon>mdi-account-circle</v-icon>
+                  </v-list-item-icon>
+
+                  <v-list-item-content>
+                    <v-list-item-title>{{ item.name }}</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-divider
+                  v-if="index < course.instructors.length - 1"
+                  :key="`${index}-divider`"
+                />
+              </template>
+            </v-list-item-group>
+          </v-list>
 
           <!-- Students-->
           <v-list
+            :color="$store.state.dark ? '#1F2833' : 'white'"
             style="height: 300px; overflow-y: auto; overflow-x: hidden"
             :dark="$store.state.dark"
             class="mt-5 elevation-20"

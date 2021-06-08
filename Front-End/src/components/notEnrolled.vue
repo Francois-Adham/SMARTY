@@ -16,7 +16,7 @@
       </h1>
     </v-col>
     <v-col cols="10" class="ma-0 pa-0" md="3">
-      <v-card :dark="this.$store.state.dark" class="mt-10">
+      <v-card color="#1F2833" :dark="this.$store.state.dark" class="mt-10">
         <v-card-text class="elevation-20">
           <v-text-field
             v-model="key"

@@ -114,7 +114,7 @@
       <!--================================================-->
       <!--=================== ENROLLED ===================-->
       <!--================================================-->
-      <v-row v-if="this.enrolled" justify="center" class="pa-0 ma-0">
+      <v-row v-if="this.enrolled" justify="center" class="pa-0 ma-5">
         <v-col v-for="(course, i) in this.courses" :key="i" cols="7">
           <v-hover v-slot:default="{ hover }">
             <v-card
@@ -124,7 +124,7 @@
               :elevation="hover ? 15 : 6"
               outlined
               :dark="$store.state.dark"
-              :color="$store.state.dark ? '#606060' : '#f0f0f0'"
+              :color="$store.state.dark ? '#1F2833' : 'white'"
               height="64"
             >
               <v-card-actions

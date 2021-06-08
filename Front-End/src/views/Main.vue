@@ -3,7 +3,12 @@
     <div id="bg" :style="bgStyle"></div>
 
     <!--  TOP -->
-    <v-app-bar app clipped-left :dark="this.$store.state.dark">
+    <v-app-bar
+      app
+      clipped-left
+      :color="this.$store.state.dark ? '#1F2833' : 'white'"
+      :dark="this.$store.state.dark"
+    >
       <v-app-bar-nav-icon
         @click.stop="primaryDrawer.model = !primaryDrawer.model"
       ></v-app-bar-nav-icon>
@@ -19,6 +24,7 @@
           </template>
           <v-card
             :dark="this.$store.state.dark"
+            :color="$store.state.dark ? '#1F2833' : 'white'"
             v-if="$store.state.currentUser.type != 'Student'"
           >
             <br />
@@ -53,6 +59,7 @@
           </v-card>
           <v-card
             :dark="this.$store.state.dark"
+            :color="$store.state.dark ? '#1F2833' : 'white'"
             v-if="$store.state.currentUser.type == 'Student'"
           >
             <br />
@@ -87,7 +94,7 @@
             <v-icon large>mdi-account-circle</v-icon>
           </v-btn>
         </template>
-        <v-list>
+        <v-list :color="$store.state.dark ? '#1F2833' : 'white'">
           <v-list-item
             v-for="(item, index) in dropItems"
             :key="index"
@@ -114,6 +121,7 @@
     <v-navigation-drawer
       v-model="primaryDrawer.model"
       :dark="this.$store.state.dark"
+      :color="this.$store.state.dark ? '#1F2833' : 'white'"
       clipped
       app
       class="elevation-20"
@@ -233,17 +241,17 @@ export default {
     themeChanged() {
       this.$store.state.dark = !this.$store.state.dark;
       if (this.$store.state.dark) {
-        this.containerStyle['background-color'] = '#4a4947';
+        this.containerStyle['background-color'] = '#0B0C10';
         this.bgStyle[
           'background-image'
         ] = `url(${require('../assets/background.png')})`;
-        this.bgStyle.opacity = 0.2;
+        this.bgStyle.opacity = 0.1;
       } else {
-        this.containerStyle['background-color'] = 'white';
+        this.containerStyle['background-color'] = '#fff5c4';
         this.bgStyle[
           'background-image'
         ] = `url(${require('../assets/background_light.png')})`;
-        this.bgStyle.opacity = 0.4;
+        this.bgStyle.opacity = 0.2;
       }
     },
     async enrollToCourse() {
@@ -290,6 +298,11 @@ export default {
 .website {
   font-family: 'Sofia', sans-serif;
 }
+
+.v-card {
+  color: '#9D8D8F';
+}
+
 #bg {
   position: absolute;
   height: 100%;

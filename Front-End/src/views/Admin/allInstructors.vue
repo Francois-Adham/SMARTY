@@ -11,34 +11,35 @@
         All Instructors
       </h1>
       <v-list
-        :class="
-          this.$store.state.dark ? 'transparent elevation-5' : 'elevation-20'
-        "
+        :color="this.$store.state.dark ? '#1F2833' : 'white'"
+        class="elevation-20"
         :dark="this.$store.state.dark"
         rounded
       >
         <v-list-item-group color="primary">
-          <v-list-item
-            style="justify-content: center"
-            v-for="(item, i) in this.Instructors"
-            :key="i"
-          >
-            <div>
-              <h3 :class="$store.state.dark ? 'white--text' : 'black--text'">
-                {{ item.username }}
-              </h3>
-            </div>
-            <v-spacer />
-            <v-btn
-              v-if="$store.state.currentUser.type != 'Student'"
-              icon
-              small
-              @click="deleteUser(item._id)"
-              class="ml-2"
-            >
-              <v-icon>mdi-delete</v-icon>
-            </v-btn>
-          </v-list-item>
+          <template v-for="(item, i) in this.Instructors">
+            <v-list-item style="justify-content: center" class="mt-2" :key="i">
+              <div>
+                <h3 :class="$store.state.dark ? 'white--text' : 'black--text'">
+                  {{ item.username }}
+                </h3>
+              </div>
+              <v-spacer />
+              <v-btn
+                v-if="$store.state.currentUser.type != 'Student'"
+                icon
+                small
+                @click="deleteUser(item._id)"
+                class="ml-2"
+              >
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </v-list-item>
+            <v-divider
+              v-if="i < Instructors.length - 1"
+              :key="`${i}-divider`"
+            />
+          </template>
         </v-list-item-group>
       </v-list>
       <v-snackbar
