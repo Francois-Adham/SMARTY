@@ -12,7 +12,7 @@
         <v-col>
           <v-row class="mt-10 pa-0 justify-center">
             <v-col cols="7" class="mt-10 pa-0">
-              <v-card color="#1F2833 " class="elevation-10" dark>
+              <v-card :color="$store.state.dark ? '#1F2833' : 'white'" class="elevation-10" :dark="this.$store.state.dark">
                 <v-avatar class="ml-3">
                   <v-icon large>mdi-teach</v-icon>
                 </v-avatar>
@@ -33,7 +33,7 @@
           </v-row>
           <v-row class="mt-10 pa-0 justify-center">
             <v-col cols="7" class="mt-10 pa-0">
-              <v-card color="#1F2833 " class="elevation-10" dark>
+              <v-card :color="$store.state.dark ? '#1F2833' : 'white'" class="elevation-10" :dark="this.$store.state.dark">
                 <v-avatar class="ml-3">
                   <v-icon large>mdi-school</v-icon>
                 </v-avatar>
@@ -54,7 +54,7 @@
           </v-row>
           <v-row class="mt-10 pa-0 justify-center">
             <v-col cols="7" class="mt-10 pa-0">
-              <v-card color="#1F2833 " class="elevation-10" dark>
+              <v-card :color="$store.state.dark ? '#1F2833' : 'white'" class="elevation-10" :dark="this.$store.state.dark">
                 <v-avatar class="ml-3">
                   <v-icon large>mdi-stack-overflow</v-icon>
                 </v-avatar>
