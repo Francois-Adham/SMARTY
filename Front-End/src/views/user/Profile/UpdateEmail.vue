@@ -1,5 +1,12 @@
 <template>
-  <v-card elevation="15" class="ma-8" :dark="this.$store.state.dark">
+  <v-card
+    :style="{
+      'background-color': this.$store.state.dark ? '#1F2833' : 'white',
+    }"
+    elevation="15"
+    class="ma-8"
+    :dark="this.$store.state.dark"
+  >
     <h1 class="pa-8 pb-4 font-weight-light">Change Email</h1>
     <v-alert
       class="mx-16"
@@ -12,6 +19,9 @@
       {{ message }}
     </v-alert>
     <v-form
+      :style="{
+        'background-color': this.$store.state.dark ? '#1F2833' : 'white',
+      }"
       v-model="valid"
       :disabled="isLoading"
       @submit.prevent="submit"
@@ -48,7 +58,8 @@
 
 <script>
 import Client from 'api-client';
-const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+const emailRegex =
+  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export default {
   data() {

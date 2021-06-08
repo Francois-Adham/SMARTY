@@ -1,5 +1,12 @@
 <template>
-  <v-card elevation="15" class="ma-8" :dark="this.$store.state.dark">
+  <v-card
+    :style="{
+      'background-color': this.$store.state.dark ? '#1F2833' : 'white',
+    }"
+    elevation="15"
+    class="ma-8"
+    :dark="this.$store.state.dark"
+  >
     <h1 class="pa-8 pb-4 font-weight-light">Change Password</h1>
     <v-alert
       class="mx-16"
@@ -12,6 +19,9 @@
       {{ message }}
     </v-alert>
     <v-form
+      :style="{
+        'background-color': this.$store.state.dark ? '#1F2833' : 'white',
+      }"
       v-model="valid"
       :disabled="isLoading"
       @submit.prevent="submit"
