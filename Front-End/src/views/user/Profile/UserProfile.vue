@@ -33,15 +33,15 @@
                 <td class="text-subtitle-1">{{ course }}</td>
               </tr>
             </tbody>
-            <h2 v-else class="pa-8 pb-4 font-weight-light">Not enrolled in any courses</h2>
+            <h2 v-else class="pa-8 pb-4 font-weight-light">
+              Not enrolled in any courses
+            </h2>
           </v-simple-table>
         </v-card>
       </v-col>
     </v-row>
   </v-container>
 </template>
-
-
 
 <script>
 import Client from 'api-client';
@@ -66,10 +66,10 @@ export default {
       this.type = response.data.data.student.type;
       this.phone = response.data.data.student.phone;
       this.email = response.data.data.student.email;
-      response.data.data.student.courses.forEach(courseID => {
-          Client.fetchCourse(courseID).then((response)=>{
-              this.courses.push(response.data.course.name)
-          })
+      response.data.data.student.courses.forEach((courseID) => {
+        Client.fetchCourse(courseID).then((response) => {
+          this.courses.push(response.data.course.name);
+        });
       });
     });
   },

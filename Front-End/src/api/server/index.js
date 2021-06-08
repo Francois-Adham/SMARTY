@@ -66,7 +66,7 @@ export default {
       .catch((error) => console.log(error));
   },
 
-  async uploadSampleFile(courseID, file,fileType,fileTitle,dueDate) {
+  async uploadSampleFile(courseID, file, fileType, fileTitle, dueDate) {
     let formData = new FormData();
     formData.append('file', file);
     formData.append('type', fileType);

@@ -29,7 +29,7 @@ router.post("/create", isInstructor, (req, res) => {
           } else {
             course.posts.push(post);
             course.save();
-            res.status(200).json({ status: "success" });
+            res.status(200).json({ status: "success", post: post });
           }
         });
       }

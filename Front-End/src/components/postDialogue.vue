@@ -20,12 +20,15 @@
       <v-card-title class="display-1"> {{ post.title }} </v-card-title>
       <v-card-subtitle class="mt-1">{{ post.publisher.name }}</v-card-subtitle>
       <v-divider></v-divider><br />
-      <v-card-text style="font-weight: 500; font-size: large">
+      <v-card-text
+        class="white--text"
+        style="font-weight: 500; font-size: large"
+      >
         {{ post.body }}
       </v-card-text>
       <v-divider></v-divider>
       <v-list
-        style="height: 300px; overflow-y: auto; overflow-x: hidden"
+        style="height: 90%; overflow-y: auto; overflow-x: hidden"
         :dark="$store.state.dark"
       >
         <v-subheader>COMMENTS</v-subheader>
@@ -60,7 +63,46 @@
         class="ma-5"
         style="bottom: 0; right: 0; position: absolute"
       >
-        <add-comment :postId="post._id" />
+        <div class="text-center">
+          <v-dialog v-model="commentDialog" width="500">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                color="primary"
+                class="elevation-20"
+                fab
+                dark
+                v-bind="attrs"
+                v-on="on"
+              >
+                <v-icon large>mdi-plus</v-icon>
+              </v-btn>
+            </template>
+
+            <v-card>
+              <v-card-title class="text-h5 grey lighten-2">
+                What do you think ...
+              </v-card-title>
+
+              <v-card-text class="mt-5">
+                <v-textarea
+                  v-model="text"
+                  label="Comment"
+                  outlined
+                  no-resize
+                ></v-textarea>
+              </v-card-text>
+
+              <v-divider></v-divider>
+
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="primary" autofocus @click="addComment">
+                  post
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </div>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -68,12 +110,12 @@
 
 <script>
 import Client from 'api-client';
-import addComment from './addComment.vue';
+// import addComment from './addComment.vue';
 
 export default {
   name: 'post',
   components: {
-    addComment,
+    // addComment,
   },
   props: {
     post: {},
@@ -85,6 +127,8 @@ export default {
       sound: true,
       widgets: false,
       comments: [],
+      commentDialog: false,
+      text: '',
     };
   },
   methods: {
@@ -95,6 +139,19 @@ export default {
       } else {
         this.comments = this.comments.filter(function (comment) {
           return comment._id != commentId;
+        });
+      }
+    },
+    async addComment() {
+      this.commentDialog = false;
+      const response = await Client.addComment(this.post._id, this.text);
+      if (response.data.status != 'success') {
+        alert('Something Went Wrong');
+      } else {
+        this.comments.push({
+          publisher: { username: this.$store.state.currentUser.username },
+          body: this.text,
+          _id: response.data._id,
         });
       }
     },

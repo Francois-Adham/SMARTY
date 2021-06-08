@@ -104,7 +104,45 @@
                     v-if="$store.state.currentUser.type != 'Student'"
                     style="justify-content: center"
                   >
-                    <add-post :courseId="this.$route.params.id" />
+                    <div class="text-center">
+                      <v-dialog v-model="postDialog" width="500">
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn text v-bind="attrs" v-on="on">
+                            <h3 class="white--text">Add new Post</h3>
+                          </v-btn>
+                        </template>
+
+                        <v-card>
+                          <v-card-title class="text-h5 grey lighten-2">
+                            What do you think ...
+                          </v-card-title>
+
+                          <v-card-text class="mt-5">
+                            <v-text-field
+                              v-model="postTitle"
+                              label="Title"
+                              outlined
+                              no-resize
+                            ></v-text-field>
+                            <v-textarea
+                              v-model="postText"
+                              label="body"
+                              outlined
+                              no-resize
+                            ></v-textarea>
+                          </v-card-text>
+
+                          <v-divider></v-divider>
+
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="primary" autofocus @click="addPost()">
+                              post
+                            </v-btn>
+                          </v-card-actions>
+                        </v-card>
+                      </v-dialog>
+                    </div>
                   </v-list-item>
                   <v-list-item
                     style="justify-content: center"
@@ -175,18 +213,32 @@
               </v-row>
               <v-spacer />
               <v-text-field
-                  v-if="fileType=='Assignment'"
-                  v-model="fileTitle"
-                  label="Title"
-                  prepend-icon="mdi-pencil"
-                ></v-text-field>
-                <v-date-picker v-model="date" v-if="fileType=='Assignment'" width="90%"></v-date-picker>
+                v-if="fileType == 'Assignment'"
+                v-model="fileTitle"
+                label="Title"
+                prepend-icon="mdi-pencil"
+              ></v-text-field>
+              <v-date-picker
+                v-model="date"
+                v-if="fileType == 'Assignment'"
+                width="90%"
+              ></v-date-picker>
               <v-card-actions>
                 <v-spacer />
                 <v-radio-group v-model="fileType" row>
-                  <v-radio key="Content" label="Content" value="file" color="primary">
+                  <v-radio
+                    key="Content"
+                    label="Content"
+                    value="file"
+                    color="primary"
+                  >
                   </v-radio>
-                  <v-radio key="Assignment" label="Assignment" value="Assignment" color="primary">
+                  <v-radio
+                    key="Assignment"
+                    label="Assignment"
+                    value="Assignment"
+                    color="primary"
+                  >
                   </v-radio>
                 </v-radio-group>
                 <v-btn class="btn-success" @click="submitFile">Submit</v-btn>
@@ -303,7 +355,7 @@ import Client from 'api-client';
 import Banner from '../../components/courseBanner.vue';
 import notEnrolled from '../../components/notEnrolled.vue';
 import post from '../../components/postDialogue.vue';
-import addPost from '../../components/addPost.vue';
+// import addPost from '../../components/addPost.vue';
 
 export default {
   name: 'Course',
@@ -311,7 +363,7 @@ export default {
     Banner,
     notEnrolled,
     post,
-    addPost,
+    // addPost,
   },
 
   data: () => ({
@@ -357,9 +409,12 @@ export default {
     ],
     file: null,
     key: '',
-    fileType:"file",
-    fileTitle:" ",
+    fileType: 'file',
+    fileTitle: ' ',
     date: new Date().toISOString().substr(0, 10),
+    postDialog: false,
+    postTitle: '',
+    postText: '',
   }),
   methods: {
     async fetchCourseByID() {
@@ -377,25 +432,23 @@ export default {
             this.posts.push(current_post);
           } else if (current_post.type == 'file') {
             this.content.push(current_post);
-          }else if (current_post.type == 'Assignment') {
-
-            if(new Date().toISOString() <= current_post.dueDate )
-            {
+          } else if (current_post.type == 'Assignment') {
+            if (new Date().toISOString() <= current_post.dueDate) {
               current_post.dueDate = current_post.dueDate.split('T')[0];
               this.events.push(current_post);
             }
           }
         }
 
-        this.events.sort((a,b) => {
-        if ( a.dueDate < b.dueDate ){
-          return -1;
-        }
-        if ( a.dueDate > b.dueDate ){
-          return 1;
-        }
-        return 0;
-      });
+        this.events.sort((a, b) => {
+          if (a.dueDate < b.dueDate) {
+            return -1;
+          }
+          if (a.dueDate > b.dueDate) {
+            return 1;
+          }
+          return 0;
+        });
       }
       this.ready = true;
     },
@@ -422,11 +475,23 @@ export default {
         this.snackbar = true;
       }
     },
-
+    async addPost() {
+      this.postDialog = false;
+      const response = await Client.addPost(
+        this.$route.params.id,
+        this.postTitle,
+        this.postText,
+      );
+      if (response.data.status != 'success') {
+        alert('Something Went Wrong');
+      } else {
+        this.posts.push(response.data.post);
+      }
+    },
     async deletePost(flag, postId) {
       const response = await Client.deletePost(this.$route.params.id, postId);
       if (response.data.status != 'success') {
-        alert('Something went wrong');
+        this.snackbar = true;
       } else {
         if (flag) {
           this.posts = this.posts.filter(function (post) {
@@ -446,7 +511,7 @@ export default {
         this.file,
         this.fileType,
         this.fileTitle,
-        this.date
+        this.date,
       );
       if (response.status != 'success') {
         this.snackbar = true;

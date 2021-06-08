@@ -1,6 +1,6 @@
 <template>
   <div class="text-center">
-    <v-dialog v-model="dialog" width="500">
+    <v-dialog v-model="postDialog" width="500">
       <template v-slot:activator="{ on, attrs }">
         <v-btn text v-bind="attrs" v-on="on">
           <h3 class="white--text">Add new Post</h3>
@@ -14,13 +14,13 @@
 
         <v-card-text class="mt-5">
           <v-text-field
-            v-model="title"
+            v-model="postTitle"
             label="Title"
             outlined
             no-resize
           ></v-text-field>
           <v-textarea
-            v-model="text"
+            v-model="postText"
             label="body"
             outlined
             no-resize
@@ -44,9 +44,9 @@ export default {
   name: 'addPost',
   data() {
     return {
-      dialog: false,
-      title: '',
-      text: '',
+      postDialog: false,
+      postTitle: '',
+      postText: '',
     };
   },
   props: {
@@ -54,11 +54,11 @@ export default {
   },
   methods: {
     async addPost() {
-      this.dialog = false;
+      this.postDialog = false;
       const response = await Client.addPost(
         this.courseId,
-        this.title,
-        this.text,
+        this.postTitle,
+        this.postText,
       );
       if (response.data.status != 'success') {
         alert('Something Went Wrong');

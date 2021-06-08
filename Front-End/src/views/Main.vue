@@ -241,7 +241,8 @@ export default {
     async enrollToCourse() {
       const response = await Client.enroll(this.enrollKey);
       if (response.data.status == 'success') {
-        this.$router.push('/my-courses');
+        this.dialog = false;
+        this.$router.go('/my-courses');
       } else {
         alert('Something Went Wrong');
       }
@@ -250,6 +251,7 @@ export default {
     async addCourse() {
       const response = await Client.addCourse(this.courseName, this.courseKey);
       if (response.data.status == 'success') {
+        this.dialog = false;
         this.$router.push(`/course/${response.data.data.Course._id}`);
         this.$router.go(this.$router.currentRoute);
       } else {
