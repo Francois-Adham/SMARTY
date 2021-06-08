@@ -18,6 +18,9 @@
     <v-col cols="10" class="ma-0 pa-0" md="3">
       <v-card :dark="this.$store.state.dark" class="mt-10">
         <v-card-text class="elevation-20">
+          <v-alert v-show="errorMessage" dense outlined type="error">
+                    {{ errorMessage }}
+                  </v-alert>
           <v-text-field
             v-model="key"
             outlined
@@ -45,15 +48,24 @@ export default {
   },
   data: () => ({
     key: '',
+    errorMessage:''
   }),
   methods: {
     async enrollToCourse() {
-      const response = await Client.enroll(this.key);
-      if (response.data.status == 'success') {
-        this.fetchCourseByID();
-      } else {
-        this.snackbar = true;
-      }
+      await Client.enroll(this.key)
+        .then((response) => {
+          if (response.status === 200)
+            {
+              location.reload();
+              this.errorMessage='';
+            }
+          else this.errorMessage = 'You entered wrong key';
+        })
+        .catch((err) => {
+          if (err) {
+            this.errorMessage = 'You entered wrong key';
+          }
+        });
     },
   },
 };

@@ -1,10 +1,10 @@
-const { isInstructor, isEnrolled, isLoggedIn } = require("../middleware");
+const { isInstructor, isEnrolled, isAdmin,isLoggedIn } = require("../middleware");
 var express  = require("express"),
     router   = express.Router({ mergeParams: true }),
     User     = require("../models/User"),
     passport = require("passport");
 
-router.get('/:id',(req,res)=>
+router.get('/:id',isLoggedIn,isAdmin,(req,res)=>
 {
     User.findById({_id:req.params.id},(err,student)=>{
         if(err)
@@ -19,7 +19,7 @@ router.get('/:id',(req,res)=>
     });
 });
 
-router.delete('/:id',(req,res)=>
+router.delete('/:id',isLoggedIn,isAdmin,(req,res)=>
 {
     User.findByIdAndRemove(req.params.id,(err)=>{
         if(err)
@@ -35,7 +35,7 @@ router.delete('/:id',(req,res)=>
 });
 
 
-router.put('/:id',(req,res)=>
+router.put('/:id',isLoggedIn,(req,res)=>
 {
     User.findById(req.params.id,(err,sanitizedUser)=>{
         if(err){

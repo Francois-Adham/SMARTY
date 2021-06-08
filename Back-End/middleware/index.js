@@ -24,9 +24,10 @@ middlewareObj.isStudent = (req,res,next) => {
         message: 'You are not a student'
     });
 };
+
 // Check if the user is Instructor 
 middlewareObj.isInstructor = (req,res,next) => {
-    if(req.user.type === "Instructor"){
+    if(req.user.type === "Instructor" || req.user.type === "Admin"){
         return next();
     }
     res.status(401).json({
@@ -46,29 +47,36 @@ middlewareObj.isAdmin = (req,res,next) => {
 // Check if the user is enrolled in the course
 middlewareObj.isEnrolled = (req,res,next) => {
     found= false;
-    User.findById(req.user.id,(err,user)=>{
-        if(err){
-            return res.status(401).json({
-                status: 'failed',
-                message: 'user not found'
-            });
-        }
-        user.courses.forEach(course => {
-            if(course == req.params.id)
-            {
-                found = true;
-                return next();
+    if(req.user.type === "Admin"){
+        next();
+    }else {
+        User.findById(req.user.id,(err,user)=>{
+            if(err){
+                return res.status(401).json({
+                    status: 'failed',
+                    message: 'user not found'
+                });
             }
+            user.courses.forEach(course => {
+                
+                if(course == req.params.id)
+                {
+                    console.log("Hi");
+                    found = true;
+                    return next();
+                }
+            });
+            if(!found)
+            {
+                res.status(400).json({
+                status: 'failed',
+                isEnrolled: false,
+                message: 'You are not enrolled in this course'
+            });
+            }
+        
         });
-        if(!found)
-        {
-            res.status(200).json({
-            status: 'failed',
-            isEnrolled: false,
-            message: 'You are not enrolled in this course'
-           });
-        }
-    });
+    }
 };
 
 //Check if current user is the publisher of a post

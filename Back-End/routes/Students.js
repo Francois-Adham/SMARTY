@@ -1,8 +1,9 @@
 var express  = require("express"),
     router   = express.Router({ mergeParams: true }),
+    { isAdmin } = require("../middleware"),
     User     = require("../models/User");
 
-router.get('/',(req,res)=>
+router.get('/',isAdmin,(req,res)=>
 {
     User.find({type:"Student"},(err,students)=>{
         if(err)

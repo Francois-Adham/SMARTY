@@ -23,6 +23,9 @@
           >
             <br />
             <v-card-text>
+              <v-alert v-show="errorMessage" dense outlined type="error">
+                {{ errorMessage }}
+              </v-alert>
               <v-text-field
                 v-model="courseName"
                 outlined
@@ -180,6 +183,7 @@ export default {
     enrollKey: '',
     courseKey: '',
     courseName: '',
+    errorMessage: '',
     primaryDrawer: {
       model: null,
       clipped: true,
@@ -257,14 +261,21 @@ export default {
     },
 
     async addCourse() {
-      const response = await Client.addCourse(this.courseName, this.courseKey);
-      if (response.data.status == 'success') {
+      await Client.addCourse(this.courseName, this.courseKey).then((response)=>{
+        if (response.status == 200) {
         this.dialog = false;
         this.$router.push(`/course/${response.data.data.Course._id}`);
         this.$router.go(this.$router.currentRoute);
+        this.errorMessage = '';
       } else {
-        alert('Something Went Wrong');
+        this.errorMessage = "Enter unique key";
       }
+      }).catch((err) => {
+          if (err) {
+            this.errorMessage = 'Enter unique key';
+          }
+      });;
+      
     },
   },
 

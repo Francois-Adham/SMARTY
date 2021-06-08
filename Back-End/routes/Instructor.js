@@ -1,10 +1,11 @@
 var express  = require("express"),
     router   = express.Router({ mergeParams: true }),
+    { isAdmin } = require("../middleware"),
     User     = require("../models/User"),
     passport = require("passport");
 
 // Get all instructors 
-router.get('/',(req,res)=>
+router.get('/',isAdmin,(req,res)=>
 {
     User.find({type:"Instructor"},(err,instructors)=>{
         if(err)
