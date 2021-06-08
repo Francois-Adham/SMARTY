@@ -226,7 +226,7 @@ router.post("/enroll", (req, res) => {
     if (err) {
       console.log(err);
       res.status(400).json({ status: "failed to get Course" });
-    } else {
+    } else if(course) {
       if (course.key == req.body.key  ) {
         course.students.push(req.user);
         course.save();
@@ -243,8 +243,10 @@ router.post("/enroll", (req, res) => {
           }
         });
       } else {
-        res.status(400).json({ status: "You entered wrong Key !" });
+        res.status(400).json({ status: "failed",message:"You entered wrong Key !" });
       }
+    }else{
+      res.status(400).json({ status: "failed",message:"You entered wrong Key !" });
     }
   });
 });

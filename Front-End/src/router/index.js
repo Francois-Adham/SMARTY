@@ -25,18 +25,21 @@ const routes = [
       title: 'SMARTY',
     },
     children: [
-      { path: '/course/:id', name: 'course', component: Course },
-      { path: '/my-courses', name: 'courses', component: myCourses },
-      { path: '/home', name: 'Home', component: Home },
-      { path: '/admin', name: 'AdminDashboard', component: Admin },
-      { path: '/courses', name: 'allCourses', component: allCourses },
-      { path: '/students', name: 'allStudents', component: allStudents },
-      { path: '/profile', name: 'profile', component: Profile },
-      { path: '/user/:id', name: 'user', component: UserProfile },
+      { path: '/course/:id', name: 'course', component: Course ,meta:{title: 'Course'}},
+      { path: '/my-courses', name: 'courses', component: myCourses,meta:{title: 'My Courses'} },
+      { path: '/home', name: 'Home', component: Home,meta:{title: 'Smarty'} },
+      { path: '/admin', name: 'AdminDashboard', component: Admin ,meta:{title: 'Dashboard'}},
+      { path: '/courses', name: 'allCourses', component: allCourses,meta:{title: 'Courses'} },
+      { path: '/students', name: 'allStudents', component: allStudents,meta:{title: 'Students'} },
+      { path: '/profile', name: 'profile', component: Profile,meta:{title: 'Profile'} },
+      { path: '/user/:id', name: 'user', component: UserProfile,meta:{title: 'Profile'} },
       {
         path: '/instructors',
         name: 'allInstructors',
         component: allInstructors,
+        meta: {
+          title: 'Instractors',
+        }
       },
     ],
   },
@@ -44,21 +47,32 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login,
+    meta: {
+      title: 'Login',
+    }
   },
   {
     path: '/logout',
     name: 'Logout',
     component: Logout,
+    meta: {
+      title: 'Logout',
+    }
   },
   {
     path: '/signup',
     name: 'Signup',
     component: Signup,
+    meta: {
+      title: 'Sign up',
+    }
   },
 ];
 
 const router = new VueRouter({
-  routes,
+  mode: "history",
+  routes
 });
+
 
 export default router;

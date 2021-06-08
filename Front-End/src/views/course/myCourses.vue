@@ -27,6 +27,9 @@
             <v-col cols="3" class="ma-0 pa-0">
               <v-card :dark="this.$store.state.dark" class="mt-10">
                 <v-card-text class="elevation-20">
+                  <v-alert v-show="errorMessage" dense outlined type="error">
+                    {{ errorMessage }}
+                  </v-alert>
                   <v-text-field
                     outlined
                     v-model="enrollKey"
@@ -174,6 +177,7 @@ export default {
     enrollKey: '',
     courseName: '',
     courseKey: '',
+    errorMessage: ''
   }),
   methods: {
     async fetchCourses() {
@@ -185,12 +189,19 @@ export default {
       this.ready = true;
     },
     async enrollToCourse() {
-      const response = await Client.enroll(this.enrollKey);
-      if (response.data.status == 'success') {
-        this.$router.go(this.$router.currentRoute);
-      } else {
-        alert('Something Went Wrong');
-      }
+      await Client.enroll(this.enrollKey).then((response)=>{
+        console.log(response)
+        if(response.status === 200)
+          this.$router.go(this.$router.currentRoute);
+        else
+          this.errorMessage = "You entered wrong key";
+      }).catch((err) => {
+        if(err){
+          alert('Something Went Wrong');
+          this.errorMessage = "You entered wrong key"
+        }
+      });
+      
     },
     async addCourse() {
       const response = await Client.addCourse(this.courseName, this.courseKey);
