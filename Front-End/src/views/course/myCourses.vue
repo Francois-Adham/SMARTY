@@ -177,7 +177,7 @@ export default {
     enrollKey: '',
     courseName: '',
     courseKey: '',
-    errorMessage: ''
+    errorMessage: '',
   }),
   methods: {
     async fetchCourses() {
@@ -189,19 +189,19 @@ export default {
       this.ready = true;
     },
     async enrollToCourse() {
-      await Client.enroll(this.enrollKey).then((response)=>{
-        console.log(response)
-        if(response.status === 200)
-          this.$router.go(this.$router.currentRoute);
-        else
-          this.errorMessage = "You entered wrong key";
-      }).catch((err) => {
-        if(err){
-          alert('Something Went Wrong');
-          this.errorMessage = "You entered wrong key"
-        }
-      });
-      
+      await Client.enroll(this.enrollKey)
+        .then((response) => {
+          console.log(response);
+          if (response.status === 200)
+            this.$router.go(this.$router.currentRoute);
+          else this.errorMessage = 'You entered wrong key';
+        })
+        .catch((err) => {
+          if (err) {
+            alert('Something Went Wrong');
+            this.errorMessage = 'You entered wrong key';
+          }
+        });
     },
     async addCourse() {
       const response = await Client.addCourse(this.courseName, this.courseKey);
