@@ -2,9 +2,9 @@
   <v-container class="">
     <v-row justify="center">
       <v-col sm="12" md="8" lg="6">
-        <v-card elevation="15" class="ma-8" :dark="this.$store.state.dark">
+        <v-card :style="{'background-color':this.$store.state.dark ? '#1F2833' : 'white'}" elevation="15" class="ma-8" :dark="this.$store.state.dark">
           <h1 class="pa-8 pb-4 font-weight-light">Profile Info</h1>
-          <v-simple-table class="pa-4 pt-0">
+          <v-simple-table :style="{'background-color':this.$store.state.dark ? '#1F2833' : 'white'}" :class="this.$store.state.dark ? 'pa-4 pt-0 #1A237E' : 'pa-4 pt-0 white'">
             <tbody>
               <tr>
                 <td class="font-weight-light text-subtitle-1">Username</td>

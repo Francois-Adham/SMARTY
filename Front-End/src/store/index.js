@@ -29,6 +29,9 @@ export default new Vuex.Store({
     logout(state) {
       state.loggedIn = false;
     },
+    setDark(state, dark){
+      state.dark = dark
+    }
   },
   actions: {},
   modules: {},

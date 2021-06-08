@@ -113,7 +113,7 @@
               id="switch"
               label="Dark"
               :value="this.$store.state.dark"
-              @change="themeChanged"
+              @change="toggleTheme"
             ></v-switch>
           </v-list-item>
         </v-list>
@@ -243,7 +243,6 @@ export default {
 
   methods: {
     themeChanged() {
-      this.$store.state.dark = !this.$store.state.dark;
       if (this.$store.state.dark) {
         this.containerStyle['background-color'] = '#0B0C10';
         this.bgStyle[
@@ -257,6 +256,11 @@ export default {
         ] = `url(${require('../assets/background_light.png')})`;
         this.bgStyle.opacity = 0.2;
       }
+    },
+    toggleTheme() {
+      this.$store.state.dark = !this.$store.state.dark;
+      this.$cookies.set('dark', this.$store.state.dark);
+      this.themeChanged();
     },
     async enrollToCourse() {
       const response = await Client.enroll(this.enrollKey);
@@ -293,6 +297,7 @@ export default {
     if (this.$cookies.isKey('user_session')) {
       if (!this.$store.loggedIn) {
         this.$store.commit('setUser', this.$cookies.get('user_data'));
+        this.$store.commit('setDark', this.$cookies.get('dark') === 'true');
         this.$store.commit('login');
       }
     } else {

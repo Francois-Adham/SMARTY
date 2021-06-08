@@ -2,9 +2,21 @@
   <v-container class="">
     <v-row justify="center">
       <v-col sm="12" md="8" lg="6">
-        <v-card elevation="15" class="ma-8" :dark="this.$store.state.dark">
+        <v-card
+          :style="{
+            'background-color': this.$store.state.dark ? '#1F2833' : 'white',
+          }"
+          elevation="15"
+          class="ma-8"
+          :dark="this.$store.state.dark"
+        >
           <h1 class="pa-8 pb-4 font-weight-light">{{ username }}'s Profile</h1>
-          <v-simple-table class="pa-4 pt-0">
+          <v-simple-table
+            :style="{
+              'background-color': this.$store.state.dark ? '#1F2833' : 'white',
+            }"
+            class="pa-4 pt-0"
+          >
             <tbody>
               <tr>
                 <td class="font-weight-light text-subtitle-1">Username</td>
@@ -25,9 +37,21 @@
             </tbody>
           </v-simple-table>
         </v-card>
-        <v-card elevation="15" class="ma-8" :dark="this.$store.state.dark">
+        <v-card
+          :style="{
+            'background-color': this.$store.state.dark ? '#1F2833' : 'white',
+          }"
+          elevation="15"
+          class="ma-8"
+          :dark="this.$store.state.dark"
+        >
           <h1 class="pa-8 pb-4 font-weight-light">Enrolled courses</h1>
-          <v-simple-table class="pa-4 pt-0">
+          <v-simple-table
+            :style="{
+              'background-color': this.$store.state.dark ? '#1F2833' : 'white',
+            }"
+            class="pa-4 pt-0"
+          >
             <tbody v-if="courses.length">
               <tr v-for="course in courses" :key="course">
                 <td class="text-subtitle-1">{{ course }}</td>
