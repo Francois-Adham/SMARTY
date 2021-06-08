@@ -7,7 +7,8 @@
       <v-app-bar-nav-icon
         @click.stop="primaryDrawer.model = !primaryDrawer.model"
       ></v-app-bar-nav-icon>
-      <v-toolbar-title>SMARTY</v-toolbar-title>
+      <img style="height: 50px" :src="logo" />
+      <h1 class="ml-3 website">Smarty</h1>
       <v-spacer></v-spacer>
       <div class="text-center">
         <v-dialog v-model="dialog" width="500">
@@ -166,6 +167,13 @@ export default {
         item.userType.includes(this.$store.state.currentUser.type),
       );
     },
+    logo() {
+      if (!this.$store.state.dark) {
+        return require('../assets/logo_light.svg');
+      } else {
+        return require('../assets/logo_dark.svg');
+      }
+    },
   },
   data: () => ({
     dialog: false,
@@ -275,8 +283,12 @@ export default {
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css?family=Sofia');
 #switch {
   margin: 20px;
+}
+.website {
+  font-family: 'Sofia', sans-serif;
 }
 #bg {
   position: absolute;

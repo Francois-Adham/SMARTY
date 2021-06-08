@@ -3,9 +3,9 @@
     <v-col cols="12" class="col pa-0">
       <div class="bg mp-0 ma-0">
         <v-row align="start" justify="start" style="width: 100%; height: 100%">
-          <v-col class="pa-10" cols="6">
-            <h1 class="display-4 text-center font-weight-bold pt-16 welcome">
-              Welcome {{ this.$store.state.currentUser.username }} to SMARTY
+          <v-col class="pa-10" cols="10">
+            <h1 class="welcome">
+              Welcome {{ this.$store.state.currentUser.username }} To Smarty
             </h1>
           </v-col>
         </v-row>
@@ -21,9 +21,12 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css?family=Sofia');
+
 .welcome {
-  color: #d0e04f;
-  font-family: 'Merienda', Helvetica, Arial;
+  color: #ffcd57;
+  font-family: 'Sofia', sans-serif;
+  font-size: 10vh;
 }
 .col {
   min-height: 100%;
