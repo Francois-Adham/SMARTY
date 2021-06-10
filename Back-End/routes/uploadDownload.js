@@ -56,7 +56,7 @@ router.post("/upload", isLoggedIn, isInstructor, function (req, res) {
   });
 });
 
-router.get("/downloads/:id", isLoggedIn, isEnrolled, function (req, res, next) {
+router.get("/downloads/:id",  function (req, res, next) {
   // Get the post to fill the data
   Post.findById(req.params.id, (err, post) => {
     if (err) {

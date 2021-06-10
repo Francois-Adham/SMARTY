@@ -91,6 +91,7 @@ export default {
           this.message = 'Email changed';
           this.messageType = 'success';
           Client.profile(this.$store.state.currentUser.id).then((response) => {
+            console.log(response.data.data.student);
             this.$cookies.set('user_data', response.data.data.student);
             this.$store.commit('setUser', response.data.data.student);
           });

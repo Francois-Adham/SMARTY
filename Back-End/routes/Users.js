@@ -4,7 +4,7 @@ var express  = require("express"),
     User     = require("../models/User"),
     passport = require("passport");
 
-router.get('/:id',isLoggedIn,isAdmin,(req,res)=>
+router.get('/:id',isLoggedIn,(req,res)=>
 {
     User.findById({_id:req.params.id},(err,student)=>{
         if(err)

@@ -490,7 +490,8 @@ export default {
 
     async deleteStudent(studentId) {
       const response = await Client.unenroll(this.$route.params.id, studentId);
-      if (response.data.status == 'success') {
+      console.log(response);
+      if (response.status == 'success') {
         this.course.students = this.course.students.filter(function (student) {
           return student._id != studentId;
         });
